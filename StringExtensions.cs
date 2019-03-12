@@ -11,5 +11,11 @@ namespace advent.of.code {
             return 
                 s.Select( ch => Convert.ToInt32(new String(ch,1)));
         } 
+
+        public static IEnumerable<int> ToNumbers(this string s) {
+            return s
+                .Split(' ')
+                .Select( cell => Convert.ToInt32(cell));
+        }
     }
 }

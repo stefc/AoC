@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <RootNamespace>advent.of.code</RootNamespace>
     <IsPackable>false</IsPackable>
+    <IsLatestLanguage>true</IsLatestLanguage>
   </PropertyGroup>
 
   <ItemGroup>
