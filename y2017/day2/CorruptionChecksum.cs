@@ -12,13 +12,10 @@ namespace advent.of.code.y2017.day2 {
     static class CorruptionChecksum {
         
         public static int[][] getSpreadsheet(this string input) 
-        {
-            return input.Split("\r\n")
+            => input.Split("\r\n")
                 .Where( line => !String.IsNullOrEmpty(line))
-                .Select( line => line.Split(' ')
-                    .Select( cell => Convert.ToInt32(cell)).ToArray()
-                ).ToArray();
-        }
+                .Select( line => line.ToNumbers().ToArray())
+                .ToArray();
 
         public static Division getDivision(this string line) {
             IEnumerable<int> numbers = line.ToNumbers().OrderByDescending(x => x);
