@@ -79,10 +79,11 @@ Suche dir bitte aus einem beliebigen Jahr ein Rätsel aus (vorzugsweise Tag #1 R
 
 Per 'dotnet' Befehl generieren wir uns ein Projekt. 
 
-'''dotnet new xunit --name AoC -o AoC
+´´´dotnet new xunit --name AoC -o AoC
 
 Um nachher die Struktur möglichst einfach in das Hauptprojekt mergen zu können, empfehlen wir folgende Verzeichnisstruktur einzuhalten. 
 
+´´´
 \tests
     \y2015
         Day1.cs
@@ -91,12 +92,17 @@ Um nachher die Struktur möglichst einfach in das Hauptprojekt mergen zu können
 \y2015
     \day1
         NotQuiteLisp.cs
+´´´
 
 Also Unittests immer im Unterverzeichnis \tests im jeweiligen Jahr Folder und mit dem Tag als Dateinamen. Der eigentliche Lösungsalgorithmus im Unterverzeichnis \yJJJJ\dayTT mit einem sprechenden Klassennamen. Im Beispiel 'NotQuiteLisp'. 
 
 Das Programm baust du mit dem Aufruf 'dotnet build' und mit 'dotnet test' lässt du die Test's durchlaufen. 
 
 Die Tests sagen dir das dein Algorithmus funktioniert. 
+
+Die bereits im Repo hinterlegten Lösungen geben dir einen Anhaltspunkt, wie vorgegangen werden kann. Aber auch diese sind nicht endgültig, sondern lassen sich verbessern. Also wenn du eine bessere Lösung für ein bereits gelöstes Problem hast nur zu. Stelle einen Pullrequest!
+
+Wichtig ist allerdings das bei einem Pullrequest immer noch alle Test's mit grün abgeschlossen sind! 
 
 
 
