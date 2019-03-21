@@ -14,7 +14,7 @@ namespace advent.of.code {
 
         public static IEnumerable<int> ToNumbers(this string s) {
             return s
-                .Split(' ', '\t', ',')
+                .Split(' ', '\t', ',', '\n')
                 .Select( cell => Convert.ToInt32(cell));
         }
     }

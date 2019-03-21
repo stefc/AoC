@@ -19,5 +19,13 @@ namespace advent.of.code {
             sequence.Count() == 0;
         public static bool IsNotEmpty<T>(this IEnumerable<T> sequence) =>
             sequence.Count() != 0;
+
+        public static IEnumerable<T> Endless<T>(this IEnumerable<T> sequence)
+        {
+            while (true) {
+                foreach(var x in sequence)
+                    yield return x;
+            }
+        }
     }
 }
