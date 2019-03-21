@@ -72,13 +72,5 @@ namespace advent.of.code.y2017.day2 {
                 .Select( division => division.Item1 / division.Item2 )
                 .Sum();
         }
-
-        /*
-           return getSpreadsheet(input)
-        .map { row in divideAll(ArraySlice<Int>(row.sorted(by: >)))! }
-        .flatMap { division in division.numerator / division.denominator }
-        .reduce(0,+)
-
-         */
     }
 }
