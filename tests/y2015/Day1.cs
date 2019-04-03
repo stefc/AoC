@@ -8,7 +8,7 @@ namespace advent.of.code.tests.y2015 {
 
     public class TestDay1
     {
-        [Theory]
+/*         [Theory]
         [InlineData("(())",0)]
         [InlineData("()()",0)]
         [InlineData("(((",3)]
@@ -23,7 +23,7 @@ namespace advent.of.code.tests.y2015 {
             Assert.Equal(expectedFloor, 
                 NotQuiteLisp.WhatFloor(instructions));
         }
-        
+*/        
     
     }
 }

@@ -7,7 +7,7 @@ namespace advent.of.code.tests.y2016 {
 
     public class TestDay1
     {
-        [Theory]
+       /*  [Theory]
         [InlineData("R2, L3", 5)]
         [InlineData("R2, R2, R2", 2)]
         [InlineData("R5, L5, R5, R3", 12)]
@@ -16,7 +16,7 @@ namespace advent.of.code.tests.y2016 {
             Assert.Equal(expectedBlocks, 
                 NoTimeForTaxicap.HowFarBlocksAway(instructions));
         }
-        
+        */
     
     }
 }
