@@ -3,6 +3,7 @@ using Xunit;
 
 using advent.of.code.y2018.day1;
 using System.IO;
+using System.Linq;
 
 namespace advent.of.code.tests.y2018 {
 
@@ -25,7 +26,6 @@ namespace advent.of.code.tests.y2018 {
             Assert.Equal(493, ChronalCalibration.ChangeFrequency(input));
         }
 
-
         [Theory]
         [InlineData(0,"+1,-1")]
         [InlineData(10,"+3,+3,+4,-2,-4")]
@@ -35,6 +35,12 @@ namespace advent.of.code.tests.y2018 {
         {
             Assert.Equal(expected, ChronalCalibration.DetectTwice(
                 value));
+        }
+
+        [Fact]
+        public void PuzzleTwo() {
+            string input = File.ReadAllText("tests/y2018/Day1.Input.txt");
+            Assert.Equal(413, ChronalCalibration.DetectTwice(input));
         }
     }
 }

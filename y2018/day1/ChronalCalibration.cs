@@ -17,23 +17,26 @@ namespace advent.of.code.y2018.day1 {
 
         internal static int DetectTwice(string display)
         {
-            return display
+            var numbers = display
                 .ToNumbers()
-                .Endless()
+                .ToImmutableArray();
+
+            return numbers
+                .Infinite()
                 .FindTwice();
         }
 
-
-        private static int FindTwice(ImmutableHashSet<int> set, int accu, int head, 
-            IEnumerable<int> tail) 
-            => set.Contains(accu) ?  accu :
-                FindTwice(set.Add(accu), accu + head, tail.Head(), tail.Tail());
-
-        internal static int FindTwice(this IEnumerable<int> sequence)
+        internal static int FindTwice(this IEnumerable<int> enumerable)
         {
-            return FindTwice(
-                ImmutableHashSet<int>.Empty, 0,
-                sequence.Head(), sequence.Tail());
+            var set = ImmutableHashSet<int>.Empty;
+            var accu = 0;
+            var enumerator = enumerable.GetEnumerator();
+            while (!set.Contains(accu) && enumerator.MoveNext()) {
+                set = set.Add(accu);
+                var head = enumerator.Current;
+                accu += head;
+            }
+            return accu;
         }
     }
 }
