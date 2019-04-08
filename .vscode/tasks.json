@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/advent-of-code.csproj"
+                "advent-of-code.csproj"
             ],
             "group": {
                 "kind": "build",
@@ -21,7 +21,7 @@
             "type": "process",
             "args": [
                 "test",
-                "${workspaceFolder}/advent-of-code.csproj"
+                "advent-of-code.csproj"
             ],
             "group": {
                 "kind": "test",
