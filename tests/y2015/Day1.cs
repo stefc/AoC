@@ -24,6 +24,7 @@ namespace advent.of.code.tests.y2015 {
                     NotQuiteLisp.WhatFloor(instructions));
 
         [Theory]
+        [InlineData(")",1)]
         [InlineData("()())",5)]
         public void PartTwo(string instructions, int expected) 
             =>
@@ -32,10 +33,10 @@ namespace advent.of.code.tests.y2015 {
 
         [Fact]
         public void Puzzle() {
-            string instructions = File.ReadAllText("Day1.Input.txt");
+            string instructions = File.ReadAllText("tests/y2015/Day1.Input.txt");
             
-            Assert.Equal(2323, NotQuiteLisp.WhatFloor(instructions));
-            // Assert.Equal(2323, NotQuiteLisp.HowManyMovesToBasement(instructions));
+            Assert.Equal(74, NotQuiteLisp.WhatFloor(instructions));
+            Assert.Equal(1795, NotQuiteLisp.HowManyMovesToBasement(instructions));
         }
     }
 }
