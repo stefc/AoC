@@ -8,7 +8,7 @@ using advent.of.code.y2015.day5;
 
 namespace advent.of.code.tests.y2015 {
 
-/* 
+/*
 ow, a nice string is one with all of the following properties:
 
 It contains a pair of any two letters that appears at least twice in the string without overlapping, like xyxy (xy) or aabcdefgaa (aa), but not like aaa (aa, but it overlaps).
@@ -22,53 +22,53 @@ ieodomkazucvgmuy is naughty because it has a repeating letter with one between (
 
 */
 
-    public class TestDay5
-    {
-        [Theory]
-        [InlineData("ugknbfddgicrmopn",true)]
-        [InlineData("aaa",true)]
-        [InlineData("jchzalrnumimnmhp",false)]
-        [InlineData("haegwjzuvuyypxyu",false)]
-        [InlineData("dvszwmarrgswjxmb",false)]
-        public void PartOne(string value, bool isNice) 
-            =>
-                Assert.Equal(isNice, 
-                    StringClassifier.IsNice(value));
+	public class TestDay5
+	{
+		[Theory]
+		[InlineData("ugknbfddgicrmopn",true)]
+		[InlineData("aaa",true)]
+		[InlineData("jchzalrnumimnmhp",false)]
+		[InlineData("haegwjzuvuyypxyu",false)]
+		[InlineData("dvszwmarrgswjxmb",false)]
+		public void PartOne(string value, bool isNice)
+			=>
+				Assert.Equal(isNice,
+					StringClassifier.IsNice(value));
 
-        [Theory]
-        [InlineData("xyxy")]
-        [InlineData("aabcdefgaa")]
-        public void TestPair(string value) => 
-            Assert.True(StringClassifier.HasPair(value));
-        
-        [Theory]
-        [InlineData("xyx")]
-        [InlineData("abcdefeghi")]
-        public void TestSurrounding(string value) => 
-            Assert.True(StringClassifier.HasSurounding(value));
+		[Theory]
+		[InlineData("xyxy")]
+		[InlineData("aabcdefgaa")]
+		public void TestPair(string value) =>
+			Assert.True(StringClassifier.HasPair(value));
 
-        [Theory]
-        [InlineData("qjhvhtzxzqqjkmpb",true)]
-        [InlineData("xxyxx",true)]
-        [InlineData("uurcxstgmygtbstg",false)]
-        [InlineData("ieodomkazucvgmuy",false)]
-        public void PartTwo(string value, bool isNice) 
-            =>
-                Assert.Equal(isNice, 
-                    StringClassifier.IsNicer(value));
+		[Theory]
+		[InlineData("xyx")]
+		[InlineData("abcdefeghi")]
+		public void TestSurrounding(string value) =>
+			Assert.True(StringClassifier.HasSurounding(value));
 
-        [Fact]
-        public void Puzzle() {
-            var input = File
-                .ReadLines("tests/y2015/Day5.Input.txt");
+		[Theory]
+		[InlineData("qjhvhtzxzqqjkmpb",true)]
+		[InlineData("xxyxx",true)]
+		[InlineData("uurcxstgmygtbstg",false)]
+		[InlineData("ieodomkazucvgmuy",false)]
+		public void PartTwo(string value, bool isNice)
+			=>
+				Assert.Equal(isNice,
+					StringClassifier.IsNicer(value));
 
-            Assert.Equal(255, input
-                    .Where(StringClassifier.IsNice)
-                    .Count());
-            Assert.Equal(73, input
-                    .Where(StringClassifier.IsNicer)
-                    .Count());
+		[Fact]
+		public void Puzzle() {
+			var input = File
+				.ReadLines("tests/y2015/Day5.Input.txt");
 
-        }
-    }
+			Assert.Equal(255, input
+					.Where(StringClassifier.IsNice)
+					.Count());
+			Assert.Equal(77, input
+					.Where(StringClassifier.IsNicer)
+					.Count());
+
+		}
+	}
 }
