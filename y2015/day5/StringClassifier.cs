@@ -37,55 +37,53 @@ namespace advent.of.code.y2015.day5 {
 			value.Contains("ab") || value.Contains("cd") ||
 			value.Contains("pq") || value.Contains("xy");
 
-		public static bool HasPair(this string value) => value
-			.Aggregate(
+		public static bool HasPair(this string value) {
+			int i = 0;
+			while (i < value.Length - 3) {
+				var sub = value.Substring(i, 2);
+				if (value.Substring(i+2).Contains(sub)) {
+					return true;
+				}
+				i++;
+			}
+			return false;
+		}
 
-				seed: (
-					hashset: ImmutableHashSet<string>.Empty,
-					result: false,
-					state: new Nullable<char>()),
+		
+		private static bool CheckPair(
+			IEnumerable<char> head, IEnumerable<char> tail)
+		{
+			var pattern = String.Concat(head);
+			var content = String.Concat(tail);
 
-				func: (accu,current) => {
-					if (!accu.state.HasValue) {
-						return (hashset: accu.hashset, result: accu.result, state: current);
-					} else {
-						var tuple = accu.state.Value.ToString() + current;
-						if (accu.hashset.Contains(tuple))
-							return (hashset: accu.hashset, result: true, state: current);
-						return (hashset: accu.hashset.Add(tuple), result: accu.result, state: current);
-					}
-				},
+			if (pattern.Length!=2) return false;
 
-				resultSelector: accu => accu.result
-			);
+			return content.Contains(pattern);
+		}
 
 		public static bool HasSurounding(this string value) => value
 			.Aggregate(
 				seed: (
-					queue: ImmutableQueue<char>.Empty,
+					tail: value
+						.Aggregate(ImmutableQueue<char>.Empty, (a,c) => a.Enqueue(c))
+						.Dequeue(),
 					result: false
 				),
 
 				func: (accu,current) => {
-					if (accu.result)
+					if (accu.result || accu.tail.IsEmpty)
 						return accu;
-					var newQueue = accu.queue.Enqueue(current);
-					if (newQueue.Count()>3)
-						newQueue = newQueue.Dequeue();
-					return (queue: newQueue,
-						result: CheckSurrounding(newQueue));
+
+					return (
+						tail: accu.tail.Dequeue(),
+						result: CheckSurrounding(current, accu.tail));
 				},
 
 				resultSelector: accu => accu.result
 			);
 
-		private static bool CheckSurrounding(IEnumerable<char> queue) {
+		private static bool CheckSurrounding(char head, IEnumerable<char> tail)
+			=> String.Concat(tail).IndexOf(head,1) == 1;
 
-			if (queue.Count() <=2)
-				return false;
-			var content = String.Concat(queue);
-			var hasSurounding = content.Last() == content.First();
-			return hasSurounding;
-		}
 	}
 }
