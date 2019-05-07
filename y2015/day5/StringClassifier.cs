@@ -37,29 +37,11 @@ namespace advent.of.code.y2015.day5 {
 			value.Contains("ab") || value.Contains("cd") ||
 			value.Contains("pq") || value.Contains("xy");
 
-		public static bool HasPair(this string value) {
-			int i = 0;
-			while (i < value.Length - 3) {
-				var sub = value.Substring(i, 2);
-				if (value.Substring(i+2).Contains(sub)) {
-					return true;
-				}
-				i++;
-			}
-			return false;
-		}
+		public static bool HasPair(this IEnumerable<char> value) =>
+			value.IsEmpty() ? false :
+				(String.Concat(value.Skip(2))
+					.Contains(String.Concat(value.Take(2)))) ? true : value.Skip(1).HasPair();
 
-		
-		private static bool CheckPair(
-			IEnumerable<char> head, IEnumerable<char> tail)
-		{
-			var pattern = String.Concat(head);
-			var content = String.Concat(tail);
-
-			if (pattern.Length!=2) return false;
-
-			return content.Contains(pattern);
-		}
 
 		public static bool HasSurounding(this string value) => value
 			.Aggregate(
