@@ -42,30 +42,8 @@ namespace advent.of.code.y2015.day5 {
 				(String.Concat(value.Skip(2))
 					.Contains(String.Concat(value.Take(2)))) ? true : value.Skip(1).HasPair();
 
-
-		public static bool HasSurounding(this string value) => value
-			.Aggregate(
-				seed: (
-					tail: value
-						.Aggregate(ImmutableQueue<char>.Empty, (a,c) => a.Enqueue(c))
-						.Dequeue(),
-					result: false
-				),
-
-				func: (accu,current) => {
-					if (accu.result || accu.tail.IsEmpty)
-						return accu;
-
-					return (
-						tail: accu.tail.Dequeue(),
-						result: CheckSurrounding(current, accu.tail));
-				},
-
-				resultSelector: accu => accu.result
-			);
-
-		private static bool CheckSurrounding(char head, IEnumerable<char> tail)
-			=> String.Concat(tail).IndexOf(head,1) == 1;
-
+		public static bool HasSurounding(this IEnumerable<char> value) =>
+			value.IsEmpty() || value.Count() <= 2 ? false :
+				value.First() == value.ElementAt(2) ? true : value.Skip(1).HasSurounding();
 	}
 }
