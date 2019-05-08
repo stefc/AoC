@@ -21,10 +21,34 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using advent.of.code.common;
 
 namespace advent.of.code.y2015.day6 {
 
 	static class FireHazard {
-	}
 
+		public static Statement Parse(string statement) {
+			return new Statement(Command.TurnOn, Point.Zero, new Point(999,999));
+		}
+
+		internal enum Command
+		{
+			TurnOn,
+			TurnOff,
+			Toggle
+		}
+		internal class Statement {
+			Command Command {get; set; }
+
+			Point From { get;  set; }
+			Point Through { get; set; }
+
+			public Statement(Command command, Point from, Point through)
+			{
+				this.Command=command;
+				this.From=from;
+				this.Through=through;
+			}
+		}
+	}
 }
