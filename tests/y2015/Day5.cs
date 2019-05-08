@@ -50,15 +50,12 @@ def is_really_nice(s):
 	public class TestDay5
 	{
 		[Theory]
-		[InlineData("ugknbfddgicrmopn",true)]
-		[InlineData("aaa",true)]
-		[InlineData("jchzalrnumimnmhp",false)]
-		[InlineData("haegwjzuvuyypxyu",false)]
-		[InlineData("dvszwmarrgswjxmb",false)]
-		public void PartOne(string value, bool isNice)
-			=>
-				Assert.Equal(isNice,
-					StringClassifier.IsNice(value));
+		[InlineData("turn on 0,0 through 999,999", 1_000_000)]
+		[InlineData("toggle 0,0 through 999,0",1_000)]
+		[InlineData("turn off 499,499 through 500,500", 4)]
+		public void PartOne(string statement, int expected) {
+			var grid = new LightGrid(1000,1000);
+		}
 
 		[Theory]
 		[InlineData("xyxy")]
