@@ -15,8 +15,9 @@ namespace advent.of.code.common
 		private static Lazy<Point> south = new Lazy<Point>(() => new Point(0, +1));
 		private static Lazy<Point> west = new Lazy<Point>(() => new Point(-1, 0));
 		private static Lazy<Point> east = new Lazy<Point>(() => new Point(+1, 0));
+        private string value;
 
-		public static Point Zero => zero.Value;
+        public static Point Zero => zero.Value;
 		public static Point North => north.Value;
 		public static Point South => south.Value;
 		public static Point West => west.Value;
@@ -32,7 +33,15 @@ namespace advent.of.code.common
 			Y = y;
 		}
 
-		public override int GetHashCode()
+        public static Point FromString(string value)
+        {
+			var parts = value.Split(',');
+			int x = Convert.ToInt32(parts.FirstOrDefault());
+			int y = Convert.ToInt32(parts.LastOrDefault());
+            return new Point(x,y);
+        }
+
+        public override int GetHashCode()
 		{
 			return this.X * 26 ^ this.Y;
 		}
