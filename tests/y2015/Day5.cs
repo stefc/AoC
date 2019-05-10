@@ -50,14 +50,6 @@ def is_really_nice(s):
 	public class TestDay5
 	{
 		[Theory]
-		[InlineData("turn on 0,0 through 999,999", 1_000_000)]
-		[InlineData("toggle 0,0 through 999,0",1_000)]
-		[InlineData("turn off 499,499 through 500,500", 4)]
-		public void PartOne(string statement, int expected) {
-			var grid = new LightGrid(1000,1000);
-		}
-
-		[Theory]
 		[InlineData("xyxy")]
 		[InlineData("aabcdefgaa")]
 		public void TestPair(string value) =>

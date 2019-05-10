@@ -22,6 +22,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using advent.of.code.common;
+using System.Text.RegularExpressions;
 
 namespace advent.of.code.y2015.day6 {
 
@@ -38,16 +39,37 @@ namespace advent.of.code.y2015.day6 {
 			Toggle
 		}
 		internal class Statement {
-			Command Command {get; set; }
-
-			Point From { get;  set; }
-			Point Through { get; set; }
+			public Command Command {get; private set; }
+			public Point From { get; private set; }
+			public Point Through { get; private set; }
 
 			public Statement(Command command, Point from, Point through)
 			{
 				this.Command=command;
 				this.From=from;
 				this.Through=through;
+			}
+
+			public static Statement FromString(string code) {
+				const string pattern = @"(?'command'turn on|turn off|toggle) (?'from'\d{1,3},\d{1,3}) through (?'to'\d{1,3},\d{1,3})";
+
+            	RegexOptions options = RegexOptions.IgnoreCase;
+
+            	Match match = Regex.Matches(code, pattern, options).First();
+
+
+            	Group commandGroup = match.Groups["command"];
+            	Group fromGroup = match.Groups["from"];
+            	Group toGroup = match.Groups["to"];
+
+				Command command = commandGroup.Value.Contains("toggle") ?
+					Command.Toggle : commandGroup.Value.Contains("off") ?
+					Command.TurnOff : Command.TurnOn;
+
+				Point from = Point.FromString(fromGroup.Value);
+				Point to = Point.FromString(toGroup.Value);
+
+				return new Statement(command, from, to);
 			}
 		}
 	}
