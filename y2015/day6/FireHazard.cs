@@ -24,12 +24,15 @@ using System.Collections.Immutable;
 using advent.of.code.common;
 using System.Text.RegularExpressions;
 
-namespace advent.of.code.y2015.day6 {
+namespace advent.of.code.y2015.day6
+{
 
-	static class FireHazard {
+	static class FireHazard
+	{
 
-		public static Statement Parse(string statement) {
-			return new Statement(Command.TurnOn, Point.Zero, new Point(999,999));
+		public static Statement Parse(string statement)
+		{
+			return new Statement(Command.TurnOn, Point.Zero, new Point(999, 999));
 		}
 
 		internal enum Command
@@ -38,29 +41,31 @@ namespace advent.of.code.y2015.day6 {
 			TurnOff,
 			Toggle
 		}
-		internal class Statement {
-			public Command Command {get; private set; }
+		internal class Statement
+		{
+			public Command Command { get; private set; }
 			public Point From { get; private set; }
 			public Point Through { get; private set; }
 
 			public Statement(Command command, Point from, Point through)
 			{
-				this.Command=command;
-				this.From=from;
-				this.Through=through;
+				this.Command = command;
+				this.From = from;
+				this.Through = through;
 			}
 
-			public static Statement FromString(string code) {
+			public static Statement FromString(string code)
+			{
 				const string pattern = @"(?'command'turn on|turn off|toggle) (?'from'\d{1,3},\d{1,3}) through (?'to'\d{1,3},\d{1,3})";
 
-            	RegexOptions options = RegexOptions.IgnoreCase;
+				RegexOptions options = RegexOptions.IgnoreCase;
 
-            	Match match = Regex.Matches(code, pattern, options).First();
+				Match match = Regex.Matches(code, pattern, options).First();
 
 
-            	Group commandGroup = match.Groups["command"];
-            	Group fromGroup = match.Groups["from"];
-            	Group toGroup = match.Groups["to"];
+				Group commandGroup = match.Groups["command"];
+				Group fromGroup = match.Groups["from"];
+				Group toGroup = match.Groups["to"];
 
 				Command command = commandGroup.Value.Contains("toggle") ?
 					Command.Toggle : commandGroup.Value.Contains("off") ?
