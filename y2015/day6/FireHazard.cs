@@ -23,6 +23,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using advent.of.code.common;
 using System.Text.RegularExpressions;
+using System.Numerics;
+using System.Collections;
 
 namespace advent.of.code.y2015.day6
 {
@@ -75,6 +77,80 @@ namespace advent.of.code.y2015.day6
 				Point to = Point.FromString(toGroup.Value);
 
 				return new Statement(command, from, to);
+			}
+
+		}
+			public class LightGrid {
+				private readonly int width;
+				private readonly int height;
+
+				private BitArray bitmap;
+
+				public LightGrid(int width, int height):
+					this(width, height, new BitArray(width*height, false))
+				{
+				}
+
+				internal LightGrid(int width, int height, BitArray bitmap) {
+					this.width = width;
+					this.height = height;
+
+					this.bitmap = bitmap;
+				}
+
+				public int LightCount {
+					get {
+						return Enumerable
+							.Range(0,width*height)
+							.Select( index => bitmap.Get(index))
+							.Where( bit => bit )
+							.Count();
+					}
+				}
+
+			private LightGrid GridOperation(Point from, Point to, Func<BitArray,int,BitArray> operation)
+			{
+				var indices = Enumerable
+					.Range(Math.Min(from.Y,to.Y), Math.Abs(to.Y-from.Y)+1)
+					.SelectMany( y => Enumerable
+						.Range(Math.Min(from.X,to.X), Math.Abs(to.X-from.Y)+1)
+						.Select( x => y * this.width + x));
+
+				var newBitmap = indices.Aggregate(
+					seed: new BitArray(this.bitmap),
+					func: (bits, index) => operation(bits, index));
+
+				return new LightGrid(this.width, this.height, newBitmap);
+			}
+
+			internal LightGrid TurnOff(Point from, Point to)
+			{
+				return GridOperation(from, to, OperationClear);
+			}
+			internal LightGrid TurnOn(Point from, Point to)
+			{
+				return GridOperation(from, to, OperationSet);
+			}
+
+			internal LightGrid Toggle(Point from, Point to)
+			{
+				return GridOperation(from, to, OperationToggle);
+			}
+
+			private static BitArray OperationSet(BitArray bits, int index)
+			{
+				bits.Set(index, true);
+				return bits;
+			}
+			private static BitArray OperationClear(BitArray bits, int index)
+			{
+				bits.Set(index, false);
+				return bits;
+			}
+			private static BitArray OperationToggle(BitArray bits, int index)
+			{
+				bits.Set(index, !bits.Get(index));
+				return bits;
 			}
 		}
 	}
