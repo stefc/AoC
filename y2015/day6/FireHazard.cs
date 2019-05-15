@@ -113,7 +113,7 @@ namespace advent.of.code.y2015.day6
 				var indices = Enumerable
 					.Range(Math.Min(from.Y,to.Y), Math.Abs(to.Y-from.Y)+1)
 					.SelectMany( y => Enumerable
-						.Range(Math.Min(from.X,to.X), Math.Abs(to.X-from.Y)+1)
+						.Range(Math.Min(from.X,to.X), Math.Abs(to.X-from.X)+1)
 						.Select( x => y * this.width + x));
 
 				var newBitmap = indices.Aggregate(
@@ -151,6 +151,22 @@ namespace advent.of.code.y2015.day6
 			{
 				bits.Set(index, !bits.Get(index));
 				return bits;
+			}
+
+			internal LightGrid Operation(Statement current)
+			{
+				switch (current.Command)
+				{
+					case Command.TurnOn:
+						return this.TurnOn(current.From, current.Through);
+
+					case Command.TurnOff:
+						return this.TurnOff(current.From, current.Through);
+
+					case Command.Toggle:
+						return this.Toggle(current.From, current.Through);
+				}
+				throw new NotImplementedException();
 			}
 		}
 	}
