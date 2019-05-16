@@ -67,7 +67,7 @@ namespace advent.of.code.tests.y2015 {
 
 
 		[Fact]
-		public void Puzzle() {
+		public void PuzzlePartOne() {
 			var input = File
 				.ReadLines("tests/y2015/Day6.Input.txt");
 
@@ -78,6 +78,38 @@ namespace advent.of.code.tests.y2015 {
 					func: (accu, current) => accu.Operation(current)
 					);
 			Assert.Equal(400410, grid.LightCount);
+		}
+
+		[Fact]
+		public void PuzzlePartTwo() {
+			var input = File
+				.ReadLines("tests/y2015/Day6.Input.txt");
+
+			var grid = input
+				.Select( FireHazard.Statement.FromString )
+				.Aggregate(
+					seed: new FireHazard.BrightnessGrid(1000,1000),
+					func: (accu, current) => accu.Operation(current)
+					);
+			Assert.Equal(15343601, grid.TotalBrightness);
+		}
+
+		[Fact]
+		public void TestBrightnessTurnOn() {
+			var grid = new FireHazard.BrightnessGrid(1000,1000);
+			Assert.Equal(0, grid.TotalBrightness);
+			grid = grid
+				.TurnOn(new Point(0,0), new Point(0,0));
+			Assert.Equal(1, grid.TotalBrightness);
+		}
+
+		[Fact]
+		public void TestBrightnessToggle() {
+			var grid = new FireHazard.BrightnessGrid(1000,1000);
+			Assert.Equal(0, grid.TotalBrightness);
+			grid = grid
+				.Toggle(new Point(0,0), new Point(999,999));
+			Assert.Equal(2000000, grid.TotalBrightness);
 		}
 	}
 }
