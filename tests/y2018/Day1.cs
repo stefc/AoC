@@ -1,11 +1,10 @@
-using System;
 using Xunit;
 
 using advent.of.code.y2018.day1;
 using System.IO;
-using System.Linq;
 
-namespace advent.of.code.tests.y2018 {
+namespace advent.of.code.tests.y2018
+{
 
     public class TestDay1
     {

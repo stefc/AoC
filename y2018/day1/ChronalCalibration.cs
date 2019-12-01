@@ -1,11 +1,11 @@
 // http://adventofcode.com/2018/day/1
 
-using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace advent.of.code.y2018.day1 {
+namespace advent.of.code.y2018.day1
+{
 
     static class ChronalCalibration {
         public static int ChangeFrequency(string display) {
