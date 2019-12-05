@@ -21,7 +21,9 @@
             "type": "process",
             "args": [
                 "test",
-                "advent-of-code.csproj"
+				"advent-of-code.csproj",
+				"--filter",
+				"Year=2019"
             ],
             "group": {
                 "kind": "test",

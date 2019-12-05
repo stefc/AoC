@@ -5,7 +5,7 @@ using System.IO;
 
 namespace advent.of.code.tests.y2019
 {
-
+	[Trait("Year", "2019")]
     public class TestDay1
     {
         [Theory]
