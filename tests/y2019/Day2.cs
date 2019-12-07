@@ -67,5 +67,27 @@ namespace advent.of.code.tests.y2019
 
 			 Assert.Equal(3760627, actual);
 		}
+
+		[Fact]
+		public void PuzzleTwo() {
+			string input = File.ReadAllText("tests/y2019/Day2.Input.txt");
+			var prg = ProgramAlarm.CreateProgram(input.ToNumbers());
+			var f = ProgramAlarm.PutInt();
+
+			var range = Enumerable.Range(0,99);
+
+			var programs =
+				from noun in range
+			    from verb in range
+				select (
+					Program: f(f(prg,1,noun),2,verb),
+					Code: 100 * noun + verb);
+
+			var machine = ProgramAlarm.CreateStateMaschine();
+			var actual = programs.Single(
+				x => machine.Run(x.Program).FirstOrDefault() == 19690720).Code;
+
+			 Assert.Equal(7195, actual);
+		}
 	}
 }

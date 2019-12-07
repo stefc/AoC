@@ -17,7 +17,7 @@ namespace advent.of.code.y2019.day2
 	using Computation = StatefulComputation<ProgramState,ImmutableArray<int>>;
 
 	public readonly struct ProgramState {
-		public readonly int PC;
+		public readonly int IP;
 		public readonly ImmutableArray<int> Program;
 
 		public ProgramState(int pc, IEnumerable<int> program)
@@ -27,18 +27,18 @@ namespace advent.of.code.y2019.day2
 
 		private ProgramState(int pc, ImmutableArray<int> program)
 		{
-			this.PC = pc;
+			this.IP = pc;
 			this.Program = program;
 		}
 
 		public int OpCode
-			=> this.Program.ElementAtOrDefault(this.PC);
+			=> this.Program.ElementAtOrDefault(this.IP);
 
 		public ProgramState WithSingleStep(int step = 4)
-			=> new ProgramState(this.PC+step, this.Program);
+			=> new ProgramState(this.IP+step, this.Program);
 
 		public ProgramState WithProgram(ImmutableArray<int> program)
-			=> new ProgramState(this.PC, program);
+			=> new ProgramState(this.IP, program);
 
 		public ProgramState WithExecute() {
 			var getValue = ProgramAlarm.GetInt();
@@ -51,11 +51,11 @@ namespace advent.of.code.y2019.day2
 			var newState =
 				from opCode in getOpCode(this)
 				from f in getFunc(opCode)
-				from a_ in getValue(state, state.PC+1)
+				from a_ in getValue(state, state.IP+1)
 				from a in getValue(state, a_)
-				from b_ in getValue(state, state.PC+2)
+				from b_ in getValue(state, state.IP+2)
 				from b in getValue(state, b_)
-				from ptr in getValue(state, state.PC+3)
+				from ptr in getValue(state, state.IP+3)
 				select putValue(state,ptr,f(a,b));
 
 			return newState.GetOrElse(state).WithSingleStep();
@@ -97,8 +97,8 @@ namespace advent.of.code.y2019.day2
 
 		public static Func<ProgramState, Option<int>> GetOpCode()
 		=> state
-			=> (state.PC < state.Program.Count()) ?
-				Some(state.Program.ElementAt(state.PC)) : None;
+			=> (state.IP < state.Program.Count()) ?
+				Some(state.Program.ElementAt(state.IP)) : None;
 
 		public static Func<ProgramState,int,Option<int>> GetInt()
 		=> (state, index)
