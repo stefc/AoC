@@ -14,6 +14,8 @@ namespace advent.of.code.y2019.day2
 {
 	using static F;
 
+	using Computation = StatefulComputation<ProgramState,ImmutableArray<int>>;
+
 	public readonly struct ProgramState {
 		public readonly int PC;
 		public readonly ImmutableArray<int> Program;
@@ -32,12 +34,32 @@ namespace advent.of.code.y2019.day2
 		public int OpCode
 			=> this.Program.ElementAtOrDefault(this.PC);
 
-		public ProgramState WithSingleStep()
-			=> new ProgramState(this.PC+4, this.Program);
+		public ProgramState WithSingleStep(int step = 4)
+			=> new ProgramState(this.PC+step, this.Program);
 
 		public ProgramState WithProgram(ImmutableArray<int> program)
 			=> new ProgramState(this.PC, program);
 
+		public ProgramState WithExecute() {
+			var getValue = ProgramAlarm.GetInt();
+			var putValue = ProgramAlarm.PutInt();
+			var getOpCode = ProgramAlarm.GetOpCode();
+			var getFunc = ProgramAlarm.Dispatch();
+
+			var state = this;
+
+			var newState =
+				from opCode in getOpCode(this)
+				from f in getFunc(opCode)
+				from a_ in getValue(state, state.PC+1)
+				from a in getValue(state, a_)
+				from b_ in getValue(state, state.PC+2)
+				from b in getValue(state, b_)
+				from ptr in getValue(state, state.PC+3)
+				select putValue(state,ptr,f(a,b));
+
+			return newState.GetOrElse(state).WithSingleStep();
+		}
 	}
 
 	public static class ProgramAlarm
@@ -50,11 +72,14 @@ namespace advent.of.code.y2019.day2
 			=> new ProgramState(0, program);
 
 
-	/*	public static StatefulComputation<int, ProgramState> ConstructStateMaschine()
-		=> code => {
-			return ((code != 99) ? ConstructStateMaschine()(code).Value : 0, opCode);
-		};
-*/
+		public static Computation CreateStateMaschine()
+		=> state => (
+				(state.OpCode != 99) ?
+				CreateStateMaschine()(state.WithExecute()).Value
+				:
+				state.Program,
+				state);
+
 		public static Func<int,int,int> Add() => (a,b) => a+b;
 		public static Func<int,int,int> Mul() => (a,b) => a*b;
 
@@ -70,9 +95,9 @@ namespace advent.of.code.y2019.day2
 			return None;
 		};
 
-		public static Func<ProgramState,int, Option<int>> GetOpCode()
-		=> (state,index)
-			=> (index < state.Program.Count()) ?
+		public static Func<ProgramState, Option<int>> GetOpCode()
+		=> state
+			=> (state.PC < state.Program.Count()) ?
 				Some(state.Program.ElementAt(state.PC)) : None;
 
 		public static Func<ProgramState,int,Option<int>> GetInt()
