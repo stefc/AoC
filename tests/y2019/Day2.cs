@@ -84,7 +84,7 @@ namespace advent.of.code.tests.y2019
 					Code: 100 * noun + verb);
 
 			var machine = ProgramAlarm.CreateStateMaschine();
-			var actual = programs.Single(
+			var actual = programs.AsParallel().Single(
 				x => machine.Run(x.Program).FirstOrDefault() == 19690720).Code;
 
 			 Assert.Equal(7195, actual);
