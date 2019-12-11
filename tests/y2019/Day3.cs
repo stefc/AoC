@@ -92,7 +92,6 @@ namespace advent.of.code.tests.y2019
 				.ToLines()
 				.Steps(new Point(x,y));
 			Assert.Equal(expected, actual);
-			// "U7,R6,D4,L4"
 		}
 
 		[Theory]

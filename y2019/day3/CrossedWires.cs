@@ -2,7 +2,6 @@
 
 using System;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
@@ -18,8 +17,6 @@ namespace advent.of.code.y2019.day3
 
     using Computation =
         StatefulComputation<IEnumerator<(Point start, Point end)>, int>;
-
-
 
     public readonly struct Direction
     {
@@ -100,10 +97,16 @@ namespace advent.of.code.y2019.day3
         public static int Steps(this (Point start, Point end) line)
         => Math.Abs(line.start.X-line.end.X) + 
             Math.Abs(line.start.Y-line.end.Y);
-    }
 
-    public static class CrossedWires
-    {
+        public static bool Between(this (Point start, Point end) line,
+            int value, Func<Point, int> selector)
+        => (value > Math.Min(selector(line.start), selector(line.end))
+            && value < Math.Max(selector(line.start), selector(line.end)));
+
+        public static int Delta(this (Point start, Point end) line,
+            Func<Point, int> selector)
+        => Math.Abs(selector(line.start) - selector(line.end));
+
         public static IEnumerable<Point> ToPath(this string wire)
         => wire.ToSegments()
             .Aggregate(ImmutableList<Point>.Empty.Add(Point.Zero),
@@ -114,35 +117,74 @@ namespace advent.of.code.y2019.day3
             .Zip(path.Skip(1), (current, next) => (current, next))
             .ToList();
 
+
+        public static bool XBetween(this (Point start, Point end) line, int x)
+        => line.Between(x, pt => pt.X);
+        public static bool YBetween(this (Point start, Point end) line, int y)
+        => line.Between(y, pt => pt.Y);
+
+        public static bool IsOnLine(this (Point start, Point end) line, Point point)
+        => (
+            (
+                (line.start.X == line.end.X) &&
+                (line.start.X == point.X && line.YBetween(point.Y))
+            )
+            ||
+               (
+                (line.start.Y == line.end.Y) &&
+                (line.start.Y == point.Y && line.XBetween(point.X))
+            )
+        );
+        private static (Point, Point) ReplaceEnd(this (Point start, Point) line,
+            Point point) => (line.start, point);
+
+        public static IEnumerable<Line> TakeUntilPointFound(
+            this IEnumerable<Line> lines, Point point)
+        {
+            foreach (var line in lines)
+            {
+                bool found = line.IsOnLine(point);
+                if (found)
+                {
+                    yield return line.ReplaceEnd(point);
+                    yield break;
+                }
+                else
+                {
+                    yield return line;
+                }
+            }
+        }
+    }
+
+    public static class CrossedWires
+    {
         public static Option<Point> Crossing(
             (Point start, Point end) a, (Point start, Point end) b)
         {
-            var cx = Math.Abs(a.start.X - a.end.X);
-            var cy = Math.Abs(a.start.Y - a.end.Y);
+            Func<Point,int> XSelector = pt => pt.X;
+            Func<Point,int> YSelector = pt => pt.Y;
 
-            var dx = Math.Abs(b.start.X - b.end.X);
-            var dy = Math.Abs(b.start.Y - b.end.Y);
+            var cx = a.Delta( XSelector);
+            var cy = a.Delta( YSelector);
+
+            var dx = b.Delta( XSelector);
+            var dy = b.Delta( YSelector);
 
             if (cx == 0 && dx != 0)
             {
-                var ax = a.start.X;  // ax ist fix, bx ist variabel
-                var by = b.start.Y;  // by ist fix, ay ist variabel
-                if ((ax > Math.Min(b.start.X, b.end.X))
-                    && (ax < Math.Max(b.start.X, b.end.X))
-                    && (by > Math.Min(a.start.Y, a.end.Y))
-                    && (by < Math.Max(a.start.Y, a.end.Y)))
+                var ax = XSelector(a.start);  // ax ist fix, bx ist variabel
+                var by = YSelector(b.start);  // by ist fix, ay ist variabel
+                if (b.Between(ax, XSelector) && a.Between(by,YSelector))
                 {
                     return Some(new Point(ax, by));
                 }
             }
             else if (cx != 0 && dx == 0)
             {
-                var bx = b.start.X;  // bx ist fix, ax ist variabel
-                var ay = a.start.Y;  // ay ist fix, by ist variabel
-                if ((bx > Math.Min(a.start.X, a.end.X))
-                    && (bx < Math.Max(a.start.X, a.end.X))
-                    && (ay > Math.Min(b.start.Y, b.end.Y))
-                    && (ay < Math.Max(b.start.Y, b.end.Y)))
+                var bx = XSelector(b.start);  // bx ist fix, ax ist variabel
+                var ay = YSelector(a.start);  // ay ist fix, by ist variabel
+                if (a.Between(bx, XSelector) && b.Between(ay,YSelector))
                 {
                     return Some(new Point(bx, ay));
                 }
@@ -151,8 +193,8 @@ namespace advent.of.code.y2019.day3
         }
 
         public static IEnumerable<Point> FindCrossings(string wire1, string wire2)
-       => (from a in ToLines(ToPath(wire1))
-           from b in ToLines(ToPath(wire2))
+       => (from a in wire1.ToPath().ToLines()
+           from b in wire2.ToPath().ToLines()
            select Crossing(a, b))
            .Bind(x => x);
 
@@ -177,49 +219,9 @@ namespace advent.of.code.y2019.day3
                 State: enumerator);
         };
 
-        private static (Point, Point) ReplaceEnd(this (Point start, Point) line,
-            Point point) => (line.start, point);
+      
 
-        public static IEnumerable<Line> TakeUntilPointFound(
-            this IEnumerable<Line> lines, Point point)
-        {
-            foreach (var line in lines)
-            {
-                bool found = line.IsOnLine(point);
-                if (found)
-                {
-                    yield return line.ReplaceEnd(point);
-                    yield break;
-                }
-                else
-                {
-                    yield return line;
-                }
-            }
-        }
-
-        public static bool Between(this (Point start, Point end) line,
-            int value, Func<Point, int> selector)
-        => (value > Math.Min(selector(line.start), selector(line.end))
-            && value < Math.Max(selector(line.start), selector(line.end)));
-
-        public static bool XBetween(this (Point start, Point end) line, int x)
-        => line.Between(x, pt => pt.X);
-        public static bool YBetween(this (Point start, Point end) line, int y)
-        => line.Between(y, pt => pt.Y);
-
-        public static bool IsOnLine(this (Point start, Point end) line, Point point)
-        => (
-            (
-                (line.start.X == line.end.X) &&
-                (line.start.X == point.X && line.YBetween(point.Y))
-            )
-            ||
-               (
-                (line.start.Y == line.end.Y) &&
-                (line.start.Y == point.Y && line.XBetween(point.X))
-            )
-        );
+       
 
         public static int FindStepsCrossings(string wire1, string wire2)
         {
