@@ -17,7 +17,8 @@ namespace advent.of.code.tests.y2019
 		[InlineData("30,1,1,4,2,5,6,0,99","1,1,1,4,99,5,6,0,99")]
 		public void PartOne(string expected, string value)
 		{
-			var actual = ProgramAlarm.CreateStateMaschine()
+			var actual = ProgramAlarm
+				.CreateStateMaschine()
 				.Run(ProgramAlarm.CreateProgram(value.ToNumbers()))
 				.Select( i => i.ToString());
 			Assert.Equal(expected, string.Join(",", actual));
@@ -42,8 +43,8 @@ namespace advent.of.code.tests.y2019
 			var prg = ProgramAlarm.CreateProgram(1,2,3,4,99);
 			var f = ProgramAlarm.GetOpCode();
 			Assert.Equal(1, f(prg).GetOrElse(-99));
-			Assert.False(f(prg.WithSingleStep(5)).IsSome());
-			Assert.True(f(prg.WithSingleStep()).IsSome());
+			Assert.False(f(prg.WithIncrementIP(5)).IsSome());
+			Assert.True(f(prg.WithIncrementIP()).IsSome());
 		}
 
 		[Fact]

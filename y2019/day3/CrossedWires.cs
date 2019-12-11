@@ -5,9 +5,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-
 using advent.of.code;
-
+using advent.of.code.common;
 
 namespace advent.of.code.y2019.day3
 {
@@ -51,37 +50,7 @@ namespace advent.of.code.y2019.day3
         }
     }
 
-    public class Point : IEquatable<Point>
-    {
-
-        private static Lazy<Point> zero = new Lazy<Point>(() => new Point(0, 0));
-
-        public static Point Zero => zero.Value;
-
-        public int X { get; private set; }
-
-        public int Y { get; private set; }
-
-        public Point(int x, int y)
-        {
-            X = x;
-            Y = y;
-        }
-
-        public override int GetHashCode()
-        {
-            return this.X * 26 ^ this.Y;
-        }
-
-        public bool Equals(Point other)
-        {
-            if (other == null)
-                return false;
-            return other.X == this.X && other.Y == this.Y;
-        }
-
-        public override string ToString() => $"({X},{Y})";
-    }
+    
 
     public static class ExtensionMethods
     {
@@ -91,9 +60,7 @@ namespace advent.of.code.y2019.day3
             return new Point(lhs.X + rhs.X, lhs.Y + rhs.Y);
         }
 
-        public static int ManhattenDistance(this Point point)
-        => Math.Abs(point.X) + Math.Abs(point.Y);
-
+       
         public static int Steps(this (Point start, Point end) line)
         => Math.Abs(line.start.X-line.end.X) + 
             Math.Abs(line.start.Y-line.end.Y);
@@ -200,7 +167,7 @@ namespace advent.of.code.y2019.day3
 
         public static int FindDistanceCrossings(string wire1, string wire2)
         => FindCrossings(wire1, wire2)
-            .Select(ExtensionMethods.ManhattenDistance)
+            .Select(PointExtensions.ManhattenDistance)
             .Min();
 
         public static int Steps(this IEnumerable<Line> path, Point point)

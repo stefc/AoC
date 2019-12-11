@@ -1,12 +1,11 @@
 // http://adventofcode.com/2015/day/3
 
-using System;
 using System.IO;
-using System.Linq;
 using Xunit;
 using advent.of.code.y2015.day3;
 
-namespace advent.of.code.tests.y2015 {
+namespace advent.of.code.tests.y2015
+{
 
     public class TestDay3
     {

@@ -2,21 +2,16 @@
 
 using System;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-
-using advent.of.code;
-
-
 namespace advent.of.code.y2019.day2
 {
-	using static F;
+    using static F;
 
-	using Computation = StatefulComputation<ProgramState,ImmutableArray<int>>;
+    using Computation = StatefulComputation<ProgramState, ImmutableArray<int>>;
 
-	public readonly struct ProgramState {
+    public readonly struct ProgramState {
 		public readonly int IP;
 		public readonly ImmutableArray<int> Program;
 
@@ -25,16 +20,16 @@ namespace advent.of.code.y2019.day2
 					(accu,current) => accu.Add(current)))
 		{}
 
-		private ProgramState(int pc, ImmutableArray<int> program)
+		private ProgramState(int ip, ImmutableArray<int> program)
 		{
-			this.IP = pc;
+			this.IP = ip;
 			this.Program = program;
 		}
 
 		public int OpCode
 			=> this.Program.ElementAtOrDefault(this.IP);
 
-		public ProgramState WithSingleStep(int step = 4)
+		public ProgramState WithIncrementIP(int step = 4)
 			=> new ProgramState(this.IP+step, this.Program);
 
 		public ProgramState WithProgram(ImmutableArray<int> program)
@@ -58,7 +53,7 @@ namespace advent.of.code.y2019.day2
 				from ptr in getValue(state, state.IP+3)
 				select putValue(state,ptr,f(a,b));
 
-			return newState.GetOrElse(state).WithSingleStep();
+			return newState.GetOrElse(state).WithIncrementIP();
 		}
 	}
 

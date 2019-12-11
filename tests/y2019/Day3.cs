@@ -1,8 +1,11 @@
-using Xunit;
 
-using advent.of.code.y2019.day3;
 using System.Linq;
 using System.IO;
+
+using Xunit;
+
+using advent.of.code.common;
+using advent.of.code.y2019.day3;
 
 namespace advent.of.code.tests.y2019
 {
@@ -43,7 +46,7 @@ namespace advent.of.code.tests.y2019
 		public void FindNearestDistance(int expected, string a, string b)
 		{
 			var actual = CrossedWires.FindCrossings(a,b)
-				.Select(ExtensionMethods.ManhattenDistance)
+				.Select(PointExtensions.ManhattenDistance)
 				.Min();
 
 			Assert.Equal(expected, actual);
