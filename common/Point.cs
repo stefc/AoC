@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace advent.of.code.common
 {
@@ -41,13 +42,38 @@ namespace advent.of.code.common
         }
 
         public override string ToString() => $"({X},{Y})";
+
+        public static Point operator +(Point a, Point b) => a.Add(b);
+
+        public static Point operator -(Point a, Point b) => a.Sub(b);
+
+        public static float operator ^(Point a, Point b) => a.Dotproduct(b);
+        public static Point operator *(Point a, int scalar)
+        => new Point(a.X*scalar,a.Y*scalar);
+
+        public static Point operator *(Point a, float scalar)
+        => new Point((int)(a.X*scalar),(int)(a.Y*scalar));
     }
 
     public static class PointExtensions {
-        public static Point Add(this Point lhs, Point rhs) 
-        => new Point(lhs.X + rhs.X, lhs.Y + rhs.Y);
+        public static Point Add(this Point a, Point b) 
+        => new Point(a.X + b.X, a.Y + b.Y);
+
+        public static Point Sub(this Point a, Point b)
+        => new Point(a.X - b.X, a.Y - b.Y);
 
         public static int ManhattenDistance(this Point point)
         => Math.Abs(point.X) + Math.Abs(point.Y);
+
+        public static Point Scale(this Point point, int factor) 
+        => new Point(point.X * factor, point.Y * factor); 
+
+        public static float Dotproduct(this Point a, Point b) 
+        => (float)(a.X*b.X + a.Y*b.Y); 
+
+         public static Point ToPoint(this string s) {
+            var parts = s.Split(',').Select( p => Convert.ToInt32(p));
+            return new Point(parts.First(), parts.Last());
+        }
     }
 }
