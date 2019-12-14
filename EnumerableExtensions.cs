@@ -4,15 +4,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace advent.of.code {
+namespace advent.of.code
+{
 
-    public static class EnumerableExtension {
+    public static class EnumerableExtension
+    {
 
-        public static T Head<T>(this IEnumerable<T> sequence) {
+        public static T Head<T>(this IEnumerable<T> sequence)
+        {
             return sequence.FirstOrDefault();
-        } 
+        }
 
-        public static IEnumerable<T> Tail<T>(this IEnumerable<T> sequence) {
+        public static IEnumerable<T> Tail<T>(this IEnumerable<T> sequence)
+        {
             return sequence.Skip(1);
         }
 
@@ -25,19 +29,22 @@ namespace advent.of.code {
         ///<param name="items">The enumerable to search.</param>
         ///<param name="predicate">The expression to test the items against.</param>
         ///<returns>The index of the first matching item, or -1 if no items match.</returns>
-        public static int FindIndex<T>(this IEnumerable<T> items, Func<T, bool> predicate) {
+        public static int FindIndex<T>(this IEnumerable<T> items, Func<T, bool> predicate)
+        {
             if (items == null) throw new ArgumentNullException("items");
             if (predicate == null) throw new ArgumentNullException("predicate");
 
             int retVal = 0;
-            foreach (var item in items) {
+            foreach (var item in items)
+            {
                 if (predicate(item)) return retVal;
                 retVal++;
             }
             return -1;
         }
 
-        public static IEnumerable<T> Infinite<T>(this ICollection<T> sequence) {
+        public static IEnumerable<T> Infinite<T>(this ICollection<T> sequence)
+        {
             return new InfiniteGenerator<T>(sequence);
         }
 
@@ -47,7 +54,7 @@ namespace advent.of.code {
 
             public InfiniteGenerator(ICollection<T> collection)
             {
-                this.collection=collection;
+                this.collection = collection;
             }
             public IEnumerator<T> GetEnumerator()
             {
@@ -73,7 +80,7 @@ namespace advent.of.code {
             public T Current => this.collection.ElementAtOrDefault(state);
 
             object IEnumerator.Current => this.Current;
-            
+
             public void Dispose()
             {
             }
@@ -81,7 +88,7 @@ namespace advent.of.code {
             public bool MoveNext()
             {
                 int count = this.collection.Count;
-                this.state = (this.state + 1) % count; 
+                this.state = (this.state + 1) % count;
                 return count != 0;
             }
 
@@ -90,5 +97,29 @@ namespace advent.of.code {
                 this.state = -1;
             }
         }
+
+        // https://stackoverflow.com/a/3683217/1259996
+        // I don't like this name :(
+        public static IEnumerable<TResult> SelectWithPrevious<TSource, TResult>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TSource, TResult> projection)
+        {
+            using (var iterator = source.GetEnumerator())
+            {
+                if (!iterator.MoveNext())
+                {
+                    yield break;
+                }
+                TSource previous = iterator.Current;
+                while (iterator.MoveNext())
+                {
+                    yield return projection(previous, iterator.Current);
+                    previous = iterator.Current;
+                }
+            }
+        }
+        // https://stackoverflow.com/a/12816817/1259996
+        public static IEnumerable<int> AsEnumerable(this Range range) 
+        => Enumerable.Range(range.Start.Value, range.End.Value-range.Start.Value+1);       
     }
 }

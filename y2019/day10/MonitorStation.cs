@@ -134,7 +134,8 @@ namespace advent.of.code.y2019.day10
             var angles = asteroids
 				.Select( a => {
 					var p = laser - a;
-					return (Asteroid: a, Polar: Math.Atan2(p.X, p.Y), Distance: p.ManhattenDistance() );
+					return (Asteroid: a, Polar: Math.Atan2(p.X, p.Y), 
+                        Distance: p.ManhattenDistance() );
 				})
 				.OrderByDescending( x => x.Polar)
 				.ThenBy( x => x.Distance)
