@@ -1,6 +1,5 @@
 // http://adventofcode.com/2019/day/10
 
-// https://de.wikipedia.org/wiki/Bresenham-Algorithmus
 
 using System;
 using System.Linq;
@@ -13,11 +12,9 @@ using advent.of.code.common;
 
 namespace advent.of.code.y2019.day10
 {
+    using static F;
 
     using Line = ValueTuple<Point, Point>;
-
-    using static F;
-    using System.Diagnostics.CodeAnalysis;
 
     public class LineComparer : IEqualityComparer<(Point start, Point end)>
     {
@@ -29,7 +26,7 @@ namespace advent.of.code.y2019.day10
             (a.start.Equals(b.end) && a.end.Equals(b.start));
         }
 
-        public int GetHashCode([DisallowNull] (Point start, Point end) line)
+        public int GetHashCode((Point start, Point end) line)
         {
             return line.start.GetHashCode() ^ line.end.GetHashCode();
         }
@@ -70,6 +67,10 @@ namespace advent.of.code.y2019.day10
 
     public static class MonitorStation
     {
+        public static Point CalcDimensions(this IEnumerable<Point> asteroids)
+        => asteroids.GroupBy( _ => 1)
+            .Select( grp => new Point(grp.Max( p => p.X), grp.Max(p=>p.Y)))
+            .FirstOrDefault();
 
         public static IEnumerable<Point> GetAsteroidsMap(
             this IEnumerable<string> lines)
@@ -100,6 +101,21 @@ namespace advent.of.code.y2019.day10
                 ).Any( target => target.Hittest(link)))
             .SelectMany( link => link.AsEnumerable());
 
+        public static (Point Asteroid,int Count) FindBestAsteroid(
+            this IEnumerable<Point> asteroids)
+        {
+            var connections = asteroids.GetInterconnections();
+
+            var result = connections
+				.GetLinesOfSight(asteroids)
+				.GroupBy( x => x)
+				.Select(  grp => (Asteroid:grp.Key, Count:grp.Count()))
+				.OrderByDescending( x => x.Count)
+				.FirstOrDefault();
+
+            return result;
+        }
+
         public static Point OrthogonalProjection(Point p1, Point p2, Point p3)
         {
             var b = p2 - p1;
@@ -110,6 +126,34 @@ namespace advent.of.code.y2019.day10
         // https://www.xarg.org/book/computer-graphics/2d-hittest/
         public static bool Hittest(this Point p3, (Point p1, Point p2) link)
         => Point.Zero.Equals(
-            p3 - link.p1 - MonitorStation.OrthogonalProjection(link.p1, link.p2, p3));
+            p3 - link.p1 - OrthogonalProjection(link.p1, link.p2, p3));
+
+        public static IEnumerable<Point> Vaporize(
+            this IEnumerable<Point> asteroids, Point laser) 
+        {
+            var angles = asteroids
+				.Select( a => {
+					var p = laser - a;
+					return (Asteroid: a, Polar: Math.Atan2(p.X, p.Y), Distance: p.ManhattenDistance() );
+				})
+				.OrderByDescending( x => x.Polar)
+				.ThenBy( x => x.Distance)
+				.GroupBy( grp => grp.Polar, grp => grp.Asteroid);
+
+            return angles.SkipWhile( grp => grp.Key > 0)
+                .Concat(angles.TakeWhile( grp => grp.Key > 0))
+                .Select( grp => grp.First())
+                .ToList();
+        }  
+
+        public static IEnumerable<Point> VaporizeAll(
+            this IEnumerable<Point> current, Point laser, IEnumerable<Point> accu) 
+        {
+            if (current.IsEmpty())
+                return accu;
+            var destroyed = current.Vaporize(laser);
+            return current.Except(destroyed).ToList()
+                .VaporizeAll(laser, accu.Concat(destroyed).ToList());
+        }
     }
 }

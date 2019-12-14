@@ -19,7 +19,6 @@ namespace advent.of.code.tests.y2019
 	[Trait("Year", "2019")]
     public class TestDay10
     {
-
 		private IEnumerable<Point> GetAsteroids() 
 		=> CreateAsteroids();
 
@@ -87,6 +86,15 @@ namespace advent.of.code.tests.y2019
 				".#.#.###########.###",
 				"#.#.#.#####.####.###",
 				"###.##.####.##.#..##"
+				}
+				.GetAsteroidsMap();
+			} else if (variant == 10) {
+				return new string[]{
+				".#....#####...#..",
+				"##...##.#####..##",
+				"##...#...#.#####.",
+				"..#.....X...###..",
+				"..#.#.....#....##"
 				}
 				.GetAsteroidsMap();
 			}
@@ -176,17 +184,10 @@ namespace advent.of.code.tests.y2019
 
 		[Theory]
 		[MemberData(nameof(Data))]
-		public void TestGetMaxViews(IEnumerable<Point> asteroids, Point p, int count) 
+		public void TestGetMaxViews(IEnumerable<Point> asteroids, 
+			Point p, int count) 
 		{
-			var connections = asteroids.GetInterconnections();
-
-			var result = connections
-				.GetLinesOfSight(asteroids)
-				.GroupBy( x => x)
-				.Select(  grp => (Asteroid:grp.Key, Count:grp.Count()))
-				.OrderByDescending( x => x.Count)
-				.FirstOrDefault();
-
+			var result = MonitorStation.FindBestAsteroid(asteroids);
 			Assert.NotNull(result);
 			Assert.Equal(p, result.Asteroid);
 			Assert.Equal(count, result.Count);
@@ -202,29 +203,39 @@ namespace advent.of.code.tests.y2019
             new object[] { CreateAsteroids(4), new Point(11,13), 210},
         };
 
-	   
+		[Theory]
+		[InlineData(1, "11,12")]
+		[InlineData(200, "8,2")]
+		[InlineData(299, "11,1")]
+		public void TestLaser(int index, string p) {
+			var laser = new Point(11,13);
+			var asteroids = CreateAsteroids(4).Except(new []{laser});
+			var destroyed = asteroids.VaporizeAll(laser, Enumerable.Empty<Point>());
+			var asteroid = destroyed.ElementAtOrDefault(index-1);
+			Assert.Equal(p.ToPoint(), asteroid);
+		}
+
 		[Fact]
 		public void PuzzleOne() {
 			var asteroids =  File.ReadAllLines("tests/y2019/Day10.Input.txt")
 				.GetAsteroidsMap();
 
-			var connections = asteroids.GetInterconnections();
-
-			var result = connections
-				.GetLinesOfSight(asteroids)
-				.GroupBy( x => x)
-				.Select(  grp => (Asteroid:grp.Key, Count:grp.Count()))
-				.OrderByDescending( x => x.Count)
-				.Select( x => x.Count)
-				.FirstOrDefault();
-
+			var result = MonitorStation.FindBestAsteroid(asteroids).Count;
 			Assert.Equal(230, result);
 		}
 		[Fact]
 		public void PuzzleTwo() {
-	//		 string input = File.ReadAllText("tests/y2019/Day1.Input.txt");
+			var asteroids =  File.ReadAllLines("tests/y2019/Day10.Input.txt")
+				.GetAsteroidsMap();
 
-	//		 Assert.Equal(5104215, RocketEquation.CalcTotal(input, true));
+			var laser = MonitorStation.FindBestAsteroid(asteroids).Asteroid;
+
+			var bet = asteroids
+				.Except(new []{laser})
+				.VaporizeAll(laser, Enumerable.Empty<Point>())
+				.ElementAtOrDefault(200-1);
+
+			Assert.Equal(1205, bet.X * 100 + bet.Y);
 		}
 
     }
