@@ -9,7 +9,17 @@ namespace advent.of.code.y2019.day2
 {
     using static F;
 
-    using Computation = StatefulComputation<ProgramState, ImmutableArray<int>>;
+    using Computation = StatefulComputation<Option<ProgramState>, ImmutableArray<int>>;
+
+	public enum OpCode {
+		Add = 1,
+		Mul = 2,
+
+		Input = 3,
+		Output = 4,
+
+		Exit = 99,
+	}
 
     public readonly struct ProgramState {
 		public readonly int IP;
@@ -26,8 +36,7 @@ namespace advent.of.code.y2019.day2
 			this.Program = program;
 		}
 
-		public int OpCode
-			=> this.Program.ElementAtOrDefault(this.IP);
+		public Option<OpCode> OpCode => ProgramAlarm.GetOpCode()(this);
 
 		public ProgramState WithIncrementIP(int step = 4)
 			=> new ProgramState(this.IP+step, this.Program);
@@ -36,24 +45,33 @@ namespace advent.of.code.y2019.day2
 			=> new ProgramState(this.IP, program);
 
 		public ProgramState WithExecute() {
-			var getValue = ProgramAlarm.GetInt();
-			var putValue = ProgramAlarm.PutInt();
 			var getOpCode = ProgramAlarm.GetOpCode();
 			var getFunc = ProgramAlarm.Dispatch();
-
 			var state = this;
+			return (				
+				from code in getOpCode(state)
+				from newState in getFunc(code)(state)
+				select newState).GetOrElse(state);
+		}
 
-			var newState =
-				from opCode in getOpCode(this)
-				from f in getFunc(opCode)
+		public static Option<ProgramState> Exec(ProgramState state, 
+			Func<int,int,int> operation) {
+			var getValue = ProgramAlarm.GetInt();
+			var putValue = ProgramAlarm.PutInt();
+			var mode = ProgramAlarm.GetModeFlags()(state);
+
+			bool immediate1st = mode % 2 == 1;
+			bool immediate2nd = (mode / 10) % 2 == 1;
+			// bool immediate3rd = (mode / 100) % 2 == 1;
+
+			return 
 				from a_ in getValue(state, state.IP+1)
-				from a in getValue(state, a_)
+				from a in immediate1st ? Some(a_) : getValue(state, a_)
 				from b_ in getValue(state, state.IP+2)
-				from b in getValue(state, b_)
+				from b in immediate2nd ? Some(b_) : getValue(state, b_)
 				from ptr in getValue(state, state.IP+3)
-				select putValue(state,ptr,f(a,b));
-
-			return newState.GetOrElse(state).WithIncrementIP();
+				from newState in putValue(state,ptr,operation(a,b))
+				select newState.WithIncrementIP();
 		}
 	}
 
@@ -68,41 +86,74 @@ namespace advent.of.code.y2019.day2
 
 
 		public static Computation CreateStateMaschine()
-		=> state => (
-				(state.OpCode != 99) ?
-				CreateStateMaschine()(state.WithExecute()).Value
-				:
-				state.Program,
-				state);
+		=> state =>
+				state.Match(
+					None: ()=> (ImmutableArray<int>.Empty, None),
+					Some: s => 
+						(Value:
+							s.OpCode.Match(
+								None: () => ImmutableArray<int>.Empty, 
+								Some: code => code == OpCode.Exit ? 
+									s.Program 
+									:
+									CreateStateMaschine()(s.WithExecute()).Value
+							),
+						State: Some(s))
+				);
 
 		public static Func<int,int,int> Add() => (a,b) => a+b;
 		public static Func<int,int,int> Mul() => (a,b) => a*b;
 
-		public static Func<int,Option<Func<int,int,int>>> Dispatch()
+
+		public static Func<OpCode,Func<ProgramState,Option<ProgramState>>> Dispatch()
 		=> opcode => {
 			switch (opcode)
 			{
-				case 1:
-					return Some(Add());
-				case 2:
-					return Some(Mul());
+				case OpCode.Add:
+					return state => ProgramState.Exec(state,Add());
+
+				case OpCode.Mul:
+					return state => ProgramState.Exec(state,Mul());
+
+				case OpCode.Exit: 
+					return state => Some(state);
 			}
-			return None;
+			return state => None;
 		};
 
-		public static Func<ProgramState, Option<int>> GetOpCode()
+		private static Option<OpCode> ToOpCode(int value) {
+			int opcode = value % 100;
+			if (opcode ==1)
+				return Some(OpCode.Add);
+			else if (opcode==2) 
+				return Some(OpCode.Mul);
+			else if (opcode==3)
+				return Some(OpCode.Input);
+			else if (opcode==4)
+				return Some(OpCode.Output);
+			else if (opcode==99)
+				return Some(OpCode.Exit);
+			return None;
+		}
+
+		public static Func<ProgramState, Option<OpCode>> GetOpCode()
 		=> state
 			=> (state.IP < state.Program.Count()) ?
-				Some(state.Program.ElementAt(state.IP)) : None;
+				ToOpCode(state.Program.ElementAt(state.IP)) : None;
+
+		public static Func<ProgramState, int> GetModeFlags()
+		=> state
+			=> (state.IP < state.Program.Count()) ?
+				state.Program.ElementAt(state.IP) / 100 : 0;
 
 		public static Func<ProgramState,int,Option<int>> GetInt()
 		=> (state, index)
 			=> (index < state.Program.Count()) ?
 				Some(state.Program.ElementAt(index)) : None;
 
-		public static Func<ProgramState,int,int,ProgramState> PutInt()
+		public static Func<ProgramState,int,int,Option<ProgramState>> PutInt()
 		=> (state, index, value)
-			=> state.WithProgram(state.Program.SetItem(index,value));
+			=> Some(state.WithProgram(state.Program.SetItem(index,value)));
 
 	}
 }

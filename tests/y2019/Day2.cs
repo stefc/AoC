@@ -3,9 +3,12 @@ using Xunit;
 using advent.of.code.y2019.day2;
 using System.Linq;
 using System.IO;
+using System;
 
 namespace advent.of.code.tests.y2019
 {
+
+	using static F;
 
 	[Trait("Year", "2019")]
     public class TestDay2
@@ -22,6 +25,16 @@ namespace advent.of.code.tests.y2019
 				.Run(ProgramAlarm.CreateProgram(value.ToNumbers()))
 				.Select( i => i.ToString());
 			Assert.Equal(expected, string.Join(",", actual));
+		}
+
+		[Fact]
+		public void InvalidProgram() 
+		{
+			var actual = ProgramAlarm
+				.CreateStateMaschine()
+				.Run(ProgramAlarm.CreateProgram("1,0,0,0,98".ToNumbers()))
+				;
+			Assert.True(actual.IsEmpty);
 		}
 
 		[Fact]
@@ -42,7 +55,7 @@ namespace advent.of.code.tests.y2019
 		public void TestGetOpCode() {
 			var prg = ProgramAlarm.CreateProgram(1,2,3,4,99);
 			var f = ProgramAlarm.GetOpCode();
-			Assert.Equal(1, f(prg).GetOrElse(-99));
+			Assert.Equal(OpCode.Add, f(prg).GetOrElse(OpCode.Exit));
 			Assert.False(f(prg.WithIncrementIP(5)).IsSome());
 			Assert.True(f(prg.WithIncrementIP()).IsSome());
 		}
@@ -51,8 +64,8 @@ namespace advent.of.code.tests.y2019
 		public void TestPut() {
 			var prg = ProgramAlarm.CreateProgram(1,2,3,4,5);
 			var f = ProgramAlarm.PutInt();
-			var newPrg = f(prg, 4, 87);
-			Assert.Equal(87, newPrg.Program.Last());
+			var newPrg = from a in Some(prg) from b in f(a, 4, 87) select b;
+			Assert.Equal(87, newPrg.GetOrElse(prg).Program.Last());
 		}
 
 		[Fact]
@@ -60,10 +73,16 @@ namespace advent.of.code.tests.y2019
 			string input = File.ReadAllText("tests/y2019/Day2.Input.txt");
 			var prg = ProgramAlarm.CreateProgram(input.ToNumbers());
 			var f = ProgramAlarm.PutInt();
-			var patched = f(f(prg,1,12),2,2);
+
+			Func<int,int,Option<ProgramState>> patching = (noun, verb) =>
+				from a in Some(prg) 
+				from b in f(a,1,noun)
+				from c in f(b,2,verb)
+				select c;
+
 
 			var actual = ProgramAlarm.CreateStateMaschine()
-				.Run(patched)
+				.Run(patching(12,2).GetOrElse(prg))
 				.FirstOrDefault();
 
 			 Assert.Equal(3760627, actual);
@@ -77,11 +96,17 @@ namespace advent.of.code.tests.y2019
 
 			var range = Enumerable.Range(0,99);
 
+			Func<int,int,Option<ProgramState>> patching = (noun, verb) =>
+				from a in Some(prg) 
+				from b in f(a,1,noun)
+				from c in f(b,2,verb)
+				select c;
+
 			var programs =
 				from noun in range
 			    from verb in range
 				select (
-					Program: f(f(prg,1,noun),2,verb),
+					Program: patching(noun,verb).GetOrElse(prg),
 					Code: 100 * noun + verb);
 
 			var machine = ProgramAlarm.CreateStateMaschine();
