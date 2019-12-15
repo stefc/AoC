@@ -18,6 +18,14 @@ namespace advent.of.code.y2019.day2
 		Input = 3,
 		Output = 4,
 
+		JmpIfTrue = 5,
+
+		JmpIfFalse = 6,
+
+		LessThan = 7,
+
+		Equals = 8,
+
 		Exit = 99,
 	}
 
@@ -49,6 +57,10 @@ namespace advent.of.code.y2019.day2
 
 		public ProgramState WithIncrementIP(int step = 4)
 			=> new ProgramState(this.IP+step, this.Program, this.Input, this.Output);
+
+		public ProgramState WithIP(int ip)
+			=> new ProgramState(ip, this.Program, this.Input, this.Output);
+
 
 		public ProgramState WithProgram(ImmutableArray<int> program)
 			=> new ProgramState(this.IP, program, this.Input, this.Output);
@@ -106,6 +118,22 @@ namespace advent.of.code.y2019.day2
 				from a in immediate1st ? Some(a_) : getValue(state, a_)
 				select state.WithOutput(a).WithIncrementIP(2);
 		}
+
+		public static Option<ProgramState> ExecJump(ProgramState state, 
+			Func<int,bool> condition) {
+			var getValue = ProgramAlarm.GetInt();
+			var putValue = ProgramAlarm.PutInt();
+			var mode = ProgramAlarm.GetModeFlags()(state);
+
+			bool immediate1st = mode % 2 == 1;
+			bool immediate2nd = (mode / 10) % 2 == 1;
+			return 
+				from a_ in getValue(state, state.IP+1)
+				from a in immediate1st ? Some(a_) : getValue(state, a_)
+				from b_ in getValue(state, state.IP+2)
+				from b in immediate2nd ? Some(b_) : getValue(state, b_)
+				select condition(a) ? state.WithIP(b) : state.WithIncrementIP(3);
+		}
 	}
 
 	public static class ProgramAlarm
@@ -142,6 +170,8 @@ namespace advent.of.code.y2019.day2
 
 		public static Func<int,int,int> Add() => (a,b) => a+b;
 		public static Func<int,int,int> Mul() => (a,b) => a*b;
+		public static Func<int,int,int> Eq() => (a,b) => a==b ? 1:0;
+		public static Func<int,int,int> Lt() => (a,b) => a<b ? 1:0;
 
 
 		public static Func<OpCode,Func<ProgramState,Option<ProgramState>>> Dispatch()
@@ -154,11 +184,24 @@ namespace advent.of.code.y2019.day2
 				case OpCode.Mul:
 					return state => ProgramState.Exec(state,Mul());
 
+				case OpCode.Equals:
+					return state => ProgramState.Exec(state,Eq());
+
+				case OpCode.LessThan:
+					return state => ProgramState.Exec(state,Lt());
+
 				case OpCode.Input:
 					return state => ProgramState.ExecInput(state);
 
 				case OpCode.Output:
 					return state => ProgramState.ExecOutput(state);
+
+				case OpCode.JmpIfTrue: 
+					return state => ProgramState.ExecJump(state, x=>x!=0);
+					
+				case OpCode.JmpIfFalse: 
+					return state => ProgramState.ExecJump(state, x=>x==0);
+
 
 				case OpCode.Exit: 
 					return state => Some(state);
@@ -176,6 +219,14 @@ namespace advent.of.code.y2019.day2
 				return Some(OpCode.Input);
 			else if (opcode==4)
 				return Some(OpCode.Output);
+			else if (opcode==5)
+				return Some(OpCode.JmpIfTrue);
+			else if (opcode==6)
+				return Some(OpCode.JmpIfFalse);
+			else if (opcode==7)
+				return Some(OpCode.LessThan);
+			else if (opcode==8)
+				return Some(OpCode.Equals);
 			else if (opcode==99)
 				return Some(OpCode.Exit);
 			return None;
