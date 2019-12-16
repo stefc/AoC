@@ -1,21 +1,17 @@
-using Xunit;
-
-using advent.of.code.y2019.day6;
-using advent.of.code.common.Bst;
-using System.IO;
 using System;
+using System.IO;
 using System.Linq;
 using System.Collections.Immutable;
-using System.Collections.Generic;
+
+using Xunit;
+
+using advent.of.code.common.Bst;
+using advent.of.code.y2019.day6;
 
 namespace advent.of.code.tests.y2019
 {
     using static advent.of.code.common.Bst.Tree;
-
-    using NodeMap = ImmutableDictionary<string, Tree<string>>;
-    using ParentSet = ImmutableHashSet<string>;
-    // using Accu = (Parents: ParentSet, Nodes: NodeMap); <ParentSet,NodeMap>;
-
+    
     [Trait("Year", "2019")]
     public class TestDay6
     {
@@ -67,8 +63,12 @@ namespace advent.of.code.tests.y2019
             Assert.Equal(42, orbits);
         }
 
-        
-
+        [Fact]
+		public void PuzzleOne() {
+             var lines = File.ReadAllLines("tests/y2019/Day6.Input.txt");
+			 var map = UniversalOrbitMap.CreateMapFromLines(lines);
+             Assert.Equal(268504, map.CountOrbits());
+        }
 
         [Fact]
         public void PuzzleTwo()

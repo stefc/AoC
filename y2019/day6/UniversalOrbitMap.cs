@@ -6,18 +6,14 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 
 using advent.of.code;
-using advent.of.code.common;
 using advent.of.code.common.Bst;
 
 namespace advent.of.code.y2019.day6
 {
     using static advent.of.code.common.Bst.Tree;
 
-    using static F;
-
     using NodeMap = ImmutableDictionary<string, Tree<string>>;
     using ParentSet = ImmutableHashSet<string>;
-
 
     public static class UniversalOrbitMap
     {
@@ -108,6 +104,5 @@ namespace advent.of.code.y2019.day6
                 });
             return (accu.parents.Except(newNodes.Keys), newNodes);
         }
-
     }
 }
