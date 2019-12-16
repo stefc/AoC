@@ -68,6 +68,66 @@ namespace advent.of.code.y2019.day6
             return root;
         }
 
+        public static Tree<string> Find(this Tree<string> node, string item)
+        {
+            return node.Match( 
+                () => node, 
+                (l,value,r) => {
+                    if (value.Equals(item))
+                        return node;
+                    var left = l.Find(item);
+                    return left.IsEmpty ? r.Find(item) : left;
+                });
+        }
+
+        public static IEnumerable<string> GetPath(
+            this Tree<string> node, string item) 
+        => node.FindPath(item, ImmutableStack<string>.Empty)
+            .Pop()
+            .Reverse();
+
+        public static IEnumerable<string> GetPathBetween(
+            this Tree<string> node, string src, string dest) 
+        {
+            var destination = node.GetPath(dest);
+            var source = node.GetPath(src);
+
+            var equalCount = (from a in destination.Select((val, index) => new { val, index })
+                    join b in source.Select((val, index) => new { val, index })
+                    on a.index equals b.index
+                where a.val == b.val
+                select a.val).Count();
+
+            return source.Skip(equalCount)
+                .Reverse()
+                .Concat(destination.Skip(equalCount-1));
+        }
+        
+        private static ImmutableStack<string> FindPath(
+            this Tree<string> node, 
+            string item, ImmutableStack<string> accu) 
+        {
+            return node.Match(
+                ()=> ImmutableStack<string>.Empty,
+                (l,value,r) => {
+                    accu = accu.Push(value);
+                    if (value.Equals(item))
+                    {
+                        return accu;
+                    };
+
+                    var leftPath = l.FindPath(item, accu);
+                    if (leftPath.IsNotEmpty() && leftPath.Peek().Equals(item))
+                        return leftPath;
+
+                    var rightPath = r.FindPath(item,accu.Pop());
+                    if (rightPath.IsNotEmpty() && rightPath.Peek().Equals(item))
+                        return rightPath;
+
+                    return accu.Pop();
+                });
+        }
+
         public static (ParentSet parents, NodeMap nodes) ReduceParents(
             (ParentSet parents, NodeMap nodes) accu,
             Func<string, ImmutableHashSet<string>> lookUpChildren)

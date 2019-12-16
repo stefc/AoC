@@ -64,6 +64,16 @@ namespace advent.of.code.tests.y2019
         }
 
         [Fact]
+        public void FindPath()
+        {
+            var root = CreateNextSample();
+
+            var path = root.GetPathBetween("SAN","YOU");
+
+            Assert.Equal(4, path.Count()-1);
+        }
+
+        [Fact]
 		public void PuzzleOne() {
              var lines = File.ReadAllLines("tests/y2019/Day6.Input.txt");
 			 var map = UniversalOrbitMap.CreateMapFromLines(lines);
@@ -73,6 +83,10 @@ namespace advent.of.code.tests.y2019
         [Fact]
         public void PuzzleTwo()
         {
+            var lines = File.ReadAllLines("tests/y2019/Day6.Input.txt");
+			var map = UniversalOrbitMap.CreateMapFromLines(lines);
+            var path = map.GetPathBetween("SAN","YOU");
+            Assert.Equal(409, path.Count()-1);
         }
 
         private Tree<String> CreateSample()
@@ -93,6 +107,26 @@ namespace advent.of.code.tests.y2019
             var b = Node(c, "B", nil);
             var com = Node(b, "COM", nil);
             return com;
+        }
+
+        private Tree<String> CreateNextSample() 
+        {
+            var lines = new[] {
+                "COM)B",
+                "B)C",
+                "C)D",
+                "D)E",
+                "E)F",
+                "B)G",
+                "G)H",
+                "D)I",
+                "E)J",
+                "J)K",
+                "K)L",
+                "K)YOU",
+                "I)SAN"  
+            };
+            return UniversalOrbitMap.CreateMapFromLines(lines);
         }
 
     }
