@@ -92,18 +92,20 @@ namespace advent.of.code.y2019.day6
             var destination = node.GetPath(dest);
             var source = node.GetPath(src);
 
-            var equalCount = (from a in destination.Select((val, index) => new { val, index })
-                    join b in source.Select((val, index) => new { val, index })
+            var equalCount = (
+                from a in destination.Select((val, index) => new { val, index })
+                join b in source.Select((val, index) => new { val, index })
                     on a.index equals b.index
                 where a.val == b.val
-                select a.val).Count();
+                select a.val)
+                .Count();
 
             return source.Skip(equalCount)
                 .Reverse()
                 .Concat(destination.Skip(equalCount-1));
         }
-        
-        private static ImmutableStack<string> FindPath(
+
+       private static ImmutableStack<string> FindPath(
             this Tree<string> node, 
             string item, ImmutableStack<string> accu) 
         {

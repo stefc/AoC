@@ -33,19 +33,19 @@ namespace advent.of.code.y2019.day2
 		public readonly int IP;
 		public readonly ImmutableArray<int> Program;
 
-		public readonly int Input; 
+		public readonly ImmutableQueue<int> Input; 
 
 		public readonly ImmutableStack<int> Output;
 
-		public ProgramState(int pc, IEnumerable<int> program, int input = 0) : 
+		public ProgramState(int pc, IEnumerable<int> program) : 
 		this(pc, 
 			program.Aggregate(
 			ImmutableArray<int>.Empty, (accu,current) => accu.Add(current)), 
-			input, ImmutableStack<int>.Empty)
+			ImmutableQueue<int>.Empty, ImmutableStack<int>.Empty)
 		{}
 
 		private ProgramState(int ip, ImmutableArray<int> program, 
-			int input, ImmutableStack<int> output)
+			ImmutableQueue<int> input, ImmutableStack<int> output)
 		{
 			this.IP = ip;
 			this.Program = program;
@@ -57,6 +57,15 @@ namespace advent.of.code.y2019.day2
 
 		public ProgramState WithIncrementIP(int step = 4)
 			=> new ProgramState(this.IP+step, this.Program, this.Input, this.Output);
+
+		public ProgramState WithInput(ImmutableQueue<int> input)
+			=> new ProgramState(this.IP, this.Program, input, this.Output);
+		public ProgramState WithInput(int input, params int[] more)
+			=> new ProgramState(this.IP, this.Program, 
+				more.Aggregate(this.Input.Enqueue(input), 
+					(accu,current) => accu.Enqueue(current)),
+			 	this.Output);
+
 
 		public ProgramState WithIP(int ip)
 			=> new ProgramState(ip, this.Program, this.Input, this.Output);
@@ -101,9 +110,11 @@ namespace advent.of.code.y2019.day2
 		public static Option<ProgramState> ExecInput(ProgramState state) {
 			var getValue = ProgramAlarm.GetInt();
 			var putValue = ProgramAlarm.PutInt();
+			var newInput = state.Input.Dequeue(out var input);
+			state = state.WithInput(newInput);
 			return 
 				from ptr in getValue(state, state.IP+1)
-				from newState in putValue(state,ptr,state.Input)
+				from newState in putValue(state,ptr,input)
 				select newState.WithIncrementIP(2);
 		}
 
@@ -140,8 +151,10 @@ namespace advent.of.code.y2019.day2
 	{
 
 		public static ProgramState CreateProgram(IEnumerable<int> program,
-			int input = 0)
-			=> new ProgramState(0, program, input);
+			int input)
+			=> new ProgramState(0, program).WithInput(input);
+		public static ProgramState CreateProgram(IEnumerable<int> program)
+			=> new ProgramState(0, program);
 
 		public static ProgramState CreateProgram(params int[] program)
 			=> new ProgramState(0, program);
