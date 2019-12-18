@@ -6,13 +6,18 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 
 using advent.of.code;
-using advent.of.code.common.Bst;
+using advent.of.code.y2019.day2;
 
 namespace advent.of.code.y2019.day7
 {
+    using PermutationAccu = 
+        ValueTuple<ImmutableArray<int>, ImmutableArray<bool>>;
 
+    using IntMatrix = IEnumerable<IEnumerable<int>>;
 
-    using PermutationAccu = ValueTuple<ImmutableArray<int>,ImmutableArray<bool>>;
+    using Computation =
+        StatefulComputation<Option<ProgramState>, ImmutableArray<int>>;
+
 
     // https://en.wikipedia.org/wiki/Steinhaus–Johnson–Trotter_algorithm
 
@@ -26,6 +31,13 @@ namespace advent.of.code.y2019.day7
 
         public static int Factorial(int number)
         => (number == 1) ? 1 : number * Factorial(number - 1);
+
+
+        public static IEnumerable<int> PowersOf10(int n)
+        => Enumerable
+            .Range(0,n)
+            .Reverse()
+            .Select( x => Convert.ToInt32(Math.Pow(10,x)));
 
         public static int GetMobile(IReadOnlyList<int> a,
             IReadOnlyList<bool> dir)
@@ -107,16 +119,77 @@ namespace advent.of.code.y2019.day7
 		=> array.Aggregate( 0, (accu, current) => accu * 10 + current);
 
         public static IEnumerable<int> Permutate(int n)
+        => Enumerable.Range(0, n)
+            .AsPermutation()
+            .Select( x => x.ToInt());
+
+        public static IEnumerable<int> Permutate(IEnumerable<int> a)
+        => Enumerable.Range(0, a.Count())
+                .AsPermutation()
+                .Select( x => x.Select( index => a.ElementAt(index)))
+                .Select( x => x.ToInt());
+
+        private static IntMatrix AsPermutation(this IEnumerable<int> a) 
         {
+            var n = a.Count();
             var accu = (
-                a:Enumerable.Range(0, n).ToImmutableArray(),
+                a:  a.ToImmutableArray(),
                 dir:Enumerable.Repeat(false, n).ToImmutableArray());
             
-            yield return accu.a.ToInt();
+            yield return accu.a;
             foreach(var _ in Enumerable.Range(0, Factorial(n)-1)) {
-                accu = AmplificationCircuit.GetPermutation(accu.a, accu.dir);
-                yield return accu.a.ToInt();
+                accu = GetPermutation(accu.a, accu.dir);
+                yield return accu.a;
             }
+        }
+
+        public static int Compute(this Computation computer, ProgramState program,
+            int sequence, int ary, int input)
+        {
+            var output = computer(program.WithInput((sequence / ary) % 10, input))
+                .State.Match(() => -99, s => s.Output.Peek());
+            if (ary == 1)
+                return output;
+
+            return Compute(computer, program, sequence, ary / 10, output);
+        }
+
+        public static ImmutableQueue<ProgramState> SetUpStates(ProgramState prg,
+            int sequence)
+            => PowersOf10(5).Aggregate(
+                ImmutableQueue<ProgramState>.Empty,
+                (accu,current) 
+                => accu.Enqueue(prg.WithInput((sequence / current) % 10)));
+
+        public static int ComputeLoop(this Computation computer, 
+            ImmutableQueue<ProgramState> states, int input)
+        {
+            states = states.Dequeue(out var state);
+
+            var result = computer(state.WithInput(input));
+
+            return result.State.Match( 
+                    () => -99,
+                    lastState => {
+                        lastState = lastState.WithOutput(
+                                lastState.Output.Pop(out var output));
+
+                        var exit = lastState.OpCode.Match( 
+                            ()=> true,
+                            code => code == OpCode.Exit);
+                        if (!exit)
+                        {
+                            states = states.Enqueue(lastState);
+                        }
+                        if (states.IsEmpty()) {
+                            return output;
+                        }
+                        else 
+                        {
+                            return ComputeLoop(computer, states, output);
+                        }
+                    }
+            );
         }
     }
 }

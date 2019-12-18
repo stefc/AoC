@@ -37,45 +37,58 @@ namespace advent.of.code.y2019.day2
 
 		public readonly ImmutableStack<int> Output;
 
+		public readonly bool Stopped;
+
 		public ProgramState(int pc, IEnumerable<int> program) : 
 		this(pc, 
 			program.Aggregate(
 			ImmutableArray<int>.Empty, (accu,current) => accu.Add(current)), 
-			ImmutableQueue<int>.Empty, ImmutableStack<int>.Empty)
+			ImmutableQueue<int>.Empty, ImmutableStack<int>.Empty, false)
 		{}
 
 		private ProgramState(int ip, ImmutableArray<int> program, 
-			ImmutableQueue<int> input, ImmutableStack<int> output)
+			ImmutableQueue<int> input, ImmutableStack<int> output, bool stopped)
 		{
 			this.IP = ip;
 			this.Program = program;
 			this.Input = input;
 			this.Output = output;
+			this.Stopped = stopped;
 		}
 
 		public Option<OpCode> OpCode => ProgramAlarm.GetOpCode()(this);
 
 		public ProgramState WithIncrementIP(int step = 4)
-			=> new ProgramState(this.IP+step, this.Program, this.Input, this.Output);
+			=> new ProgramState(this.IP+step, this.Program, this.Input, this.Output, this.Stopped);
+
+		public ProgramState WithStopping() 
+			=> new ProgramState(this.IP, this.Program, this.Input, this.Output, true);
+		public ProgramState WithRunning() 
+			=> new ProgramState(this.IP, this.Program, this.Input, this.Output, false);
 
 		public ProgramState WithInput(ImmutableQueue<int> input)
-			=> new ProgramState(this.IP, this.Program, input, this.Output);
+			=> new ProgramState(this.IP, this.Program, input, this.Output, false);
 		public ProgramState WithInput(int input, params int[] more)
 			=> new ProgramState(this.IP, this.Program, 
 				more.Aggregate(this.Input.Enqueue(input), 
 					(accu,current) => accu.Enqueue(current)),
-			 	this.Output);
+			 	this.Output,false);
 
 
 		public ProgramState WithIP(int ip)
-			=> new ProgramState(ip, this.Program, this.Input, this.Output);
+			=> new ProgramState(ip, this.Program, this.Input, 
+				this.Output, this.Stopped);
 
 
 		public ProgramState WithProgram(ImmutableArray<int> program)
-			=> new ProgramState(this.IP, program, this.Input, this.Output);
+			=> new ProgramState(this.IP, program, this.Input, 
+				this.Output, this.Stopped);
 		public ProgramState WithOutput(int output)
 			=> new ProgramState(this.IP, this.Program, this.Input, 
-				this.Output.Push(output));
+				this.Output.Push(output), this.Stopped);
+		public ProgramState WithOutput(ImmutableStack<int> output)
+			=> new ProgramState(this.IP, this.Program, this.Input, 
+				output, this.Stopped);
 
 		public ProgramState WithExecute() {
 			var getOpCode = ProgramAlarm.GetOpCode();
@@ -110,12 +123,19 @@ namespace advent.of.code.y2019.day2
 		public static Option<ProgramState> ExecInput(ProgramState state) {
 			var getValue = ProgramAlarm.GetInt();
 			var putValue = ProgramAlarm.PutInt();
-			var newInput = state.Input.Dequeue(out var input);
-			state = state.WithInput(newInput);
-			return 
-				from ptr in getValue(state, state.IP+1)
-				from newState in putValue(state,ptr,input)
-				select newState.WithIncrementIP(2);
+
+			if (state.Input.IsEmpty) {
+				return Some(state.WithStopping());
+			} 
+			else 
+			{
+				var newInput = state.Input.Dequeue(out var input);
+				state = state.WithInput(newInput);
+				return 
+					from ptr in getValue(state, state.IP+1)
+					from newState in putValue(state,ptr,input)
+					select newState.WithIncrementIP(2);
+			}
 		}
 
 		public static Option<ProgramState> ExecOutput(ProgramState state) {
@@ -145,6 +165,10 @@ namespace advent.of.code.y2019.day2
 				from b in immediate2nd ? Some(b_) : getValue(state, b_)
 				select condition(a) ? state.WithIP(b) : state.WithIncrementIP(3);
 		}
+
+		public static Option<ProgramState> ExecExit(ProgramState state)
+		=> Some(new ProgramState(state.IP, state.Program, state.Input, 
+				state.Output, true));
 	}
 
 	public static class ProgramAlarm
@@ -169,8 +193,11 @@ namespace advent.of.code.y2019.day2
 				
 		public static (ImmutableArray<int> Value, Option<ProgramState> State) Exec(
 			ProgramState state) 
-		{
-			return 
+		=> state.Stopped ? 
+			(Value: state.Program, State: Some(state)) : 
+			CreateStateMaschine()(state.WithExecute());
+
+/*
 				state.OpCode.Match(
 					None: () => (Value: ImmutableArray<int>.Empty, State: Some(state)),
 					Some: code => 
@@ -179,7 +206,7 @@ namespace advent.of.code.y2019.day2
 						:
 						CreateStateMaschine()(state.WithExecute())
 						);
-		}
+		} */
 
 		public static Func<int,int,int> Add() => (a,b) => a+b;
 		public static Func<int,int,int> Mul() => (a,b) => a*b;
@@ -217,7 +244,7 @@ namespace advent.of.code.y2019.day2
 
 
 				case OpCode.Exit: 
-					return state => Some(state);
+					return state => ProgramState.ExecExit(state);
 			}
 			return state => None;
 		};

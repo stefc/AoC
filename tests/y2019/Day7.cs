@@ -4,14 +4,9 @@ using advent.of.code.y2019.day2;
 using advent.of.code.y2019.day7;
 using System.Linq;
 using System.IO;
-using System.Collections.Immutable;
-using System.Collections.Generic;
-using System;
 
 namespace advent.of.code.tests.y2019
 {
-    using Computation =
-        StatefulComputation<Option<ProgramState>, ImmutableArray<int>>;
 
     [Trait("Year", "2019")]
     public class TestDay7
@@ -28,6 +23,16 @@ namespace advent.of.code.tests.y2019
             Assert.Equal(max, permutation.Max());
         }
 
+        [Fact]
+        public void TestNewPermutation()
+        {
+            var permutation = AmplificationCircuit.Permutate(56789.ToDigits());
+            Assert.Equal(120, permutation.Count());
+            Assert.Equal(permutation.Count(),permutation.Distinct().Count());
+            Assert.Equal(56789, permutation.Min());
+            Assert.Equal(98765, permutation.Max());
+        }
+
         [Theory]
         [InlineData(43210, 43210,
         "3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0")]
@@ -39,56 +44,53 @@ namespace advent.of.code.tests.y2019
         {
             var prg = ProgramAlarm.CreateProgram(program.ToNumbers());
             var computer = ProgramAlarm.CreateStateMaschine();
-            var actual = Compute(computer, prg, sequence, 10000, 0);
+            var actual = computer.Compute(prg, sequence, 10000, 0);
             Assert.Equal(expected, actual);
         }
 
-        private int Compute(Computation computer, ProgramState program,
-            int sequence, int ary, int input)
+        [Theory]
+        [InlineData(139629729, 98765,
+        "3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5")]
+        [InlineData(18216, 97856,
+        "3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,-5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10")]
+        public void Feedback(int expected, int sequence, string program)
         {
-            var output = computer(program.WithInput((sequence / ary) % 10, input))
-                .State.Match(() => -99, s => s.Output.Peek());
-            if (ary == 1)
-                return output;
+            var prg = ProgramAlarm.CreateProgram(program.ToNumbers());
+            var computer = ProgramAlarm.CreateStateMaschine();
 
-            return Compute(computer, program, sequence, ary / 10, output);
+            var states = AmplificationCircuit.SetUpStates(prg, sequence);
+            Assert.Equal(expected, computer.ComputeLoop(states, 0));
         }
-
-
-
 
         [Fact]
         public void PuzzleOne()
         {
             string input = File.ReadAllText("tests/y2019/Day7.Input.txt");
             var prg = ProgramAlarm.CreateProgram(input.ToNumbers());
-
-
             var computer = ProgramAlarm.CreateStateMaschine();
-
-			var permutations = AmplificationCircuit.Permutate(5);
-			var actual = permutations
+			var actual = AmplificationCircuit.Permutate(5)
 				.AsParallel()
-				.Select( sequence => Compute(computer, prg, sequence, 10000, 0))
+				.Select( sequence => computer.Compute(prg, sequence, 10000, 0))
 				.Max();
-
             Assert.Equal(38500, actual);
-
         }
 
         [Fact]
         public void PuzzleTwo()
         {
             string input = File.ReadAllText("tests/y2019/Day7.Input.txt");
-            var prg = ProgramAlarm.CreateProgram(input.ToNumbers(), 5);
-
-
+            var prg = ProgramAlarm.CreateProgram(input.ToNumbers());
             var computer = ProgramAlarm.CreateStateMaschine();
+            var permutations = AmplificationCircuit
+                .Permutate(56789.ToDigits()).ToList();
 
-            Assert.Equal(8684145, computer(prg).State.Match(
-                () => 0, s => s.Output.Peek()));
+            var actual = permutations
+				.AsParallel()
+				.Select( sequence => AmplificationCircuit.SetUpStates(prg, sequence))
+                .Select( states => computer.ComputeLoop(states, 0))
+				.Max();
+
+            Assert.Equal(33660560, actual);
         }
-
-
     }
 }

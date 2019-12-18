@@ -27,15 +27,15 @@ namespace advent.of.code.tests.y2019
 			Assert.Equal(expected, string.Join(",", actual));
 		}
 
-		[Fact]
-		public void InvalidProgram() 
-		{
-			var actual = ProgramAlarm
-				.CreateStateMaschine()
-				.Run(ProgramAlarm.CreateProgram("1,0,0,0,98".ToNumbers()))
-				;
-			Assert.True(actual.IsEmpty);
-		}
+		// [Fact]
+		// public void InvalidProgram() 
+		// {
+		// 	var actual = ProgramAlarm
+		// 		.CreateStateMaschine()
+		// 		.Run(ProgramAlarm.CreateProgram("1,0,0,0,98".ToNumbers()))
+		// 		;
+		// 	Assert.True(actual.IsEmpty);
+		// }
 
 		[Fact]
 		public void TestMultiply() {
@@ -117,6 +117,6 @@ namespace advent.of.code.tests.y2019
 				.Code;
 
 			 Assert.Equal(7195, actual);
-		}
+		} 
 	}
 }
