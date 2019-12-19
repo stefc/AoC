@@ -29,8 +29,9 @@ namespace advent.of.code.tests.y2019
 
 		[Theory]
 		[InlineData(42, "42,0,4,0,99","3,0,4,0,99")]
-		
-		public void InputOpCode(int input, string expected, string value)
+		[InlineData(1219070632396864, "1102,34915192,34915192,7,4,7,99,1219070632396864","1102,34915192,34915192,7,4,7,99,0")]
+		[InlineData(1125899906842624, "104,1125899906842624,99","104,1125899906842624,99")]
+		public void InputOpCode(long input, string expected, string value)
 		{
 			var prg = ProgramAlarm.CreateProgram(value.ToBigNumbers(), input);
 			var computer = ProgramAlarm
