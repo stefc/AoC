@@ -32,5 +32,19 @@ namespace advent.of.code.y2019.day8
             .GroupBy( x => x)
             .Select( grp => grp.Count())
             .Aggregate( 1, (accu,current) => accu * current);
+
+        public static string Decode(this string content, Point dimensions) 
+        {
+            var layers = content.GetLayers(dimensions).Reverse();
+
+            return layers.Aggregate( (accu, current) 
+            => Add(accu, current));
+        }
+
+        public static char Add(char a, char b) 
+        => (b=='2') ? a : b;
+
+        public static string Add(string a, string b) 
+        => string.Concat(a.Zip(b, (aa,bb) => Add(aa,bb)));
     }
 }

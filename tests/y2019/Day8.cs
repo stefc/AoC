@@ -3,6 +3,7 @@ using Xunit;
 using advent.of.code.y2019.day8;
 using System.IO;
 using advent.of.code.common;
+using System.Linq;
 
 namespace advent.of.code.tests.y2019
 {
@@ -19,6 +20,18 @@ namespace advent.of.code.tests.y2019
             var actual = input.CalcCheckSum(dim);
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void Decode() 
+        {
+            string input = "0222112222120000";
+
+            var dim = new Point(2,2);
+
+            var actual = input.Decode(dim);
+
+            Assert.Equal("0110", actual);
+        }
        
         [Fact]
         public void PuzzleOne()
@@ -33,7 +46,21 @@ namespace advent.of.code.tests.y2019
         public void PuzzleTwo()
         {
             string input = File.ReadAllText("tests/y2019/Day8.Input.txt");
-           
+            var dim = new Point(25,6);
+            var actual = string.Concat(
+                input.Decode(dim).Select( ch => ch == '1' ? '#' : ' '));
+
+            var result = 
+            Enumerable.Range(0, dim.Y)
+                .Select( row =>
+                    actual[(row*dim.X)..((row+1)*dim.X)])
+                .ToArray();
+
+            Assert.Equal(
+                " ##   ##  #  # ###  #### #  # #  # # #  #  #    # #  # #    ##   #  #   #  #### #    # #  ###   #   #  # #  # # #  #    #    #  #  ##  #  # #    #### ",
+            actual);
+        
+           // ACKPZ
         }
     }
 }

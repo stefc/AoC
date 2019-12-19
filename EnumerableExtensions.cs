@@ -141,7 +141,8 @@ namespace advent.of.code
             {
                 if (!sourceIterator.MoveNext())
                 {
-                    throw new InvalidOperationException("Sequence contains no elements");
+                    throw new InvalidOperationException(
+                        "Sequence contains no elements");
                 }
                 var min = sourceIterator.Current;
                 var minKey = selector(min);
