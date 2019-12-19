@@ -119,7 +119,44 @@ namespace advent.of.code
             }
         }
         // https://stackoverflow.com/a/12816817/1259996
-        public static IEnumerable<int> AsEnumerable(this Range range) 
-        => Enumerable.Range(range.Start.Value, range.End.Value-range.Start.Value+1);       
+        public static IEnumerable<int> AsEnumerable(this Range range)
+        => Enumerable.Range(range.Start.Value, range.End.Value - range.Start.Value + 1);
+
+        // https://stackoverflow.com/a/914198/1259996
+        public static TSource MinBy<TSource, TKey>(
+            this IEnumerable<TSource> source, Func<TSource, TKey> selector)
+        {
+            return source.MinBy(selector, null);
+        }
+
+        public static TSource MinBy<TSource, TKey>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> selector, IComparer<TKey> comparer)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            if (selector == null) throw new ArgumentNullException("selector");
+            comparer = comparer ?? Comparer<TKey>.Default;
+
+            using (var sourceIterator = source.GetEnumerator())
+            {
+                if (!sourceIterator.MoveNext())
+                {
+                    throw new InvalidOperationException("Sequence contains no elements");
+                }
+                var min = sourceIterator.Current;
+                var minKey = selector(min);
+                while (sourceIterator.MoveNext())
+                {
+                    var candidate = sourceIterator.Current;
+                    var candidateProjected = selector(candidate);
+                    if (comparer.Compare(candidateProjected, minKey) < 0)
+                    {
+                        min = candidate;
+                        minKey = candidateProjected;
+                    }
+                }
+                return min;
+            }
+        }
     }
 }
