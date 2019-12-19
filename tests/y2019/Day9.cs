@@ -48,12 +48,27 @@ namespace advent.of.code.tests.y2019
         public void PuzzleOne()
         {
             string input = File.ReadAllText("tests/y2019/Day9.Input.txt");
+            var prg = ProgramAlarm.CreateProgram(input.ToBigNumbers(),1);
+			var computer = ProgramAlarm
+				.CreateStateMaschine();
+
+			var result = computer(prg);
+
+            Assert.Equal(2457252183, result.State.Match(()=> 0, s => s.Output.Peek()));
+
         }
 
         [Fact]
         public void PuzzleTwo()
         {
             string input = File.ReadAllText("tests/y2019/Day9.Input.txt");
+            var prg = ProgramAlarm.CreateProgram(input.ToBigNumbers(),2);
+			var computer = ProgramAlarm
+				.CreateStateMaschine();
+
+			var result = computer(prg);
+
+            Assert.Equal(2457252183, result.State.Match(()=> 0, s => s.Output.Peek()));
         }
     }
 }

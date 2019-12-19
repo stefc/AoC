@@ -143,7 +143,7 @@ namespace advent.of.code.y2019.day2
                 from b_ in getValue(state, state.IP + 2, Mode.Position)
                 from b in getValue(state, Convert.ToInt32(b_), modes.ElementAtOrDefault(1))
                 from ptr in getValue(state, state.IP + 3, Mode.Position)
-                from newState in putValue(state, Convert.ToInt32(ptr), operation(a, b))
+                from newState in putValue(state, Convert.ToInt32(ptr), modes.ElementAtOrDefault(2), operation(a, b))
                 select newState.WithIncrementIP();
         }
 
@@ -163,7 +163,7 @@ namespace advent.of.code.y2019.day2
                 state = state.WithInput(newInput);
                 return
                     from ptr in getValue(state, state.IP + 1, Mode.Position)
-                    from newState in putValue(state, Convert.ToInt32(ptr), input)
+                    from newState in putValue(state, Convert.ToInt32(ptr), modes.ElementAtOrDefault(0), input)
                     select newState.WithIncrementIP(2);
             }
         }
@@ -324,27 +324,29 @@ namespace advent.of.code.y2019.day2
             => state.Program.GetValueOrDefault(state.IP).ModesFromInstruction();
 
         public static Func<ProgramState, Mem, Mode, Option<Mem>> GetInt()
-        => (state, index, mode) => {
+        => (state, raw, mode) => {
 			switch (mode)
 			{
 				case Mode.Position: 
 					return state.Program.TryGetValue(
-						Convert.ToInt32(index), out var value) 
-						? Some(value) : Some(0l);
+						Convert.ToInt32(raw), out var value) 
+						? Some(value) : Some(0L);
 				case Mode.Immediate:
-					return Some(index);
+					return Some(raw);
 				case Mode.Relative:
 					return state.Program.TryGetValue(
-						state.RelativeBase+Convert.ToInt32(index), out var value2) 
-						? Some(value2) : Some(0l);
+						state.RelativeBase+Convert.ToInt32(raw), out var value2) 
+						? Some(value2) : Some(0L);
 				default:
 					return None;
 			}
 		};
 
-        public static Func<ProgramState, Adr, Mem, Option<ProgramState>> PutInt()
-        => (state, index, value)
-            => Some(state.WithProgram(state.Program.SetItem(index, value)));
+        public static Func<ProgramState, Adr, Mode, Mem, Option<ProgramState>> PutInt()
+        => (state, raw, mode, value)
+            => Some(state.WithProgram(
+				state.Program.SetItem(
+					raw + ((mode == Mode.Relative) ? state.RelativeBase:0), value)));
 
     }
 }

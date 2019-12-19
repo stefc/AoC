@@ -64,7 +64,7 @@ namespace advent.of.code.tests.y2019
 		public void TestPut() {
 			var prg = ProgramAlarm.CreateProgram(1,2,3,4,5);
 			var f = ProgramAlarm.PutInt();
-			var newPrg = from a in Some(prg) from b in f(a, 4, 87) select b;
+			var newPrg = from a in Some(prg) from b in f(a, 4, Mode.Position, 87) select b;
 			Assert.Equal(87, newPrg.GetOrElse(prg).Program.Last().Value);
 		}
 
@@ -76,8 +76,8 @@ namespace advent.of.code.tests.y2019
 
 			Func<int,int,Option<ProgramState>> patching = (noun, verb) =>
 				from a in Some(prg) 
-				from b in f(a,1,noun)
-				from c in f(b,2,verb)
+				from b in f(a,1,Mode.Position, noun)
+				from c in f(b,2,Mode.Position, verb)
 				select c;
 
 
@@ -98,8 +98,8 @@ namespace advent.of.code.tests.y2019
 
 			Func<int,int,Option<ProgramState>> patching = (noun, verb) =>
 				from a in Some(prg) 
-				from b in f(a,1,noun)
-				from c in f(b,2,verb)
+				from b in f(a,1,Mode.Position,noun)
+				from c in f(b,2,Mode.Position,verb)
 				select c;
 
 			var programs =
