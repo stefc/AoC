@@ -118,6 +118,12 @@ namespace advent.of.code
                 }
             }
         }
+
+        public static IEnumerable<long> PowersOf10(this int n)
+        => Enumerable
+            .Range(0,n)
+            .Select( x => Convert.ToInt64(Math.Pow(10,x)));
+
         // https://stackoverflow.com/a/12816817/1259996
         public static IEnumerable<int> AsEnumerable(this Range range)
         => Enumerable.Range(range.Start.Value, range.End.Value - range.Start.Value + 1);

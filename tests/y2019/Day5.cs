@@ -19,10 +19,10 @@ namespace advent.of.code.tests.y2019
 		{
 			var computer = 
 				from v in ProgramAlarm.CreateStateMaschine()
-				select string.Join(",", (from r in v select r.ToString()));
+				select string.Join(",", (from r in v select r.Value.ToString()));
 
 			var actual = computer.Run(
-				ProgramAlarm.CreateProgram(value.ToNumbers()));
+				ProgramAlarm.CreateProgram(value.ToBigNumbers()));
 
 			Assert.Equal(expected, actual);
 		}
@@ -32,14 +32,14 @@ namespace advent.of.code.tests.y2019
 		
 		public void InputOpCode(int input, string expected, string value)
 		{
-			var prg = ProgramAlarm.CreateProgram(value.ToNumbers(), input);
+			var prg = ProgramAlarm.CreateProgram(value.ToBigNumbers(), input);
 			var computer = ProgramAlarm
 				.CreateStateMaschine();
 
 			var result = computer(prg);
 
 			var actual = string.Join(",", 
-				result.Value.Select( i => i.ToString()));
+				result.Value.Select( i => i.Value.ToString()));
 
 			Assert.Equal(expected, actual);
 
@@ -67,7 +67,7 @@ namespace advent.of.code.tests.y2019
 		
 		public void Compare(int input, int output, string value)
 		{
-			var prg = ProgramAlarm.CreateProgram(value.ToNumbers(), input);
+			var prg = ProgramAlarm.CreateProgram(value.ToBigNumbers(), input);
 			var computer = ProgramAlarm
 				.CreateStateMaschine();
 
@@ -86,7 +86,7 @@ namespace advent.of.code.tests.y2019
 		[InlineData(2,1,"3,3,1105,-1,9,1101,0,0,12,4,12,99,1")]
 		public void Jump(int input, int output, string value)
 		{
-			var prg = ProgramAlarm.CreateProgram(value.ToNumbers(), input);
+			var prg = ProgramAlarm.CreateProgram(value.ToBigNumbers(), input);
 			var computer = ProgramAlarm
 				.CreateStateMaschine();
 
@@ -100,7 +100,7 @@ namespace advent.of.code.tests.y2019
 		[Fact]
 		public void PuzzleOne() {
 			string input = File.ReadAllText("tests/y2019/Day5.Input.txt");
-			var prg = ProgramAlarm.CreateProgram(input.ToNumbers(), 1);
+			var prg = ProgramAlarm.CreateProgram(input.ToBigNumbers(), 1);
 			
 
 			var computer = ProgramAlarm.CreateStateMaschine();
@@ -115,7 +115,7 @@ namespace advent.of.code.tests.y2019
 		[Fact]
 		public void PuzzleTwo() {
 			string input = File.ReadAllText("tests/y2019/Day5.Input.txt");
-			var prg = ProgramAlarm.CreateProgram(input.ToNumbers(), 5);
+			var prg = ProgramAlarm.CreateProgram(input.ToBigNumbers(), 5);
 			
 
 			var computer = ProgramAlarm.CreateStateMaschine();

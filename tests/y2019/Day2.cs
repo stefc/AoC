@@ -22,8 +22,8 @@ namespace advent.of.code.tests.y2019
 		{
 			var actual = ProgramAlarm
 				.CreateStateMaschine()
-				.Run(ProgramAlarm.CreateProgram(value.ToNumbers()))
-				.Select( i => i.ToString());
+				.Run(ProgramAlarm.CreateProgram(value.ToBigNumbers()))
+				.Select( i => i.Value.ToString());
 			Assert.Equal(expected, string.Join(",", actual));
 		}
 
@@ -65,13 +65,13 @@ namespace advent.of.code.tests.y2019
 			var prg = ProgramAlarm.CreateProgram(1,2,3,4,5);
 			var f = ProgramAlarm.PutInt();
 			var newPrg = from a in Some(prg) from b in f(a, 4, 87) select b;
-			Assert.Equal(87, newPrg.GetOrElse(prg).Program.Last());
+			Assert.Equal(87, newPrg.GetOrElse(prg).Program.Last().Value);
 		}
 
 		[Fact]
 		public void PuzzleOne() {
 			string input = File.ReadAllText("tests/y2019/Day2.Input.txt");
-			var prg = ProgramAlarm.CreateProgram(input.ToNumbers());
+			var prg = ProgramAlarm.CreateProgram(input.ToBigNumbers());
 			var f = ProgramAlarm.PutInt();
 
 			Func<int,int,Option<ProgramState>> patching = (noun, verb) =>
@@ -85,13 +85,13 @@ namespace advent.of.code.tests.y2019
 				.Run(patching(12,2).GetOrElse(prg))
 				.FirstOrDefault();
 
-			 Assert.Equal(3760627, actual);
+			 Assert.Equal(3760627, actual.Value);
 		}
 
 		[Fact]
 		public void PuzzleTwo() {
 			string input = File.ReadAllText("tests/y2019/Day2.Input.txt");
-			var prg = ProgramAlarm.CreateProgram(input.ToNumbers());
+			var prg = ProgramAlarm.CreateProgram(input.ToBigNumbers());
 			var f = ProgramAlarm.PutInt();
 
 			var range = Enumerable.Range(0,99);
@@ -113,7 +113,7 @@ namespace advent.of.code.tests.y2019
 			var actual = programs
 				.AsParallel()
 				.Single(
-					x => machine.Run(x.Program).FirstOrDefault() == 19690720)
+					x => machine.Run(x.Program).FirstOrDefault().Value == 19690720)
 				.Code;
 
 			 Assert.Equal(7195, actual);

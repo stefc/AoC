@@ -17,6 +17,10 @@ namespace advent.of.code {
 		=> s.Split(' ', '\t', ',', '\n')
 			.Select( cell => Convert.ToInt32(cell));
 
+		public static IEnumerable<long> ToBigNumbers(this string s)
+		=> s.Split(' ', '\t', ',', '\n')
+			.Select( cell => Convert.ToInt64(cell));
+
 		public static IEnumerable<string> ToSegments(this string s)
 		=> s.Split(',');
 	}

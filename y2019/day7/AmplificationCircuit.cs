@@ -10,13 +10,17 @@ using advent.of.code.y2019.day2;
 
 namespace advent.of.code.y2019.day7
 {
+    using Adr = Int32; 
+	using Mem = Int64; 
+
     using PermutationAccu = 
         ValueTuple<ImmutableArray<int>, ImmutableArray<bool>>;
 
     using IntMatrix = IEnumerable<IEnumerable<int>>;
 
-    using Computation =
-        StatefulComputation<Option<ProgramState>, ImmutableArray<int>>;
+    using Computation = StatefulComputation<Option<ProgramState>, 
+		ImmutableSortedDictionary<Int32,Int64>>;
+    
 
 
     // https://en.wikipedia.org/wiki/Steinhaus–Johnson–Trotter_algorithm
@@ -33,11 +37,7 @@ namespace advent.of.code.y2019.day7
         => (number == 1) ? 1 : number * Factorial(number - 1);
 
 
-        public static IEnumerable<int> PowersOf10(int n)
-        => Enumerable
-            .Range(0,n)
-            .Reverse()
-            .Select( x => Convert.ToInt32(Math.Pow(10,x)));
+        
 
         public static int GetMobile(IReadOnlyList<int> a,
             IReadOnlyList<bool> dir)
@@ -143,8 +143,8 @@ namespace advent.of.code.y2019.day7
             }
         }
 
-        public static int Compute(this Computation computer, ProgramState program,
-            int sequence, int ary, int input)
+        public static Mem Compute(this Computation computer, ProgramState program,
+            int sequence, int ary, Mem input)
         {
             var output = computer(program.WithInput((sequence / ary) % 10, input))
                 .State.Match(() => -99, s => s.Output.Peek());
@@ -156,13 +156,15 @@ namespace advent.of.code.y2019.day7
 
         public static ImmutableQueue<ProgramState> SetUpStates(ProgramState prg,
             int sequence)
-            => PowersOf10(5).Aggregate(
+            => 5.PowersOf10()
+                .Reverse()
+                .Aggregate(
                 ImmutableQueue<ProgramState>.Empty,
                 (accu,current) 
                 => accu.Enqueue(prg.WithInput((sequence / current) % 10)));
 
-        public static int ComputeLoop(this Computation computer, 
-            ImmutableQueue<ProgramState> states, int input)
+        public static Mem ComputeLoop(this Computation computer, 
+            ImmutableQueue<ProgramState> states, Mem input)
         {
             states = states.Dequeue(out var state);
 
