@@ -1,9 +1,9 @@
+
+using System.IO;
+using System.Linq;
 using Xunit;
 
 using advent.of.code.y2019.day2;
-using System.IO;
-using advent.of.code.common;
-using System.Linq;
 
 namespace advent.of.code.tests.y2019
 {
@@ -15,7 +15,7 @@ namespace advent.of.code.tests.y2019
        	[Fact]	
 		public void RelativeMode()
 		{
-            var modes = 21001l.ModesFromInstruction();
+            var modes = 21001L.ModesFromInstruction();
 
             Assert.Equal(3, modes.Count());
 
@@ -39,10 +39,6 @@ namespace advent.of.code.tests.y2019
 				()=> string.Empty, s => string.Join(",", s.Output.Reverse().Select( i => i.ToString())));
 			Assert.Equal(input, actual);
         }
-
-
-
-		
        
         [Fact]
         public void PuzzleOne()
@@ -53,9 +49,8 @@ namespace advent.of.code.tests.y2019
 				.CreateStateMaschine();
 
 			var result = computer(prg);
-
-            Assert.Equal(2457252183, result.State.Match(()=> 0, s => s.Output.Peek()));
-
+            Assert.Equal(2457252183, 
+                result.State.Match(()=> 0, s => s.Output.Peek()));
         }
 
         [Fact]
@@ -67,8 +62,8 @@ namespace advent.of.code.tests.y2019
 				.CreateStateMaschine();
 
 			var result = computer(prg);
-
-            Assert.Equal(2457252183, result.State.Match(()=> 0, s => s.Output.Peek()));
+            Assert.Equal(70634, 
+                result.State.Match(()=> 0, s => s.Output.Peek()));
         }
     }
 }

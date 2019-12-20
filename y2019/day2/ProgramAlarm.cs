@@ -163,7 +163,8 @@ namespace advent.of.code.y2019.day2
                 state = state.WithInput(newInput);
                 return
                     from ptr in getValue(state, state.IP + 1, Mode.Position)
-                    from newState in putValue(state, Convert.ToInt32(ptr), modes.ElementAtOrDefault(0), input)
+                    from newState in putValue(state, Convert.ToInt32(ptr), 
+                            modes.ElementAtOrDefault(0), input)
                     select newState.WithIncrementIP(2);
             }
         }
@@ -232,9 +233,12 @@ namespace advent.of.code.y2019.day2
 
         public static (ImmutableSortedDictionary<Adr,Mem> Value, Option<ProgramState> State) Exec(
             ProgramState state)
-        => state.Stopped ?
-            (Value: state.Program, State: Some(state)) :
-            CreateStateMaschine()(state.WithExecute());
+        {
+            while (!state.Stopped) {
+                state = state.WithExecute();
+            }
+            return (Value: state.Program, State: Some(state));
+        }
 
         public static Func<Mem, Mem, Mem> Add() => (a, b) => a + b;
         public static Func<Mem, Mem, Mem> Mul() => (a, b) => a * b;
