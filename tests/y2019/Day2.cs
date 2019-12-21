@@ -11,6 +11,7 @@ namespace advent.of.code.tests.y2019
 	using static F;
 
 	[Trait("Year", "2019")]
+	[Trait("Topic", "intcode")]
     public class TestDay2
 	{
 		[Theory]

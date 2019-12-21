@@ -7,13 +7,13 @@ using System.Collections.Immutable;
 
 namespace advent.of.code.y2019.day2
 {
-	using Adr = Int32; 
+	using Adr = Int64; 
 	using Mem = Int64; 
 
     using static F;
 
     using Computation = StatefulComputation<Option<ProgramState>, 
-		ImmutableSortedDictionary<Int32,Int64>>;
+		ImmutableSortedDictionary<Int64,Int64>>;
 
     public enum Mode
     {
@@ -130,6 +130,9 @@ namespace advent.of.code.y2019.day2
                 select newState).GetOrElse(state);
         }
 
+        public Mem Read(Adr adr) 
+        => this.Program.TryGetValue(adr, out var value) ? value : 0L;
+
         public static Option<ProgramState> Exec(ProgramState state,
             Func<Mem, Mem, Mem> operation)
         {
@@ -139,11 +142,11 @@ namespace advent.of.code.y2019.day2
 
             return
                 from a_ in getValue(state, state.IP + 1, Mode.Position)
-                from a in getValue(state, Convert.ToInt32(a_), modes.ElementAtOrDefault(0))
+                from a in getValue(state, a_, modes.ElementAtOrDefault(0))
                 from b_ in getValue(state, state.IP + 2, Mode.Position)
-                from b in getValue(state, Convert.ToInt32(b_), modes.ElementAtOrDefault(1))
+                from b in getValue(state, b_, modes.ElementAtOrDefault(1))
                 from ptr in getValue(state, state.IP + 3, Mode.Position)
-                from newState in putValue(state, Convert.ToInt32(ptr), modes.ElementAtOrDefault(2), operation(a, b))
+                from newState in putValue(state, ptr, modes.ElementAtOrDefault(2), operation(a, b))
                 select newState.WithIncrementIP();
         }
 
@@ -163,7 +166,7 @@ namespace advent.of.code.y2019.day2
                 state = state.WithInput(newInput);
                 return
                     from ptr in getValue(state, state.IP + 1, Mode.Position)
-                    from newState in putValue(state, Convert.ToInt32(ptr), 
+                    from newState in putValue(state, ptr, 
                             modes.ElementAtOrDefault(0), input)
                     select newState.WithIncrementIP(2);
             }
@@ -187,7 +190,7 @@ namespace advent.of.code.y2019.day2
             return
                 from a_ in getValue(state, state.IP + 1, Mode.Position)
                 from a in getValue(state, a_, modes.ElementAtOrDefault(0)  )
-                select state.WithAdjust(Convert.ToInt32(a)).WithIncrementIP(2);
+                select state.WithAdjust(a).WithIncrementIP(2);
         }
 
 
@@ -202,7 +205,7 @@ namespace advent.of.code.y2019.day2
                 from a in getValue(state, a_, modes.ElementAtOrDefault(0)  )
                 from b_ in getValue(state, state.IP + 2, Mode.Position)
                 from b in getValue(state, b_, modes.ElementAtOrDefault(1)  )
-                select condition(a) ? state.WithIP(Convert.ToInt32(b)) : state.WithIncrementIP(3);
+                select condition(a) ? state.WithIP(b) : state.WithIncrementIP(3);
         }
 
         public static Option<ProgramState> ExecExit(ProgramState state)
@@ -245,6 +248,9 @@ namespace advent.of.code.y2019.day2
         public static Func<Mem, Mem, Mem> Eq() => (a, b) => a == b ? 1 : 0;
         public static Func<Mem, Mem, Mem> Lt() => (a, b) => a < b ? 1 : 0;
 
+        public static Func<Mem, bool> True() => x => x != 0;
+        public static Func<Mem, bool> False() => x => x == 0;
+
 
         public static Func<OpCode, Func<ProgramState, Option<ProgramState>>> Dispatch()
         => opcode =>
@@ -270,10 +276,10 @@ namespace advent.of.code.y2019.day2
                     return state => ProgramState.ExecOutput(state);
 
                 case OpCode.JmpIfTrue:
-                    return state => ProgramState.ExecJump(state, x => x != 0);
+                    return state => ProgramState.ExecJump(state, True());
 
                 case OpCode.JmpIfFalse:
-                    return state => ProgramState.ExecJump(state, x => x == 0);
+                    return state => ProgramState.ExecJump(state, False());
 
 				case OpCode.Adjust: 
 					return state => ProgramState.ExecAdjust(state);
@@ -321,30 +327,27 @@ namespace advent.of.code.y2019.day2
 
         public static Func<ProgramState, Option<OpCode>> GetOpCode()
         => state
-            => ToOpCode(state.Program.GetValueOrDefault(state.IP));
+            => ToOpCode(state.Read(state.IP));
 
         public static Func<ProgramState, IEnumerable<Mode>> GetModeFlags()
         => state
-            => state.Program.GetValueOrDefault(state.IP).ModesFromInstruction();
+            => state.Read(state.IP).ModesFromInstruction();
 
         public static Func<ProgramState, Mem, Mode, Option<Mem>> GetInt()
         => (state, raw, mode) => {
 			switch (mode)
 			{
 				case Mode.Position: 
-					return state.Program.TryGetValue(
-						Convert.ToInt32(raw), out var value) 
-						? Some(value) : Some(0L);
+					return Some(state.Read(raw));
 				case Mode.Immediate:
 					return Some(raw);
 				case Mode.Relative:
-					return state.Program.TryGetValue(
-						state.RelativeBase+Convert.ToInt32(raw), out var value2) 
-						? Some(value2) : Some(0L);
+					return Some(state.Read(state.RelativeBase+raw));
 				default:
-					return None;
+					return Some(0L);
 			}
 		};
+
 
         public static Func<ProgramState, Adr, Mode, Mem, Option<ProgramState>> PutInt()
         => (state, raw, mode, value)

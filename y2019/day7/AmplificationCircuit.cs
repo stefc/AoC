@@ -19,7 +19,7 @@ namespace advent.of.code.y2019.day7
     using IntMatrix = IEnumerable<IEnumerable<int>>;
 
     using Computation = StatefulComputation<Option<ProgramState>, 
-		ImmutableSortedDictionary<Int32,Int64>>;
+		ImmutableSortedDictionary<Int64,Int64>>;
     
 
 
@@ -144,7 +144,7 @@ namespace advent.of.code.y2019.day7
         }
 
         public static Mem Compute(this Computation computer, ProgramState program,
-            int sequence, int ary, Mem input)
+            long sequence, int ary, Mem input)
         {
             var output = computer(program.WithInput((sequence / ary) % 10, input))
                 .State.Match(() => -99, s => s.Output.Peek());

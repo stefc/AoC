@@ -22,8 +22,9 @@
             "args": [
                 "test",
 				"advent-of-code.csproj",
-				"--filter",
-				"Year=2019"
+                "--filter",
+                "Topic=intcode"
+//				"Year=2019"
             ],
             "group": {
                 "kind": "test",
