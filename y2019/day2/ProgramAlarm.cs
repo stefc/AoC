@@ -25,6 +25,7 @@ namespace advent.of.code.y2019.day2
 
     public enum OpCode
     {
+        Nop = 0, 
         Add = 1,
         Mul = 2,
 
@@ -77,7 +78,7 @@ namespace advent.of.code.y2019.day2
             this.Stopped = stopped;
         }
 
-        public Option<OpCode> OpCode => ProgramAlarm.GetOpCode()(this);
+        public OpCode OpCode => ProgramAlarm.GetOpCode(this);
 
         public ProgramState WithIncrementIP(Adr step = 4)
             => new ProgramState(this.IP + step, this.RelativeBase, 
@@ -121,97 +122,15 @@ namespace advent.of.code.y2019.day2
 
         public ProgramState WithExecute()
         {
-            var getOpCode = ProgramAlarm.GetOpCode();
-            var getFunc = ProgramAlarm.Dispatch();
-            var state = this;
-            return (
-                from code in getOpCode(state)
-                from newState in getFunc(code)(state)
-                select newState).GetOrElse(state);
+            
+            return ProgramAlarm.Dispatch(this);
         }
 
         public Mem Read(Adr adr) 
         => this.Program.TryGetValue(adr, out var value) ? value : 0L;
 
-        public static Option<ProgramState> Exec(ProgramState state,
-            Func<Mem, Mem, Mem> operation)
-        {
-            var getValue = ProgramAlarm.GetInt();
-            var putValue = ProgramAlarm.PutInt();
-            var modes = ProgramAlarm.GetModeFlags()(state);
-
-            return
-                from a_ in getValue(state, state.IP + 1, Mode.Position)
-                from a in getValue(state, a_, modes.ElementAtOrDefault(0))
-                from b_ in getValue(state, state.IP + 2, Mode.Position)
-                from b in getValue(state, b_, modes.ElementAtOrDefault(1))
-                from ptr in getValue(state, state.IP + 3, Mode.Position)
-                from newState in putValue(state, ptr, modes.ElementAtOrDefault(2), operation(a, b))
-                select newState.WithIncrementIP();
-        }
-
-        public static Option<ProgramState> ExecInput(ProgramState state)
-        {
-            var getValue = ProgramAlarm.GetInt();
-            var putValue = ProgramAlarm.PutInt();
-			var modes = ProgramAlarm.GetModeFlags()(state);
-
-            if (state.Input.IsEmpty)
-            {
-                return Some(state.WithStopping());
-            }
-            else
-            {
-                var newInput = state.Input.Dequeue(out var input);
-                state = state.WithInput(newInput);
-                return
-                    from ptr in getValue(state, state.IP + 1, Mode.Position)
-                    from newState in putValue(state, ptr, 
-                            modes.ElementAtOrDefault(0), input)
-                    select newState.WithIncrementIP(2);
-            }
-        }
-
-        public static Option<ProgramState> ExecOutput(ProgramState state)
-        {
-            var getValue = ProgramAlarm.GetInt();
-            var putValue = ProgramAlarm.PutInt();
-            var modes = ProgramAlarm.GetModeFlags()(state);
-            return
-                from a_ in getValue(state, state.IP + 1, Mode.Position)
-                from a in getValue(state, a_, modes.ElementAtOrDefault(0)  )
-                select state.WithOutput(a).WithIncrementIP(2);
-        }
-		public static Option<ProgramState> ExecAdjust(ProgramState state)
-        {
-            var getValue = ProgramAlarm.GetInt();
-            var putValue = ProgramAlarm.PutInt();
-            var modes = ProgramAlarm.GetModeFlags()(state);
-            return
-                from a_ in getValue(state, state.IP + 1, Mode.Position)
-                from a in getValue(state, a_, modes.ElementAtOrDefault(0)  )
-                select state.WithAdjust(a).WithIncrementIP(2);
-        }
-
-
-        public static Option<ProgramState> ExecJump(ProgramState state,
-            Func<Mem, bool> condition)
-        {
-            var getValue = ProgramAlarm.GetInt();
-            var putValue = ProgramAlarm.PutInt();
-            var modes = ProgramAlarm.GetModeFlags()(state);
-            return
-                from a_ in getValue(state, state.IP + 1, Mode.Position)
-                from a in getValue(state, a_, modes.ElementAtOrDefault(0)  )
-                from b_ in getValue(state, state.IP + 2, Mode.Position)
-                from b in getValue(state, b_, modes.ElementAtOrDefault(1)  )
-                select condition(a) ? state.WithIP(b) : state.WithIncrementIP(3);
-        }
-
-        public static Option<ProgramState> ExecExit(ProgramState state)
-        => Some(state.WithStopping());
-
-     
+        public ProgramState Write(Adr adr, Mem value) 
+        => this.WithProgram(this.Program.SetItem(adr, value));
     }
 
     public static class ProgramAlarm
@@ -243,81 +162,99 @@ namespace advent.of.code.y2019.day2
             return (Value: state.Program, State: Some(state));
         }
 
-        public static Func<Mem, Mem, Mem> Add() => (a, b) => a + b;
-        public static Func<Mem, Mem, Mem> Mul() => (a, b) => a * b;
-        public static Func<Mem, Mem, Mem> Eq() => (a, b) => a == b ? 1 : 0;
-        public static Func<Mem, Mem, Mem> Lt() => (a, b) => a < b ? 1 : 0;
+        private static Func<Mem, Mem, Mem> Add() => (a, b) => a + b;
+        private static Func<Mem, Mem, Mem> Mul() => (a, b) => a * b;
+        private static Func<Mem, Mem, Mem> Eq() => (a, b) => a == b ? 1 : 0;
+        private static Func<Mem, Mem, Mem> Lt() => (a, b) => a < b ? 1 : 0;
+        private static Func<Mem, bool> True() => x => x != 0;
+        private static Func<Mem, bool> False() => x => x == 0;
 
-        public static Func<Mem, bool> True() => x => x != 0;
-        public static Func<Mem, bool> False() => x => x == 0;
+        private static ProgramState Exec(ProgramState state,
+            Func<Mem, Mem, Mem> operation)
+        => (
+            from a in Get()(state, 1)
+            from b in Get()(state, 2)
+            from newState in Put()(state, 3, operation(a, b))
+            select newState.WithIncrementIP()
+        ).GetOrElse(state);
+
+        private static ProgramState ExecInput(ProgramState state)
+        => (
+            state.Input.IsEmpty ?
+            Some(state.WithStopping())
+            :
+            from newState in Put()
+                (state.WithInput(state.Input.Dequeue(out var input)), 1, input)
+            select newState.WithIncrementIP(2)
+        ).GetOrElse(state);
+
+        private static ProgramState ExecOutput(ProgramState state)
+        => (
+            from a in Get()(state, 1)
+            select state.WithOutput(a).WithIncrementIP(2)
+        ).GetOrElse(state);
+
+        private static ProgramState ExecAdjust(ProgramState state) 
+        =>  (
+            from a in Get()(state, 1)
+            select state.WithAdjust(a).WithIncrementIP(2)
+        ).GetOrElse(state);
 
 
-        public static Func<OpCode, Func<ProgramState, Option<ProgramState>>> Dispatch()
-        => opcode =>
+        private static ProgramState ExecJump(ProgramState state,
+            Func<Mem, bool> condition)
+        => (
+            from a in Get()(state, 1)
+            from b in Get()(state, 2)
+            select condition(a) ? state.WithIP(b) : state.WithIncrementIP(3)
+        ).GetOrElse(state);
+
+        private static ProgramState ExecExit(ProgramState state)
+        => state.WithStopping();
+
+
+        public static ProgramState Dispatch(ProgramState state)
         {
-            switch (opcode)
+            var opCode = ToOpCode(state.Read(state.IP));
+            switch (opCode)
             {
                 case OpCode.Add:
-                    return state => ProgramState.Exec(state, Add());
+                    return Exec(state, Add());
 
                 case OpCode.Mul:
-                    return state => ProgramState.Exec(state, Mul());
+                    return Exec(state, Mul());
 
                 case OpCode.Equals:
-                    return state => ProgramState.Exec(state, Eq());
+                    return Exec(state, Eq());
 
                 case OpCode.LessThan:
-                    return state => ProgramState.Exec(state, Lt());
+                    return Exec(state, Lt());
 
                 case OpCode.Input:
-                    return state => ProgramState.ExecInput(state);
+                    return ExecInput(state);
 
                 case OpCode.Output:
-                    return state => ProgramState.ExecOutput(state);
+                    return ExecOutput(state);
 
                 case OpCode.JmpIfTrue:
-                    return state => ProgramState.ExecJump(state, True());
+                    return ExecJump(state, True());
 
                 case OpCode.JmpIfFalse:
-                    return state => ProgramState.ExecJump(state, False());
+                    return ExecJump(state, False());
 
 				case OpCode.Adjust: 
-					return state => ProgramState.ExecAdjust(state);
-
+					return ExecAdjust(state);
 
                 case OpCode.Exit:
-                    return state => ProgramState.ExecExit(state);
+                    return ExecExit(state);
             }
-            return state => None;
-        };
-
-        private static Option<OpCode> ToOpCode(Mem value)
-        {
-            Mem opcode = value % 100;
-            if (opcode == 1)
-                return Some(OpCode.Add);
-            else if (opcode == 2)
-                return Some(OpCode.Mul);
-            else if (opcode == 3)
-                return Some(OpCode.Input);
-            else if (opcode == 4)
-                return Some(OpCode.Output);
-            else if (opcode == 5)
-                return Some(OpCode.JmpIfTrue);
-            else if (opcode == 6)
-                return Some(OpCode.JmpIfFalse);
-            else if (opcode == 7)
-                return Some(OpCode.LessThan);
-            else if (opcode == 8)
-                return Some(OpCode.Equals);
-			else if (opcode == 9)
-				return Some(OpCode.Adjust);
-            else if (opcode == 99)
-                return Some(OpCode.Exit);
-            return None;
+            return state;
         }
 
-		public static Mode ToMode(this Mem flags) 
+        private static OpCode ToOpCode(Mem value)
+        => (OpCode)(value % 100);
+
+		private static Mode ToMode(this Mem flags) 
 		=> (Mode)((flags % 10) % 3);
 
 		public static IEnumerable<Mode> ModesFromInstruction(this Mem instruction)
@@ -325,35 +262,41 @@ namespace advent.of.code.y2019.day2
 			.Aggregate(ImmutableList<Mode>.Empty,
 			(accu, current) => accu.Add((instruction / (current*100)).ToMode()));
 
-        public static Func<ProgramState, Option<OpCode>> GetOpCode()
-        => state
-            => ToOpCode(state.Read(state.IP));
+        public static OpCode GetOpCode(ProgramState state)
+        => ToOpCode(state.Read(state.IP));
 
         public static Func<ProgramState, IEnumerable<Mode>> GetModeFlags()
         => state
             => state.Read(state.IP).ModesFromInstruction();
 
-        public static Func<ProgramState, Mem, Mode, Option<Mem>> GetInt()
-        => (state, raw, mode) => {
-			switch (mode)
-			{
-				case Mode.Position: 
-					return Some(state.Read(raw));
-				case Mode.Immediate:
-					return Some(raw);
-				case Mode.Relative:
-					return Some(state.Read(state.RelativeBase+raw));
-				default:
-					return Some(0L);
-			}
+        private static Func<ProgramState, int, Option<Mem>> Get()
+        => (state, index) => {
+            var modes = GetModeFlags()(state);
+            var mode = modes.ElementAtOrDefault(index-1);
+            var raw =  state.Read(state.IP + index);
+            switch (mode)
+            {
+                case Mode.Position: 
+                    return Some(state.Read(raw));
+                case Mode.Immediate:
+                    return Some(raw);
+                case Mode.Relative:
+                    return Some(state.Read(state.RelativeBase+raw));
+                default:
+                    return Some(0L);
+            }
 		};
 
-
-        public static Func<ProgramState, Adr, Mode, Mem, Option<ProgramState>> PutInt()
-        => (state, raw, mode, value)
-            => Some(state.WithProgram(
-				state.Program.SetItem(
-					raw + ((mode == Mode.Relative) ? state.RelativeBase:0), value)));
-
+        private static Func<ProgramState, int, Mem, Option<ProgramState>> Put()
+        => (state, index, value)
+            => {
+                var modes = GetModeFlags()(state);
+                var raw = state.Read(state.IP + index);
+                var mode = modes.ElementAtOrDefault(index-1);
+                var isRelative = mode == Mode.Relative;
+                return Some(
+                    state.Write(raw + (isRelative ? state.RelativeBase:0), 
+                    value));
+            };
     }
 }

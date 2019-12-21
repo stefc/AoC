@@ -176,9 +176,7 @@ namespace advent.of.code.y2019.day7
                         lastState = lastState.WithOutput(
                                 lastState.Output.Pop(out var output));
 
-                        var exit = lastState.OpCode.Match( 
-                            ()=> true,
-                            code => code == OpCode.Exit);
+                        var exit = lastState.OpCode == OpCode.Exit;
                         if (!exit)
                         {
                             states = states.Enqueue(lastState);
