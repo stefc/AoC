@@ -169,24 +169,24 @@ namespace advent.of.code.y2019.day2
         private static Func<Mem, bool> True() => x => x != 0;
         private static Func<Mem, bool> False() => x => x == 0;
 
-        private static ProgramState Exec(ProgramState state,
+        private static ProgramState Exec(ProgramState current,
             Func<Mem, Mem, Mem> operation)
         => (
-            from a in Get()(state, 1)
-            from b in Get()(state, 2)
-            from newState in Put()(state, 3, operation(a, b))
-            select newState.WithIncrementIP()
-        ).GetOrElse(state);
+            from a in Get()(current, 1)
+            from b in Get()(current, 2)
+            from next in Put()(current, 3, operation(a, b))
+            select next.WithIncrementIP()
+        ).GetOrElse(current);
 
-        private static ProgramState ExecInput(ProgramState state)
+        private static ProgramState ExecInput(ProgramState current)
         => (
-            state.Input.IsEmpty ?
-            Some(state.WithStopping())
+            current.Input.IsEmpty ?
+            Some(current.WithStopping())
             :
-            from newState in Put()
-                (state.WithInput(state.Input.Dequeue(out var input)), 1, input)
-            select newState.WithIncrementIP(2)
-        ).GetOrElse(state);
+            from next in Put()
+                (current.WithInput(current.Input.Dequeue(out var input)), 1, input)
+            select next.WithIncrementIP(2)
+        ).GetOrElse(current);
 
         private static ProgramState ExecOutput(ProgramState state)
         => (

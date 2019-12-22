@@ -28,91 +28,52 @@ namespace advent.of.code.y2019.day12
             this IEnumerable<Point3D> moons)
         => (from a in moons
            from b in moons 
-           select (a,b)).Where( x => !x.Item1.Equals(x.Item2));
-    }
+           select (a,b))
+           .Distinct(new ConnectionComparer())
+           .Where( x => !x.Item1.Equals(x.Item2));
 
-    public class Point3D : IEquatable<Point3D>
-    {
-
-        private static Lazy<Point3D> zero = new Lazy<Point3D>(() => new Point3D(0, 0, 0));
-
-        public static Point3D Zero => zero.Value;
-
-        public int X { get; private set; }
-
-        public int Y { get; private set; }
-        public int Z { get; private set; }
-
-        public Point3D(int x, int y, int z)
+        public static IEnumerable<(Point3D pos, Point3D vel)> CalcVelocity(this 
+            (Point3D start, Point3D end) connection)
         {
-            X = x;
-            Y = y;
-            Z = z;
+            var vel = new Point3D(
+                connection.start.X.CompareTo(connection.end.X),
+                connection.start.Y.CompareTo(connection.end.Y),
+                connection.start.Z.CompareTo(connection.end.Z));
+
+            yield return (pos: connection.start, vel: !vel);
+            yield return (pos: connection.end, vel: vel);
         }
 
-        public override int GetHashCode()
-        {
-            return this.X * 26 ^ this.Y * 13 ^ this.Z;
-        }
-
-        public bool Equals(Point3D other)
-        {
-            if (other == null)
-                return false;
-            return other.X == this.X && other.Y == this.Y && other.Z == this.Z;
-        }
-
-        public override string ToString() => $"({X},{Y},{Z})";
-
-        public static Point3D operator +(Point3D a, Point3D b) => a.Add(b);
-
-        public static Point3D operator -(Point3D a, Point3D b) => a.Sub(b);
-
-        // public static float operator ^(Point a, Point b) => a.Dotproduct(b);
-        // public static Point operator *(Point a, int scalar)
-        // => new Point(a.X*scalar,a.Y*scalar);
-
-    //     public static Point operator *(Point a, float scalar)
-    //     => new Point((int)(a.X*scalar),(int)(a.Y*scalar));
-    }
-
-    public static class Point3DExtensions {
-        public static Point3D Add(this Point3D a, Point3D b) 
-        => new Point3D(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
-
-        public static Point3D Sub(this Point3D a, Point3D b)
-        => new Point3D(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
-
-        public static int ManhattenDistance(this Point3D point)
-        => Math.Abs(point.X) + Math.Abs(point.Y) + Math.Abs(point.Z);
-
-        public static Point3D Scale(this Point3D point, int factor) 
-        => new Point3D(point.X * factor, point.Y * factor, point.Z * factor); 
-
-        public static float Dotproduct(this Point3D a, Point3D b) 
-        => (float)(a.X*b.X + a.Y*b.Y); 
-
-         public static Option<Point3D> ToPoint3D(this string input) {
-            string pattern = @"^<x=([-|+]?\d*)\s?,\s?y=([-|+]?\d*)\s?,\s?z=([-|+]?\d*)>$";
-        	
-        	Match m = Regex.Match(input, pattern);
-			if (m.Success)
-			{
-				var values = m.Groups.Values
-					.Skip(1)
-                    .Select(g => g.Value)
-                    .Select(v => Convert.ToInt32(v))
-                    .ToArray();
-
-				return Some(new Point3D( values[0], values[1], values[2]));
-			}	
-            return None;
-        }
     }
 
 
     public static class NBodyProblem
     {
-       
+
+        public static IEnumerable<(Point3D pos, Point3D vel)> Simulation(
+            this IEnumerable<(Point3D pos, Point3D vel)> state)
+        {
+            var lookUpVelocity = state
+                .ToImmutableDictionary( x => x.pos, x => x.vel);
+
+            var movements = state
+                .Select( moon => moon.pos)
+                .ToConnections()
+                .SelectMany( connection => connection.CalcVelocity())
+                .GroupBy( moon => moon.pos, moon => moon.vel)
+                .Select( grp => (pos: grp.Key, 
+                    vel: grp.Aggregate(lookUpVelocity[grp.Key],
+                        (accu,current) => accu+current)))
+                .Select( x => (pos:x.pos+x.vel, vel: x.vel))
+                .ToList();
+            return movements;
+        }
+
+        public static int EnergyOf(this IEnumerable<(Point3D pos, Point3D vel)> state)
+        => state
+            .Select(x => 
+                (x.pos.AsEnumerable().Select(x => Math.Abs(x)).Sum()) * 
+                (x.vel.AsEnumerable().Select(x => Math.Abs(x)).Sum()))
+            .Sum();
     }
 }
