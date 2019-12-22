@@ -30,7 +30,7 @@ namespace advent.of.code.y2019.day12
            from b in moons 
            select (a,b))
            .Distinct(new ConnectionComparer())
-           .Where( x => !x.Item1.Equals(x.Item2));
+           ;
 
         public static IEnumerable<(Point3D pos, Point3D vel)> CalcVelocity(this 
             (Point3D start, Point3D end) connection)
@@ -49,7 +49,6 @@ namespace advent.of.code.y2019.day12
 
     public static class NBodyProblem
     {
-
         public static IEnumerable<(Point3D pos, Point3D vel)> Simulation(
             this IEnumerable<(Point3D pos, Point3D vel)> state)
         {
@@ -75,5 +74,26 @@ namespace advent.of.code.y2019.day12
                 (x.pos.AsEnumerable().Select(x => Math.Abs(x)).Sum()) * 
                 (x.vel.AsEnumerable().Select(x => Math.Abs(x)).Sum()))
             .Sum();
+
+        public static int FindCycle(this 
+            IEnumerable<(Point3D pos, Point3D vel)> state, Func<Point3D,int> f)
+        {
+            var seq = state.Select( x => f(x.pos)).ToList();
+            int result = 0;
+            do {
+                state = state.Simulation();
+                result += 1;
+            } while (
+                !(state.Select( x => f(x.pos)).SequenceEqual(seq) && 
+                state.All( x => f(x.vel) == 0)));
+
+            return result;
+        }
+        
+        public static long gcd(long a, long b) 
+        => (b == 0) ? a : gcd(b, a % b);
+
+        public static long lcm(long a, long b) 
+        => (a * b) / (gcd(a, b));
     }
 }

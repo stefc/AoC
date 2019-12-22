@@ -80,7 +80,8 @@ namespace advent.of.code.y2019.day12
         }
 
         public static Option<Point3D> ToPoint3D(this string input) {
-            string pattern = @"^<x=([-|+]?\d*)\s?,\s?y=([-|+]?\d*)\s?,\s?z=([-|+]?\d*)>$";
+            string pattern = 
+                @"^<x=([-|+]?\d*)\s?,\s?y=([-|+]?\d*)\s?,\s?z=([-|+]?\d*)>$";
         	
         	Match m = Regex.Match(input, pattern);
 			if (m.Success)
