@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace advent.of.code.common
 {
-    public class Point : IEquatable<Point>
+    public class Point : IEquatable<Point>, IComparable<Point>
     {
 
         private static Lazy<Point> zero = new Lazy<Point>(() => new Point(0, 0));
@@ -44,6 +45,15 @@ namespace advent.of.code.common
         }
 
         public override string ToString() => $"({X},{Y})";
+
+        public int CompareTo(Point other)
+        {
+            if (other == null)
+                return 1;
+            var a = (this.X*this.X) + (this.Y*this.Y);
+            var b = (other.X*other.X) + (other.Y*other.Y);
+            return a.CompareTo(b);
+        }
 
         public static Point operator +(Point a, Point b) => a.Add(b);
 

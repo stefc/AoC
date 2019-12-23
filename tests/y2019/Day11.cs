@@ -113,6 +113,52 @@ namespace advent.of.code.tests.y2019
         [Fact]
         public void PuzzleTwo()
         {
+            string input = File.ReadAllText("tests/y2019/Day11.Input.txt");
+            var prg = ProgramAlarm.CreateProgram(input.ToBigNumbers());
+			var computer = ProgramAlarm
+				.CreateStateMaschine();
+
+            var robot = new RobotState().WithPaint(PaintColor.White);
+            var program = prg;
+
+			do {
+                var result = computer(program.WithInput((int)robot.Color));
+
+                program = computer(program.WithInput((int)robot.Color))
+                    .State.Match( () => program, 
+                        x => {
+                            var newState = x.WithOutput(x.Output
+                                .Pop(out var b)
+                                .Pop(out var a));
+                            if (newState.OpCode != OpCode.Exit) {
+                                robot = robot.Handle((Convert.ToInt32(a),Convert.ToInt32(b)));
+                            }
+                            return newState;
+                        });
+
+            } while (program.OpCode != OpCode.Exit);
+
+            var points = robot.Painted.Keys;
+
+
+            
+            var max = points.Aggregate(Point.Zero, (accu, current) => 
+                new Point( Math.Max(accu.X, current.X),  Math.Max(accu.Y, current.Y)));
+
+            var min = points.Aggregate(Point.Zero, (accu, current) => 
+                new Point( Math.Min(accu.X, current.X),  Math.Min(accu.Y, current.Y)));
+
+
+            var image = Enumerable.Range(0, max.Y+1)
+                .Select( y => string.Concat(Enumerable.Range(0, max.X+1)
+                .Select( x => 
+                    robot.Painted.TryGetValue(
+                        new Point(x,y), out var color) ? 
+                            color == PaintColor.White ? '#' : ' ': ' ')))
+                .ToArray();
+
+            foreach(var line in image) System.Console.WriteLine(line);
+            //Assert.Equal("PZRFPRKC", robot.Painted.Values.Count());
         }
     }
 }
