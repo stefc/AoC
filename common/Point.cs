@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace advent.of.code.common
 {
@@ -71,9 +73,35 @@ namespace advent.of.code.common
         public static float Dotproduct(this Point a, Point b) 
         => (float)(a.X*b.X + a.Y*b.Y); 
 
-         public static Point ToPoint(this string s) {
+        public static Point ToPoint(this string s) {
             var parts = s.Split(',').Select( p => Convert.ToInt32(p));
             return new Point(parts.First(), parts.Last());
         }
+
+        public static IEnumerable<int> AsEnumerable(this Point p) 
+        {
+            yield return p.X;
+            yield return p.Y;
+        }
+
+        public static Point RotateRight(this Point p) 
+        => p.Rotate( new float[,]{{0,-1},{1,0}});
+        public static Point RotateLeft(this Point p) 
+        => p.Rotate( new float[,]{{0,1},{-1,0}});
+
+        private static Point Rotate(this Point p, float[,] transform) {
+
+            var M = Matrix<float>.Build;
+            var V = Vector<float>.Build;
+
+            var m = M.DenseOfArray(transform); 
+            var v = V.Dense(p.AsEnumerable().Select(Convert.ToSingle).ToArray());
+            var v_ = (m * v)
+                .Select(Convert.ToInt32)
+                .ToArray();
+
+            return new Point(v_[0],v_[1]);
+        }
+
     }
 }
