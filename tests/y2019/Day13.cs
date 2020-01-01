@@ -15,10 +15,7 @@ using SixLabors.Primitives;
 
 using static System.Environment;
 using SixLabors.Shapes;
-using SixLabors.Fonts;
 using System.Collections.Generic;
-using SixLabors.ImageSharp.Formats.Gif;
-using SixLabors.ImageSharp.Processing.Processors.Quantization;
 
 namespace advent.of.code.tests.y2019
 {
@@ -46,7 +43,7 @@ namespace advent.of.code.tests.y2019
             Assert.Equal(0, count);
         }
 
-        [Fact]
+        //[Fact]
         public void Playing()
         {
             string input = File.ReadAllText("tests/y2019/Day13.Input.txt");
