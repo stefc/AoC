@@ -77,19 +77,19 @@ namespace advent.of.code.y2019.day14
                     if (reactions.TryGetValue(reagent.Chemical, out var refReaction)) {
                         if (refReaction.Quantity <= reagent.Quantity)
                         {
-                            int factor = Convert.ToInt32(
-                            Math.Ceiling( 
-                                Convert.ToDecimal(reagent.Quantity) / 
-                                Convert.ToDecimal(refReaction.Quantity)));
+                            int factor = reagent.Quantity / refReaction.Quantity;
+                            int modulo = reagent.Quantity % refReaction.Quantity;
                             return refReaction.Reagents.Select(
-                                r=> new Reagent(r.Chemical, r.Quantity*factor));
+                                r=> new Reagent(r.Chemical, r.Quantity*factor))
+                                .Concat(new[]{new Reagent(reagent.Chemical, modulo)});
                         }
 
                     }
                     return new []{reagent};
                 })
                 .GroupBy( x => x.Chemical)
-                .Select( grp => new Reagent( grp.Key, grp.Sum( x => x.Quantity)));
+                .Select( grp => new Reagent( grp.Key, grp.Sum( x => x.Quantity)))
+                .Where( r => r.Quantity > 0);
             return new Reaction(old.Chemical, old.Quantity, reagents);
         }
 
