@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netcoreapp2.2</TargetFramework>
+		<TargetFramework>net5</TargetFramework>
 		<RootNamespace>advent.of.code</RootNamespace>
 		<IsPackable>false</IsPackable>
 		<LangVersion>Latest</LangVersion>
@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="tests\y2015\Day*.Input.txt" >
+    <Content Include="tests\y20*\Day*.Input.txt" >
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
