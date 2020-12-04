@@ -18,7 +18,7 @@ namespace advent.of.code.tests.y2020
 				1721,979,366,299,675,1456
 			};
 
-			var actual = ReportRepair.Multiply(input, 2020);
+			var actual = ReportRepair.MultiplyTwoNumbers(input, 2020);
 			Assert.Equal(514579, actual);
 		}
 
@@ -28,7 +28,7 @@ namespace advent.of.code.tests.y2020
 				.ReadLines("tests/y2020/Day1.Input.txt")
 				.Select( x => Convert.ToInt32(x));
 
-			var actual = ReportRepair.Multiply(input, 2020);
+			var actual = ReportRepair.MultiplyTwoNumbers(input, 2020);
 
 			Assert.Equal(1020036, actual);
 		}
