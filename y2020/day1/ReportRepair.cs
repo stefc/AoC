@@ -1,10 +1,9 @@
 
 // http://adventofcode.com/2018/day/1
 
-using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using Combinatorics.Collections;
 
 namespace advent.of.code.y2020.day1
 {
@@ -12,32 +11,12 @@ namespace advent.of.code.y2020.day1
 	static class ReportRepair
 	{
 
-		public static int MultiplyTwoNumbers(IEnumerable<int> values, int sum)
+		public static int MultiplyNumbers(IEnumerable<int> values, int sum, int numbers)
 		{
-			
-
-			int n = values.Count();
-
-			var tuple = Enumerable.Range(1, n - 1)
-				.SelectMany(x => values.Skip(x).Select(y => (a: values.ElementAt(x - 1), b: y)))
-				.Single(x => x.a + x.b == sum);
-
-			return tuple.a * tuple.b;
+			Combinations<int> combinations = new Combinations<int>(values.ToList(), numbers);
+			var list = combinations.ToList();
+			var result = list.Single( row => row.Sum() == sum);
+			return result.Aggregate( 1, (accu,current) => accu * current);
 		}
-
-		
-		public static int MultiplyThreeNumbers(IEnumerable<int> values, int sum)
-		{
-
-
-			int n = values.Count();
-
-			var tuple = Enumerable.Range(1, n - 1)
-				.SelectMany(x => values.Skip(x).Select(y => (a: values.ElementAt(x - 1), b: y)))
-				.Single(x => x.a + x.b == sum);
-
-			return tuple.a * tuple.b;
-		}
-
 	}
 }
