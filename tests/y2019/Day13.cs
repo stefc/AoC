@@ -11,11 +11,11 @@ using advent.of.code.common;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using SixLabors.Primitives;
 
 using static System.Environment;
-using SixLabors.Shapes;
 using System.Collections.Generic;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.Drawing;
 
 namespace advent.of.code.tests.y2019
 {
@@ -77,7 +77,7 @@ namespace advent.of.code.tests.y2019
             int w = (max.X+1) * 10;
             int h = (max.Y+2) * 10;
 
-           
+
 
 
             var queue = new long[]
@@ -87,10 +87,10 @@ namespace advent.of.code.tests.y2019
                 +1,+1,+1,
                 }
                 .Aggregate(
-                    ImmutableQueue<long>.Empty, 
+                    ImmutableQueue<long>.Empty,
                     (accu,current) => accu.Enqueue(current));
             // prg = prg.WithInput(queueAsImmutableStack());
-            
+
             var imgFactory = new ImageFactory(w,h);
 
             var frame = 0;
@@ -98,13 +98,13 @@ namespace advent.of.code.tests.y2019
             var rnd = new Random();
 
             var scores = ImmutableList<int>.Empty;
-            
+
             while (frame < 5000) {
 
                 scores = imgFactory.AddFrame(gameState, frame, scores);
 
                 if (prg.OpCode == OpCode.Exit) break;
-                
+
                 queue = queue.Dequeue(out var control);
                 prg = computer(prg
                         .WithInput(control)
@@ -122,7 +122,7 @@ namespace advent.of.code.tests.y2019
                 }
 
             }
-            
+
             imgFactory.SaveGif("Test.gif");
             Assert.Equal(11441, scores.Last());
         }
@@ -166,17 +166,17 @@ namespace advent.of.code.tests.y2019
             this.height = h;
 
             this.gif = new Image<Rgba32>(weight, height);
-            gif.Mutate(context => context.Fill(Rgba32.Red));
+			gif.Mutate(context => context.Fill(Color.Red));
 
         }
         public ImmutableList<int> AddFrame(IEnumerable<Either<TileState, int>> gameState, int frame, ImmutableList<int> scores) {
 
             var img = new Image<Rgba32>(weight, height);
 
-            var brushWall = new SolidBrush(Rgba32.Gray);
-            var brushBrick = new SolidBrush(Rgba32.IndianRed);
-            var brushBall = new SolidBrush(Rgba32.Black);
-            var brushPaddle = new SolidBrush(Rgba32.PaleGoldenrod);
+			var brushWall = new SolidBrush(Color.Gray);
+			var brushBrick = new SolidBrush(Color.IndianRed);
+			var brushBall = new SolidBrush(Color.Black);
+			var brushPaddle = new SolidBrush(Color.PaleGoldenrod);
 
             var font = SixLabors.Fonts.SystemFonts.CreateFont("Arial", 12);
 
@@ -211,34 +211,34 @@ namespace advent.of.code.tests.y2019
 
                         if (tile.TileId == TileId.Ball)
                         {
-                            img.Mutate(i => i.Fill( brush, 
+                            img.Mutate(i => i.Fill( brush,
                                 new EllipsePolygon(
                                     new PointF(x+5f,y+5f), new SizeF(8f,8f))));
                         }
                         else
                         {
-                            img.Mutate(i => i.Fill( brush, 
+                            img.Mutate(i => i.Fill( brush,
                                new RectangularPolygon( x,y, 9f, 9f)));
                         }
-                    } 
-                    else 
+                    }
+                    else
                     {
-                        img.Mutate(i => i.Fill( Rgba32.White,  
+						img.Mutate(i => i.Fill(Color.White,
                             new RectangularPolygon( x,y, 10f, 10f)));
                     }
                 }, score =>
                 {
                     img.Mutate(i => i
-                        .Fill(Rgba32.White,  
+						.Fill(Color.White,
                             new RectangularPolygon( 12f, this.height - 10f, 150f, 10f))
-                        .DrawText($"Score: {score}", font, Rgba32.Black, 
+						.DrawText($"Score: {score}", font, Color.Black,
                             new PointF(12f, this.height - 10f)));
                     scores = scores.Add(score);
                 });
             }
 
-            
-          
+
+
             gif.Frames.AddFrame(img.Frames[0]);
             img.Dispose();
 

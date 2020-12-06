@@ -47,19 +47,9 @@ def is_really_nice(s):
 
 */
 
+	[Trait("Category","y2015")]
 	public class TestDay5
 	{
-		[Theory]
-		[InlineData("ugknbfddgicrmopn",true)]
-		[InlineData("aaa",true)]
-		[InlineData("jchzalrnumimnmhp",false)]
-		[InlineData("haegwjzuvuyypxyu",false)]
-		[InlineData("dvszwmarrgswjxmb",false)]
-		public void PartOne(string value, bool isNice)
-			=>
-				Assert.Equal(isNice,
-					StringClassifier.IsNice(value));
-
 		[Theory]
 		[InlineData("xyxy")]
 		[InlineData("aabcdefgaa")]

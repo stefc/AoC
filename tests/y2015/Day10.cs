@@ -7,7 +7,8 @@ using advent.of.code.y2015.day10;
 
 namespace advent.of.code.tests.y2015 {
 
-    public class TestDay10
+	[Trait("Category", "y2015")]
+	public class TestDay10
     {
         [Theory]
         [InlineData(1,1,"11")]
@@ -23,14 +24,14 @@ namespace advent.of.code.tests.y2015 {
                 LookAndSay.Iterate(number, iteration).ToString());
         }
 
-        [Fact]
+		[Fact]
         public void PuzzlePartOne()
         {
             Assert.Equal(252594,
                  LookAndSay.WhatLength(1113222113, 40));
         }
 
-        [Fact]
+		[Fact]
         public void PuzzlePartTwo()
         {
             Assert.Equal(3579328,

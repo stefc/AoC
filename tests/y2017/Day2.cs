@@ -1,13 +1,12 @@
-using System;
 using Xunit;
 
 using advent.of.code.y2017.day2;
-using System.Linq;
-using System.Collections.Generic;
 
-namespace advent.of.code.tests.y2017 {
+namespace advent.of.code.tests.y2017
+{
 
-    public class TestDay2
+	[Trait("Category", "y2017")]
+	public class TestDay2
     {
 
         [Fact]
@@ -20,7 +19,7 @@ namespace advent.of.code.tests.y2017 {
 ";
             Assert.Equal(18, CorruptionChecksum.getMinMaxAggregate(input));
         }
-        
+
         [Fact]
         public void PartTwo()
         {
@@ -38,7 +37,7 @@ namespace advent.of.code.tests.y2017 {
         [InlineData("3 8 6 5", 6, 3)]
         public void TestDivision(string line, int expectedNumerator, int expectedDenominator) {
             var division = line.getDivision();
-            
+
             Assert.Equal(expectedNumerator, division.Item1);
             Assert.Equal(expectedDenominator, division.Item2);
         }
