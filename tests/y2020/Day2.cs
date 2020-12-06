@@ -16,13 +16,13 @@ namespace advent.of.code.tests.y2020
 		{
 			// Arrange
 			var input = new string[]{
-				"1-3 a: abcde",
 				"1-3 b: cdefg",
+				"1-3 a: abcde",
 				"2-9 c: ccccccccc"
 			};
 
 			// Act
-			var actual = PasswordPhilosophy.AreValid(input);
+			var actual = PasswordPhilosophy.AreValidCount(input);
 
 			// Assert
 			Assert.Equal(2, actual);
@@ -33,29 +33,30 @@ namespace advent.of.code.tests.y2020
 
 			//  Arrange
 			var input = File
-				.ReadLines("tests/y2020/Day1.Input.txt")
-				.Select( x => Convert.ToInt32(x));
+				.ReadLines("tests/y2020/Day2.Input.txt")
+				.ToList();
 
 			// Act
-			//var actual = ReportRepair.MultiplyNumbers(input, 2020, 2);
+			var actual = PasswordPhilosophy.AreValidCount(input);
 
 			// Assert
-			//Assert.Equal(1020036, actual);
+			Assert.Equal(398, actual);
 		}
 
 		[Fact]
 		public void PuzzleTwo()
 		{
-			// Arrange
-			var input = new int[]{
-				1721,979,366,299,675,1456
+			var input = new string[]{
+				"1-3 b: cdefg",
+				"1-3 a: abcde",
+				"2-9 c: ccccccccc"
 			};
 
 			// Act
-			//var actual = ReportRepair.MultiplyNumbers(input, 2020, 3);
+			var actual = PasswordPhilosophy.AreValidOccurence(input);
 
 			// Assert
-			//Assert.Equal(241861950, actual);
+			Assert.Equal(1, actual);
 		}
 
 		[Fact]
@@ -63,14 +64,14 @@ namespace advent.of.code.tests.y2020
 
 			//  Arrange
 			var input = File
-				.ReadLines("tests/y2020/Day1.Input.txt")
-				.Select( x => Convert.ToInt32(x));
+				.ReadLines("tests/y2020/Day2.Input.txt")
+				.ToList();
 
 			// Act
-			//var actual = ReportRepair.MultiplyNumbers(input, 2020, 3);
+			var actual = PasswordPhilosophy.AreValidOccurence(input);
 
 			// Assert
-			//Assert.Equal(286977330, actual);
+			Assert.Equal(562, actual);
 		}
 
 
