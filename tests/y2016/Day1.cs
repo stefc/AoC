@@ -5,7 +5,8 @@ using advent.of.code.y2016.day1;
 
 namespace advent.of.code.tests.y2016 {
 
-    public class TestDay1
+    [Trait("Category", "y2016")]
+	public class TestDay1
     {
        /*  [Theory]
         [InlineData("R2, L3", 5)]
@@ -13,10 +14,10 @@ namespace advent.of.code.tests.y2016 {
         [InlineData("R5, L5, R5, R3", 12)]
         public void PartOne(string instructions, int expectedBlocks)
         {
-            Assert.Equal(expectedBlocks, 
+            Assert.Equal(expectedBlocks,
                 NoTimeForTaxicap.HowFarBlocksAway(instructions));
         }
         */
-    
+
     }
 }

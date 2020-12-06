@@ -6,6 +6,7 @@ using advent.of.code.y2018.day1;
 namespace advent.of.code.tests.y2018
 {
 
+	[Trait("Category", "y2018")]
 	public class TestDay1
     {
         [Theory(Skip="not yet")]
