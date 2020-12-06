@@ -1,28 +1,29 @@
-using System;
 using Xunit;
 
 using advent.of.code.y2015.day2;
 using System.IO;
 using System.Linq;
 
-namespace advent.of.code.tests.y2015 {
+namespace advent.of.code.tests.y2015
+{
 
-    public class TestDay2
+	[Trait("Category","y2015")]
+	public class TestDay2
     {
         [Theory]
         [InlineData("2x3x4",58)]
         [InlineData("1x1x10",43)]
-        public void PartOne(string dimensions, int expected) 
+        public void PartOne(string dimensions, int expected)
             =>
-                Assert.Equal(expected, 
+                Assert.Equal(expected,
                     WrappingPaper.SquareFeetOfPaper(dimensions));
 
         [Theory]
         [InlineData("2x3x4",34)]
         [InlineData("1x1x10",14)]
-        public void PartTwo(string dimensions, int expected) 
+        public void PartTwo(string dimensions, int expected)
             =>
-                Assert.Equal(expected, 
+                Assert.Equal(expected,
                     WrappingPaper.FeetOfRibbon(dimensions));
 
         [Fact]

@@ -47,6 +47,7 @@ def is_really_nice(s):
 
 */
 
+	[Trait("Category","y2015")]
 	public class TestDay5
 	{
 		[Theory]

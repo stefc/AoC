@@ -8,7 +8,7 @@ using advent.of.code.y2020.day1;
 namespace advent.of.code.tests.y2020
 {
 
-	[Trait("Category","2020")]
+	[Trait("Category", "y2020")]
 	public class TestDay1
 	{
 		[Fact]

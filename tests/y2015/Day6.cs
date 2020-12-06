@@ -9,6 +9,7 @@ using advent.of.code.common;
 
 namespace advent.of.code.tests.y2015 {
 
+	[Trait("Category", "y2015")]
 	public class TestDay6
 	{
 		[Theory]
@@ -80,7 +81,7 @@ namespace advent.of.code.tests.y2015 {
 			Assert.Equal(400410, grid.LightCount);
 		}
 
-		[Fact]
+		[Fact(Skip = "Longrunner")]
 		public void PuzzlePartTwo() {
 			var input = File
 				.ReadLines("tests/y2015/Day6.Input.txt");
