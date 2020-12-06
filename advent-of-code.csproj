@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netcoreapp2.2</TargetFramework>
+		<TargetFramework>net5</TargetFramework>
 		<RootNamespace>advent.of.code</RootNamespace>
 		<IsPackable>false</IsPackable>
 		<LangVersion>Latest</LangVersion>
@@ -11,10 +11,11 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+	 <PackageReference Include="Combinatorics" Version="1.1.0.19" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="tests\y2015\Day*.Input.txt" >
+    <Content Include="tests\y20*\Day*.Input.txt" >
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

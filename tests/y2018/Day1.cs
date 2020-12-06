@@ -1,15 +1,14 @@
-using System;
+using System.IO;
 using Xunit;
 
 using advent.of.code.y2018.day1;
-using System.IO;
-using System.Linq;
 
-namespace advent.of.code.tests.y2018 {
+namespace advent.of.code.tests.y2018
+{
 
-    public class TestDay1
+	public class TestDay1
     {
-        [Theory]
+        [Theory(Skip="not yet")]
         [InlineData(3,"+1,-2,+3,+1")]
         [InlineData(3,"+1,+1,+1")]
         [InlineData(0,"+1,+1,-2")]
@@ -20,13 +19,13 @@ namespace advent.of.code.tests.y2018 {
                 value));
         }
 
-        [Fact]
+        [Fact(Skip="not yet")]
         public void PuzzleOne() {
             string input = File.ReadAllText("tests/y2018/Day1.Input.txt");
             Assert.Equal(493, ChronalCalibration.ChangeFrequency(input));
         }
 
-        [Theory]
+        [Theory(Skip="not yet")]
         [InlineData(0,"+1,-1")]
         [InlineData(10,"+3,+3,+4,-2,-4")]
         [InlineData(5,"-6,+3,+8,+5,-6")]
@@ -37,7 +36,7 @@ namespace advent.of.code.tests.y2018 {
                 value));
         }
 
-        [Fact]
+        [Fact(Skip="not yet")]
         public void PuzzleTwo() {
             string input = File.ReadAllText("tests/y2018/Day1.Input.txt");
             Assert.Equal(413, ChronalCalibration.DetectTwice(input));
