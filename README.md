@@ -98,6 +98,10 @@ Also Unittests immer im Unterverzeichnis \tests im jeweiligen Jahr Folder und mi
 
 Das Programm baust du mit dem Aufruf 'dotnet build' und mit 'dotnet test' lässt du die Test's durchlaufen. 
 
+Willst du nur die Tests für ein einzelnes Jahr laufen lassen, so geschieht das mit einem Filter Ausdruck: 
+
+`dotnet test --filter Category=y2020 -v m`
+
 Die Tests sagen dir das dein Algorithmus funktioniert. 
 
 Die bereits im Repo hinterlegten Lösungen geben dir einen Anhaltspunkt, wie vorgegangen werden kann. Aber auch diese sind nicht endgültig, sondern lassen sich verbessern. Also wenn du eine bessere Lösung für ein bereits gelöstes Problem hast nur zu. Stelle einen Pullrequest!
