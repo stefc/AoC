@@ -12,7 +12,7 @@ namespace advent.of.code.tests.y2019
 {
 
 
-    [Trait("Year", "2019")]
+	[Trait("Category", "y2019")]
     public class TestDay12
     {
         [Fact]
@@ -60,14 +60,14 @@ namespace advent.of.code.tests.y2019
             var yCyle = state.FindCycle( p => p.Y);
             var zCyle = state.FindCycle( p => p.Z);
 
-           
+
             var actual = NBodyProblem.lcm(
                 NBodyProblem.lcm(xCyle,yCyle),
                     zCyle);
             Assert.Equal(expected, actual);
         }
 
-        
+
         [Fact]
         public void PuzzleOne()
         {
@@ -92,7 +92,7 @@ namespace advent.of.code.tests.y2019
             var yCyle = input.FindCycle( p => p.Y);
             var zCyle = input.FindCycle( p => p.Z);
 
-           
+
             var actual = NBodyProblem.lcm(
                 NBodyProblem.lcm(xCyle,yCyle),
                     zCyle);

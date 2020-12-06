@@ -10,12 +10,12 @@ using advent.of.code.common;
 
 namespace advent.of.code.tests.y2019
 {
-    [Trait("Year", "2019")]
+    [Trait("Category", "y2019")]
     [Trait("Topic", "intcode")]
     public class TestDay11
     {
         [Fact]
-        public void TestRotate() 
+        public void TestRotate()
         {
             Point pt = Point.North;
 
@@ -37,7 +37,7 @@ namespace advent.of.code.tests.y2019
             Assert.Equal(Point.West, b1);
             Assert.Equal(Point.South, b2);
             Assert.Equal(Point.East, b3);
-            Assert.Equal(Point.North, b4); 
+            Assert.Equal(Point.North, b4);
         }
 
         [Fact]
@@ -76,10 +76,10 @@ namespace advent.of.code.tests.y2019
             Assert.Equal(Point.West, robot.Direction);
             Assert.Equal(new Point(0,-1), robot.Position);
 
-            Assert.Equal(4, 
+            Assert.Equal(4,
                 robot.Painted.Values.Where( x => x == PaintColor.White).Count());
         }
-        
+
         [Fact]
         public void PuzzleOne()
         {
@@ -95,7 +95,7 @@ namespace advent.of.code.tests.y2019
                 var result = computer(program.WithInput((int)robot.Color));
 
                 program = computer(program.WithInput((int)robot.Color))
-                    .State.Match( () => program, 
+                    .State.Match( () => program,
                         x => {
                             var newState = x.WithOutput(x.Output
                                 .Pop(out var b)
@@ -125,7 +125,7 @@ namespace advent.of.code.tests.y2019
                 var result = computer(program.WithInput((int)robot.Color));
 
                 program = computer(program.WithInput((int)robot.Color))
-                    .State.Match( () => program, 
+                    .State.Match( () => program,
                         x => {
                             var newState = x.WithOutput(x.Output
                                 .Pop(out var b)
@@ -141,19 +141,19 @@ namespace advent.of.code.tests.y2019
             var points = robot.Painted.Keys;
 
 
-            
-            var max = points.Aggregate(Point.Zero, (accu, current) => 
+
+            var max = points.Aggregate(Point.Zero, (accu, current) =>
                 new Point( Math.Max(accu.X, current.X),  Math.Max(accu.Y, current.Y)));
 
-            var min = points.Aggregate(Point.Zero, (accu, current) => 
+            var min = points.Aggregate(Point.Zero, (accu, current) =>
                 new Point( Math.Min(accu.X, current.X),  Math.Min(accu.Y, current.Y)));
 
 
             var image = Enumerable.Range(0, max.Y+1)
                 .Select( y => string.Concat(Enumerable.Range(0, max.X+1)
-                .Select( x => 
+                .Select( x =>
                     robot.Painted.TryGetValue(
-                        new Point(x,y), out var color) ? 
+                        new Point(x,y), out var color) ?
                             color == PaintColor.White ? '#' : ' ': ' ')))
                 .ToArray();
 

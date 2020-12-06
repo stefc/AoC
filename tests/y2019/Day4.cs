@@ -9,14 +9,14 @@ using advent.of.code.y2019.day4;
 
 namespace advent.of.code.tests.y2019
 {
-    [Trait("Year", "2019")]
+    [Trait("Category", "y2019")]
     public class TestDay4
 	{
 		[Theory]
 		[InlineData(123789, false)]
 		[InlineData(122345, true)]
 		[InlineData(111111, true)]
-		public void TwoAdjacentDigits(int value, bool expected) 
+		public void TwoAdjacentDigits(int value, bool expected)
 		{
 			var actual = SecureContainer.HasTwoAdjacentDigits(value);
 
@@ -28,26 +28,26 @@ namespace advent.of.code.tests.y2019
 		[InlineData(122345, true)]
 		[InlineData(111111, true)]
 		[InlineData(223450, false)]
-		public void NeverDecrease(int value, bool expected) 
+		public void NeverDecrease(int value, bool expected)
 		{
 			var actual = SecureContainer.NeverDecrease(value);
 			Assert.Equal(expected, actual);
 		}
 
 		[Theory]
-		[InlineData(112211, true)]   
-		[InlineData(112233, true)]   
-		[InlineData(111166, true)]   
-		[InlineData(443444, true)]   
-		[InlineData(111111, false)]  
-		[InlineData(111167, false)]  
-		[InlineData(111333, false)]  
-		[InlineData(123444, false)]  
-		[InlineData(111116, false)]  
+		[InlineData(112211, true)]
+		[InlineData(112233, true)]
+		[InlineData(111166, true)]
+		[InlineData(443444, true)]
+		[InlineData(111111, false)]
+		[InlineData(111167, false)]
+		[InlineData(111333, false)]
+		[InlineData(123444, false)]
+		[InlineData(111116, false)]
 
-		public void NotPartOfGroup(int value, bool expected) 
+		public void NotPartOfGroup(int value, bool expected)
 		{
-			var actual = SecureContainer.NotPartOfGroup(value); 
+			var actual = SecureContainer.NotPartOfGroup(value);
 			Assert.Equal(expected, actual);
 		}
 

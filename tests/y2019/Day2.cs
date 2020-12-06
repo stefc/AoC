@@ -10,7 +10,7 @@ namespace advent.of.code.tests.y2019
 
 	using static F;
 
-	[Trait("Year", "2019")]
+	[Trait("Category", "y2019")]
 	[Trait("Topic", "intcode")]
     public class TestDay2
 	{
@@ -29,7 +29,7 @@ namespace advent.of.code.tests.y2019
 		}
 
 		// [Fact]
-		// public void InvalidProgram() 
+		// public void InvalidProgram()
 		// {
 		// 	var actual = ProgramAlarm
 		// 		.CreateStateMaschine()
@@ -52,7 +52,7 @@ namespace advent.of.code.tests.y2019
 			var prg = ProgramAlarm.CreateProgram(input.ToBigNumbers());
 
 			Func<int,int,Option<ProgramState>> patching = (noun, verb) =>
-				from a in Some(prg) 
+				from a in Some(prg)
 				from b in Some(a.Write(1,noun))
 				from c in Some(b.Write(2,verb))
 				select c;
@@ -69,11 +69,11 @@ namespace advent.of.code.tests.y2019
 		public void PuzzleTwo() {
 			string input = File.ReadAllText("tests/y2019/Day2.Input.txt");
 			var prg = ProgramAlarm.CreateProgram(input.ToBigNumbers());
-			
+
 			var range = Enumerable.Range(0,99);
 
 			Func<int,int,Option<ProgramState>> patching = (noun, verb) =>
-				from a in Some(prg) 
+				from a in Some(prg)
 				from b in Some(a.Write(1,noun))
 				from c in Some(b.Write(2,verb))
 				select c;
@@ -93,6 +93,6 @@ namespace advent.of.code.tests.y2019
 				.Code;
 
 			 Assert.Equal(7195, actual);
-		} 
+		}
 	}
 }

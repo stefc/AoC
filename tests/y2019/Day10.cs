@@ -16,10 +16,10 @@ namespace advent.of.code.tests.y2019
 
 	using Line = ValueTuple<Point, Point>;
 
-	[Trait("Year", "2019")]
+	[Trait("Category", "y2019")]
     public class TestDay10
     {
-		private IEnumerable<Point> GetAsteroids() 
+		private IEnumerable<Point> GetAsteroids()
 		=> CreateAsteroids();
 
 		private static IEnumerable<Point> CreateAsteroids(int variant = 0) {
@@ -47,7 +47,7 @@ namespace advent.of.code.tests.y2019
 				"..#...##..",
 				"..##....##",
 				"......#...",
-				".####.###."	
+				".####.###."
 				}
 				.GetAsteroidsMap();
 			} else if (variant == 3) {
@@ -120,12 +120,12 @@ namespace advent.of.code.tests.y2019
 			"....f...c.",
 			"...e..d..c"
 			}.GetAsteroidsMap();
-			
+
 		[Fact]
         public void PartOne()
         {
 			var asteroids = GetAsteroids();
-				
+
 
 			Assert.Equal(10, asteroids.Count());
 			Assert.Contains(new Point(1,0), asteroids);
@@ -151,7 +151,7 @@ namespace advent.of.code.tests.y2019
 		public void TestHitLine(string _line, string _point, bool expected)
 		{
 			var line = _line.ToLine();
-			var p3 = _point.ToPoint(); 
+			var p3 = _point.ToPoint();
 			Assert.False(expected == p3.Hittest(line));
 		}
 
@@ -170,13 +170,13 @@ namespace advent.of.code.tests.y2019
 		public void TestLineOfSight(string _target, bool expected) {
 			var target = _target.ToPoint();
 			Line line = (Point.Zero, target);
-			
+
 			var asteroids = GetLineOfSight().Except(line);
-			
+
 			asteroids = asteroids.Except(
 				from a in asteroids
-				where !a.InCircle(line.PointInTheMiddle(), line.Distance()/2) 
-				select a 
+				where !a.InCircle(line.PointInTheMiddle(), line.Distance()/2)
+				select a
 			);
 			var actual = asteroids.All( asteroid => !asteroid.Hittest(line));
 			Assert.Equal(expected,actual);
@@ -184,8 +184,8 @@ namespace advent.of.code.tests.y2019
 
 		[Theory]
 		[MemberData(nameof(Data))]
-		public void TestGetMaxViews(IEnumerable<Point> asteroids, 
-			Point p, int count) 
+		public void TestGetMaxViews(IEnumerable<Point> asteroids,
+			Point p, int count)
 		{
 			var result = MonitorStation.FindBestAsteroid(asteroids);
 			Assert.NotNull(result);

@@ -8,7 +8,7 @@ using System.Linq;
 namespace advent.of.code.tests.y2019
 {
 
-    [Trait("Year", "2019")]
+    [Trait("Category", "y2019")]
     public class TestDay8
     {
         [Theory]
@@ -22,7 +22,7 @@ namespace advent.of.code.tests.y2019
         }
 
         [Fact]
-        public void Decode() 
+        public void Decode()
         {
             string input = "0222112222120000";
 
@@ -32,7 +32,7 @@ namespace advent.of.code.tests.y2019
 
             Assert.Equal("0110", actual);
         }
-       
+
         [Fact]
         public void PuzzleOne()
         {
@@ -50,7 +50,7 @@ namespace advent.of.code.tests.y2019
             var actual = string.Concat(
                 input.Decode(dim).Select( ch => ch == '1' ? '#' : ' '));
 
-            var result = 
+            var result =
             Enumerable.Range(0, dim.Y)
                 .Select( row =>
                     actual[(row*dim.X)..((row+1)*dim.X)])
@@ -59,7 +59,7 @@ namespace advent.of.code.tests.y2019
             Assert.Equal(
                 " ##   ##  #  # ###  #### #  # #  # # #  #  #    # #  # #    ##   #  #   #  #### #    # #  ###   #   #  # #  # # #  #    #    #  #  ##  #  # #    #### ",
             actual);
-        
+
            // ACKPZ
         }
     }

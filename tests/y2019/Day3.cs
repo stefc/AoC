@@ -9,7 +9,7 @@ using advent.of.code.y2019.day3;
 
 namespace advent.of.code.tests.y2019
 {
-    [Trait("Year", "2019")]
+    [Trait("Category", "y2019")]
     public class TestDay3
 	{
 

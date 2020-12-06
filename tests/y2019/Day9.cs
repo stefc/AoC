@@ -8,12 +8,12 @@ using advent.of.code.y2019.day2;
 namespace advent.of.code.tests.y2019
 {
 
-    [Trait("Year", "2019")]
+    [Trait("Category", "y2019")]
     [Trait("Topic", "intcode")]
     public class TestDay9
     {
 
-       	[Fact]	
+       	[Fact]
 		public void RelativeMode()
 		{
             var modes = 21001L.ModesFromInstruction();
@@ -35,12 +35,12 @@ namespace advent.of.code.tests.y2019
 
 			var result = computer(prg);
 
-		    var actual = 
+		    var actual =
 				result.State.Match(
 				()=> string.Empty, s => string.Join(",", s.Output.Reverse().Select( i => i.ToString())));
 			Assert.Equal(input, actual);
         }
-       
+
         [Fact]
         public void PuzzleOne()
         {
@@ -50,7 +50,7 @@ namespace advent.of.code.tests.y2019
 				.CreateStateMaschine();
 
 			var result = computer(prg);
-            Assert.Equal(2457252183, 
+            Assert.Equal(2457252183,
                 result.State.Match(()=> 0, s => s.Output.Peek()));
         }
 
@@ -63,7 +63,7 @@ namespace advent.of.code.tests.y2019
 				.CreateStateMaschine();
 
 			var result = computer(prg);
-            Assert.Equal(70634, 
+            Assert.Equal(70634,
                 result.State.Match(()=> 0, s => s.Output.Peek()));
         }
     }

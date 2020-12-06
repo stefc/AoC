@@ -7,18 +7,18 @@ using System.IO;
 namespace advent.of.code.tests.y2019
 {
 
-	[Trait("Year", "2019")]
+	[Trait("Category", "y2019")]
 	[Trait("Topic", "intcode")]
     public class TestDay5
 	{
-		
+
 		[Theory]
 		[InlineData("1002,4,3,4,99","1002,4,3,4,33")]
 		[InlineData("1101,100,-1,4,99","1101,100,-1,4,0")]
-	
+
 		public void ImmediateMode(string expected, string value)
 		{
-			var computer = 
+			var computer =
 				from v in ProgramAlarm.CreateStateMaschine()
 				select string.Join(",", (from r in v select r.Value.ToString()));
 
@@ -40,7 +40,7 @@ namespace advent.of.code.tests.y2019
 
 			var result = computer(prg);
 
-			var actual = string.Join(",", 
+			var actual = string.Join(",",
 				result.Value.Select( i => i.Value.ToString()));
 
 			Assert.Equal(expected, actual);
@@ -66,7 +66,7 @@ namespace advent.of.code.tests.y2019
 		[InlineData(7,1,"3,3,1107,-1,8,3,4,3,99")]
 		[InlineData(8,0,"3,3,1107,-1,8,3,4,3,99")]
 		[InlineData(9,0,"3,3,1107,-1,8,3,4,3,99")]
-		
+
 		public void Compare(int input, int output, string value)
 		{
 			var prg = ProgramAlarm.CreateProgram(value.ToBigNumbers(), input);
@@ -103,7 +103,7 @@ namespace advent.of.code.tests.y2019
 		public void PuzzleOne() {
 			string input = File.ReadAllText("tests/y2019/Day5.Input.txt");
 			var prg = ProgramAlarm.CreateProgram(input.ToBigNumbers(), 1);
-			
+
 
 			var computer = ProgramAlarm.CreateStateMaschine();
 
@@ -111,19 +111,19 @@ namespace advent.of.code.tests.y2019
 				()=> 0, s => s.Output.Peek()));
 
 
-			
+
 		}
 
 		[Fact]
 		public void PuzzleTwo() {
 			string input = File.ReadAllText("tests/y2019/Day5.Input.txt");
 			var prg = ProgramAlarm.CreateProgram(input.ToBigNumbers(), 5);
-			
+
 
 			var computer = ProgramAlarm.CreateStateMaschine();
 
 			Assert.Equal(8684145, computer(prg).State.Match(
-				()=> 0, s => s.Output.Peek()));			
+				()=> 0, s => s.Output.Peek()));
 		}
 
 

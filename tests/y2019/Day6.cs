@@ -11,8 +11,8 @@ using advent.of.code.y2019.day6;
 namespace advent.of.code.tests.y2019
 {
     using static advent.of.code.common.Bst.Tree;
-    
-    [Trait("Year", "2019")]
+
+    [Trait("Category", "y2019")]
     public class TestDay6
     {
 
@@ -30,7 +30,7 @@ namespace advent.of.code.tests.y2019
                 );
             Assert.Equal(5, letterCount.Count);
             Assert.Equal(letters.Length, letterCount.Sum(kvp => kvp.Value));
-            // letterCount == ["a": 5, "b": 2, "r": 2, "c": 1, "d": 1]	
+            // letterCount == ["a": 5, "b": 2, "r": 2, "c": 1, "d": 1]
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace advent.of.code.tests.y2019
             Assert.Equal(42, map.CountOrbits());
         }
 
-        
+
         [Fact]
         public void TreeOperation()
         {
@@ -109,7 +109,7 @@ namespace advent.of.code.tests.y2019
             return com;
         }
 
-        private Tree<String> CreateNextSample() 
+        private Tree<String> CreateNextSample()
         {
             var lines = new[] {
                 "COM)B",
@@ -124,7 +124,7 @@ namespace advent.of.code.tests.y2019
                 "J)K",
                 "K)L",
                 "K)YOU",
-                "I)SAN"  
+                "I)SAN"
             };
             return UniversalOrbitMap.CreateMapFromLines(lines);
         }
