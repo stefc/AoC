@@ -2,11 +2,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace advent.of.code.common
 {
+	[DebuggerDisplay("{debugDescription,nq}")]
 	public class Point : IEquatable<Point>
 	{
 
@@ -63,6 +65,8 @@ namespace advent.of.code.common
 
 		public static Point operator *(Point a, float scalar)
 		=> new Point((int)(a.X * scalar), (int)(a.Y * scalar));
+
+		private string debugDescription => $"x={this.X},y={this.Y}";
 	}
 
 	public static class PointExtensions
