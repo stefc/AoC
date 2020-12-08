@@ -15,13 +15,17 @@ namespace advent.of.code.y2020.day3
 			var width = lines.First().Count();
 			var coords = Enumerable
 				.Range(1, height-1)
-				.Select( index => new Point((3 * index) % width, index % height));
+				.Select( index => new Point((slope.X * index) % width, slope.Y * index ))
+				.Where( point => point.Y < height);
 
 			var trees = coords.Count( point =>
 				lines.ElementAt(point.Y).ElementAt(point.X) == '#');
 
 			return trees;
 		}
+
+		public static int HowManyTrees(IEnumerable<string> lines, params Point[] slopes)
+		=> slopes.Aggregate(1, (acc,cur) => acc * HowManyTrees(lines, cur));
 
 	}
 }
