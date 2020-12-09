@@ -35,8 +35,29 @@ namespace advent.of.code.y2020.day8
 
 		public static int GetAccumulatorFix(IEnumerable<string> lines)
 		{
-			var program = new ProgramState(lines.Select(FromString));
-			return program.GetAccuWithFixing();
+			var prg = lines.Select(FromString).ToImmutableList();
+
+			var accus = prg
+				.Select( (instruction,idx) => {
+
+					if (instruction.Operation == Operations.Acc)
+					{
+						return prg;
+					}
+					else {
+						var newInstruction = new Instruction()
+						{
+							Operation = instruction.Operation == Operations.Jmp ? Operations.Nop : Operations.Jmp,
+							Argument = instruction.Argument
+						};
+
+						return prg.RemoveAt(idx).Insert(idx, newInstruction);
+					}
+				})
+				.Select( onePrg => new ProgramState(onePrg).GetAccuNoneInfinite());
+
+			return accus.First( x => x.HasValue ).Value;
+
 		}
 
 
@@ -80,30 +101,20 @@ namespace advent.of.code.y2020.day8
 		public int GetAccumulator() {
 
 			var state = this;
-			while (!state.visits.Contains(state.IP))
+			while (!state.visits.Contains(state.IP) && (state.IP < state.program.Count))
 			{
 				state = this.Dispatch(state);
 			}
 			return state.Accu;
 		}
 
-		public int GetAccuWithFixing() {
-			var stack = ImmutableStack<ProgramState>.Empty.Push(this);
-			while (!stack.Peek().visits.Contains(stack.Peek().IP))
+		public int? GetAccuNoneInfinite() {
+			var state = this;
+			while (!state.visits.Contains(state.IP) && (state.IP >= 0 && state.IP < state.program.Count))
 			{
-				stack = stack.Push(this.Dispatch(stack.Peek()));
-			}
-
-			stack = stack.Pop();
-
-			var state = stack.Peek();
-			state = state.WithProgramPatch();
-			while (state.IP < state.program.Count) {
 				state = this.Dispatch(state);
 			}
-			return state.Accu;
-
-
+			return (state.IP < 0 || state.IP >= state.program.Count) ? state.Accu : null;
 		}
 
 		public ProgramState WithIP(int ip)
@@ -112,30 +123,20 @@ namespace advent.of.code.y2020.day8
 		public ProgramState WithAccu(int accu)
             => new ProgramState(this.program, this.IP, accu, this.visits);
 
-		public ProgramState WithProgramPatch() {
-			var instruction = this.program[this.IP];
-			var newInstruction = instruction.Operation == Operations.Jmp ?
-				new Instruction() { Operation = Operations.Nop, Argument = instruction.Argument }
-				:
-				new Instruction() { Operation = Operations.Jmp, Argument = instruction.Argument };
-
-			var patched = this.program.RemoveAt(this.IP).Insert(this.IP, newInstruction);
-			return new ProgramState(patched, this.IP, this.Accu, this.visits);
-		}
-
 		public ProgramState Dispatch(ProgramState state)
         {
-            var opCode = state.program[state.IP].Operation;
+			var instruction =state.program[state.IP];
+            var opCode = instruction.Operation;
             switch (opCode)
             {
                 case Operations.Nop:
                     return state.WithIP(state.IP+1);
 
                 case Operations.Acc:
-                    return state.WithAccu(state.Accu + state.program[state.IP].Argument).WithIP(state.IP+1);
+                    return state.WithAccu(state.Accu + instruction.Argument).WithIP(state.IP+1);
 
                 case Operations.Jmp:
-                    return state.WithIP(state.IP+ state.program[state.IP].Argument);
+                    return state.WithIP(state.IP + instruction.Argument);
             }
             return state;
         }
