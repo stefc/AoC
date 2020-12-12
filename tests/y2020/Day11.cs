@@ -4,9 +4,12 @@ using System.Linq;
 using System;
 using System.IO;
 using advent.of.code.y2020.day11;
+using advent.of.code.common;
+using System.Collections.Immutable;
 
 namespace advent.of.code.tests.y2020
 {
+	using Layout = ImmutableDictionary<Point,SeatingSystem.Seat>;
 
 	[Trait("Category", "y2020")]
 	public class TestDay11
@@ -48,6 +51,86 @@ namespace advent.of.code.tests.y2020
 			// Assert
 			Assert.Equal(2361, actual);
 		}
+
+		[Theory]
+		[InlineData(1,"3,4",8)]
+		[InlineData(2,"1,1",1)]
+		[InlineData(3,"3,3",0)]
+		public void SightSeeing(int variant, string point, int expected) {
+			var layout = CreateLayout(variant);
+
+			var at = Point.FromString(point);
+
+
+			var actual = SeatingSystem.CountSightSeeings(layout, at);
+
+			Assert.Equal(expected, actual);
+		}
+
+		[Fact]
+		public void IsPointOnLine()
+		{
+			var points = new Point[]{
+				new Point(0,7),
+				new Point(1,2),
+				new Point(2,4),
+				new Point(3,8),
+				new Point(3,1),
+				new Point(4,5),
+				new Point(7,0),
+				new Point(8,4)
+			};
+
+			var at = new Point(3,4);
+
+			var allPoints = points.ToHashSet();
+
+
+			Assert.False(SeatingSystem.IsPointOnLine(
+				(at,points[0]), allPoints));
+			Assert.False(SeatingSystem.IsPointOnLine(
+				(at,points[1]), allPoints));
+			Assert.False(SeatingSystem.IsPointOnLine(
+				(at,points[2]), allPoints));
+			Assert.False(SeatingSystem.IsPointOnLine(
+				(at,points[3]), allPoints));
+			Assert.False(SeatingSystem.IsPointOnLine(
+				(at,points[4]), allPoints));
+			Assert.False(SeatingSystem.IsPointOnLine(
+				(at,points[5]), allPoints));
+			Assert.False(SeatingSystem.IsPointOnLine(
+				(at,points[6]), allPoints));
+		}
+
+
+		private static Layout CreateLayout(int variant = 0)
+		{
+			if (variant == 1) { return @"
+.......#.
+...#.....
+.#.......
+.........
+..#L....#
+....#....
+.........
+#........
+...#.....".ToLayout();
+			} else if (variant == 2) { return @"
+.............
+.L.L.#.#.#.#.
+.............".ToLayout();
+			} else if (variant == 3) { return @"
+.##.##.
+#.#.#.#
+##...##
+...L...
+##...##
+#.#.#.#
+.##.##.".ToLayout();
+			};
+			return Layout.Empty;
+		}
+
 
 
 	}

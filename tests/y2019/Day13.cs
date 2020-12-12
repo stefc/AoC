@@ -34,9 +34,9 @@ namespace advent.of.code.tests.y2019
 
             Assert.Equal(2, actual.Count());
 
-            Assert.Equal(new common.Point(1, 2), actual.First().Position);
+            Assert.Equal(new code.common.Point(1, 2), actual.First().Position);
             Assert.Equal(TileId.Paddle, actual.First().TileId);
-            Assert.Equal(new common.Point(6, 5), actual.Last().Position);
+            Assert.Equal(new code.common.Point(6, 5), actual.Last().Position);
             Assert.Equal(TileId.Ball, actual.Last().TileId);
 
             var count = actual.Count(x => x.TileId == TileId.Block);
@@ -66,9 +66,9 @@ namespace advent.of.code.tests.y2019
                 .Select(Convert.ToInt32)
                 .ToTilesOrScore();
 
-            var max = gameState.Aggregate(common.Point.Zero,
+            var max = gameState.Aggregate(code.common.Point.Zero,
             (accu, current) => current.Match(
-                l => new common.Point(
+                l => new code.common.Point(
                     Math.Max(accu.X, l.Position.X),
                     Math.Max(accu.Y, l.Position.Y)),
                 r => accu)

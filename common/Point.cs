@@ -55,6 +55,9 @@ namespace advent.of.code.common
 			return other.X == this.X && other.Y == this.Y;
 		}
 
+		public int SquareLength => Math.Abs(this.X * this.X) + Math.Abs(this.Y * this.Y);
+		public double Length => Math.Sqrt((this.X * this.X) + (this.Y * this.Y));
+
 		public static Point operator +(Point a, Point b) => a.Add(b);
 
 		public static Point operator -(Point a, Point b) => a.Sub(b);
@@ -98,10 +101,18 @@ namespace advent.of.code.common
 			yield return p.Y;
 		}
 
-		public static Point RotateRight(this Point p)
-		=> p.Rotate(new float[,] { { 0, -1 }, { 1, 0 } });
-		public static Point RotateLeft(this Point p)
-		=> p.Rotate(new float[,] { { 0, 1 }, { -1, 0 } });
+		public static IEnumerable<Point> AsEnumerable(this (Point start, Point end) line)
+		{
+			yield return line.start;
+			yield return line.end;
+		}
+
+		public static Point RotateRight(this Point p, int count = 1)
+		=> Enumerable.Range(1, count).Aggregate(p,
+		 	(acc, _) => acc.Rotate(new float[,] { { 0, -1 }, { 1, 0 } }));
+		public static Point RotateLeft(this Point p, int count = 1)
+		=> Enumerable.Range(1, count).Aggregate(p,
+		 	(acc, _) => acc.Rotate(new float[,] { { 0, 1 }, { -1, 0 } }));
 
 		private static Point Rotate(this Point p, float[,] transform)
 		{
@@ -116,6 +127,23 @@ namespace advent.of.code.common
 				.ToArray();
 
 			return new Point(v_[0], v_[1]);
+		}
+
+
+		// https://www.xarg.org/book/computer-graphics/2d-hittest/
+		public static bool HitTest(this Point p3, (Point p1, Point p2) link)
+		{
+			const double ϵ = 0.9999;
+
+			var b = link.p2 - link.p1;
+			var a = p3 - link.p1;
+			var ab = a ^ b;
+			var bb = b ^ b;
+			var p = link.p1 + (b * (ab / bb));
+			var c = p - link.p1;
+			var m = (a - c).Length;
+
+			return ((0f <= ab) && (ab <= bb)) && (m <= ϵ);
 		}
 
 	}

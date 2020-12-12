@@ -44,8 +44,8 @@ namespace advent.of.code.y2019.day10
             Math.Pow(l.p2.X - l.p1.X, 2) +
             Math.Pow(l.p2.Y - l.p1.Y, 2));
 
-        public static bool InCircle(this Point p, Point c, double r) 
-        => ((c - p) ^ (c-p)) <= (r*r);  
+        public static bool InCircle(this Point p, Point c, double r)
+        => ((c - p) ^ (c-p)) <= (r*r);
 
         public static (Point start, Point end) ToLine(this string s)
         {
@@ -96,8 +96,8 @@ namespace advent.of.code.y2019.day10
                 .Except(link)
                 .Except(
                     from a in asteroids
-                    where !a.InCircle(link.PointInTheMiddle(), link.Distance()/2) 
-                    select a 
+                    where !a.InCircle(link.PointInTheMiddle(), link.Distance()/2)
+                    select a
                 ).Any( target => target.Hittest(link)))
             .SelectMany( link => link.AsEnumerable());
 
@@ -125,16 +125,17 @@ namespace advent.of.code.y2019.day10
 
         // https://www.xarg.org/book/computer-graphics/2d-hittest/
         public static bool Hittest(this Point p3, (Point p1, Point p2) link)
+		
         => Point.Zero.Equals(
             p3 - link.p1 - OrthogonalProjection(link.p1, link.p2, p3));
 
         public static IEnumerable<Point> Vaporize(
-            this IEnumerable<Point> asteroids, Point laser) 
+            this IEnumerable<Point> asteroids, Point laser)
         {
             var angles = asteroids
 				.Select( a => {
 					var p = laser - a;
-					return (Asteroid: a, Polar: Math.Atan2(p.X, p.Y), 
+					return (Asteroid: a, Polar: Math.Atan2(p.X, p.Y),
                         Distance: p.ManhattenDistance() );
 				})
 				.OrderByDescending( x => x.Polar)
@@ -145,10 +146,10 @@ namespace advent.of.code.y2019.day10
                 .Concat(angles.TakeWhile( grp => grp.Key > 0))
                 .Select( grp => grp.First())
                 .ToList();
-        }  
+        }
 
         public static IEnumerable<Point> VaporizeAll(
-            this IEnumerable<Point> current, Point laser, IEnumerable<Point> accu) 
+            this IEnumerable<Point> current, Point laser, IEnumerable<Point> accu)
         {
             if (current.IsEmpty())
                 return accu;
