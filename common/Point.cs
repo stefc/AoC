@@ -14,14 +14,22 @@ namespace advent.of.code.common
 
 		private static Lazy<Point> zero = new Lazy<Point>(() => new Point(0, 0));
 		private static Lazy<Point> north = new Lazy<Point>(() => new Point(0, -1));
+		private static Lazy<Point> northwest = new Lazy<Point>(() => new Point(-1, -1));
+		private static Lazy<Point> northeast = new Lazy<Point>(() => new Point(+1, -1));
 		private static Lazy<Point> south = new Lazy<Point>(() => new Point(0, +1));
+		private static Lazy<Point> southwest = new Lazy<Point>(() => new Point(-1, +1));
+		private static Lazy<Point> southeast = new Lazy<Point>(() => new Point(+1, +1));
 		private static Lazy<Point> west = new Lazy<Point>(() => new Point(-1, 0));
 		private static Lazy<Point> east = new Lazy<Point>(() => new Point(+1, 0));
 		private string value;
 
 		public static Point Zero => zero.Value;
 		public static Point North => north.Value;
+		public static Point NorthWest => northwest.Value;
+		public static Point NorthEast => northeast.Value;
 		public static Point South => south.Value;
+		public static Point SouthWest => southwest.Value;
+		public static Point SouthEast => southeast.Value;
 		public static Point West => west.Value;
 		public static Point East => east.Value;
 
@@ -146,7 +154,10 @@ namespace advent.of.code.common
 			return ((0f <= ab) && (ab <= bb)) && (m <= ϵ);
 		}
 
+		public static bool IsAdjacent(this Point p1, Point p2)
+		{
+			var p = p2 - p1;
+			return p.X == 0 || p.Y == 0 || (Math.Abs(p.X) == Math.Abs(p.Y));
+		}
 	}
-
-
 }

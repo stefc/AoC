@@ -1,7 +1,6 @@
 using Xunit;
 
 using System.Linq;
-using System;
 using System.IO;
 using advent.of.code.y2020.day11;
 using advent.of.code.common;
@@ -9,7 +8,7 @@ using System.Collections.Immutable;
 
 namespace advent.of.code.tests.y2020
 {
-	using Layout = ImmutableDictionary<Point,SeatingSystem.Seat>;
+	using Layout = ImmutableDictionary<Point, SeatingSystem.Seat>;
 
 	[Trait("Category", "y2020")]
 	public class TestDay11
@@ -66,6 +65,44 @@ namespace advent.of.code.tests.y2020
 
 			Assert.Equal(expected, actual);
 		}
+
+		[Fact]
+		public void PuzzleTwo()
+		{
+			// Arrange
+			var input = new string[]{
+"L.LL.LL.LL",
+"LLLLLLL.LL",
+"L.L.L..L..",
+"LLLL.LL.LL",
+"L.LL.LL.LL",
+"L.LLLLL.LL",
+"..L.L.....",
+"LLLLLLLLLL",
+"L.LLLLLL.L",
+"L.LLLLL.LL"
+			};
+
+			// Act
+			var actual = SeatingSystem.StabilizeSeeing(input);
+
+			// Assert
+			Assert.Equal(26, actual);
+		}
+
+		// [Fact]
+		// public void PuzzlePartTwo() {
+
+		// 	//  Arrange
+		// 	var input = File
+		// 		.ReadLines("tests/y2020/Day11.Input.txt");
+
+		// 	// Act
+		// 	var actual = SeatingSystem.StabilizeSeeing(input);
+
+		// 	// Assert
+		// 	Assert.Equal(2361, actual);
+		// }
 
 		[Fact]
 		public void IsPointOnLine()
