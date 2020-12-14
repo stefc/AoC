@@ -5,6 +5,7 @@ using System.IO;
 using advent.of.code.y2020.day11;
 using advent.of.code.common;
 using System.Collections.Immutable;
+using System;
 
 namespace advent.of.code.tests.y2020
 {
@@ -17,18 +18,7 @@ namespace advent.of.code.tests.y2020
 		public void PuzzleOne()
 		{
 			// Arrange
-			var input = new string[]{
-"L.LL.LL.LL",
-"LLLLLLL.LL",
-"L.L.L..L..",
-"LLLL.LL.LL",
-"L.LL.LL.LL",
-"L.LLLLL.LL",
-"..L.L.....",
-"LLLLLLLLLL",
-"L.LLLLLL.L",
-"L.LLLLL.LL"
-			};
+			var input = CreateLayout(0);
 
 			// Act
 			var actual = SeatingSystem.Stabilize(input);
@@ -42,7 +32,8 @@ namespace advent.of.code.tests.y2020
 
 			//  Arrange
 			var input = File
-				.ReadLines("tests/y2020/Day11.Input.txt");
+				.ReadLines("tests/y2020/Day11.Input.txt")
+				.ToLayout();
 
 			// Act
 			var actual = SeatingSystem.Stabilize(input);
@@ -57,12 +48,8 @@ namespace advent.of.code.tests.y2020
 		[InlineData(3,"3,3",0)]
 		public void SightSeeing(int variant, string point, int expected) {
 			var layout = CreateLayout(variant);
-
 			var at = Point.FromString(point);
-
-
 			var actual = SeatingSystem.CountSightSeeings(layout, at);
-
 			Assert.Equal(expected, actual);
 		}
 
@@ -70,21 +57,21 @@ namespace advent.of.code.tests.y2020
 		public void PuzzleTwo()
 		{
 			// Arrange
-			var input = new string[]{
-"L.LL.LL.LL",
-"LLLLLLL.LL",
-"L.L.L..L..",
-"LLLL.LL.LL",
-"L.LL.LL.LL",
-"L.LLLLL.LL",
-"..L.L.....",
-"LLLLLLLLLL",
-"L.LLLLLL.L",
-"L.LLLLL.LL"
-			};
+			var input = CreateLayout(0);
 
 			// Act
+			var next = SeatingSystem.ProcessUntilStable(input, SeatingSystem.CountSightSeeings,
+				SeatingSystem.CountSightEmpty, 5).Take(3).ToArray();
+
+			File.WriteAllText("next01.txt", Visualize(next[0]));
+			File.WriteAllText("next02.txt", Visualize(next[1]));
+			File.WriteAllText("next03.txt", Visualize(next[2]));
+
 			var actual = SeatingSystem.StabilizeSeeing(input);
+
+
+
+
 
 			// Assert
 			Assert.Equal(26, actual);
@@ -142,7 +129,18 @@ namespace advent.of.code.tests.y2020
 
 		private static Layout CreateLayout(int variant = 0)
 		{
-			if (variant == 1) { return @"
+			if (variant == 0) { return @"
+L.LL.LL.LL
+LLLLLLL.LL
+L.L.L..L..
+LLLL.LL.LL
+L.LL.LL.LL
+L.LLLLL.LL
+..L.L.....
+LLLLLLLLLL
+L.LLLLLL.L
+L.LLLLL.LL".ToLayout();
+			} else if (variant == 1) { return @"
 .......#.
 ...#.....
 .#.......
@@ -166,6 +164,20 @@ namespace advent.of.code.tests.y2020
 .##.##.".ToLayout();
 			};
 			return Layout.Empty;
+		}
+
+		private string Visualize(Layout layout) {
+			Point dimensions = layout.Dimensions();
+
+			//layout = layout.RemoveRange( layout.Where( kvp => kvp.Value != SeatingSystem.Seat.Floor).Select( kvp => kvp.Key));
+
+			var lines = Enumerable.Range(0, dimensions.Y+1)
+				.Select( y =>
+					String.Concat(Enumerable.Range(0, dimensions.X+1)
+						.Select( x => !layout.TryGetValue(new Point(x,y), out var seat) ? '.' :
+							( seat == SeatingSystem.Seat.Empty ? 'L' : '#' ))));
+
+			return String.Join('\n', lines);
 		}
 
 
