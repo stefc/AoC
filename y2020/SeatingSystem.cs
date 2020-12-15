@@ -32,18 +32,18 @@ namespace advent.of.code.y2020.day11
 		=> input.Trim().Split('\n').ToArray().ToLayout();
 
 		public static int Stabilize(Layout input)
-			=> ProcessUntilStable(input, CountOccupies, CountOccupies, 4).Last().CountOccupies();
+			=> ProcessUntilStable(input, CountOccupies, 4).Last().CountOccupies();
 
 		public static int StabilizeSeeing(Layout input)
-			=> ProcessUntilStable(input, CountSightSeeings, CountOccupies, 5).Last().CountOccupies();
+			=> ProcessUntilStable(input, CountSightOccupied, 5).Last().CountOccupies();
 
-		public static IEnumerable<Layout> ProcessUntilStable(Layout layout, Func<Layout, Point, int> countEmpty, Func<Layout, Point, int> countOccupied,  int tolerance)
+		public static IEnumerable<Layout> ProcessUntilStable(Layout layout, Func<Layout, Point, int> countEmpty, int tolerance)
 		{
 			var lastOccupied = -1;
 			var occupied = layout.CountOccupies();
 			while (lastOccupied != occupied)
 			{
-				layout = Process(layout, countEmpty, countOccupied, tolerance);
+				layout = Process(layout, countEmpty, tolerance);
 				yield return layout;
 				lastOccupied = occupied;
 				occupied = layout.CountOccupies();
@@ -63,7 +63,7 @@ namespace advent.of.code.y2020.day11
 			}
 		}
 
-		private static Layout Process(Layout layout, Func<Layout, Point, int> countEmpty, Func<Layout, Point, int> countOccupied, int tolerance)
+		private static Layout Process(Layout layout, Func<Layout, Point, int> countEmpty, int tolerance)
 		 => layout.Aggregate(layout, (acc, cur) =>
 		 {
 			 if (cur.Value == Seat.Empty)
@@ -75,7 +75,7 @@ namespace advent.of.code.y2020.day11
 			 }
 			 else if (cur.Value == Seat.Occupied)
 			 {
-				 if (countOccupied(layout, cur.Key) >= tolerance)
+				 if (countEmpty(layout, cur.Key) >= tolerance)
 				 {
 					 acc = acc.SetItem(cur.Key, Seat.Empty);
 				 }
@@ -105,7 +105,7 @@ namespace advent.of.code.y2020.day11
 
 		}
 
-		public static int CountSightSeeings(Layout layout, Point at)
+		public static int CountSightOccupied(Layout layout, Point at)
 		{
 			var adjacents = new Point[]{
 				Point.North,Point.South,Point.East,Point.West,
@@ -120,26 +120,7 @@ namespace advent.of.code.y2020.day11
 				   .Select(i => at + (cur * i))
 				   .Where(pt => pt.X >= 0 && pt.Y >= 0 && pt.X <= dimensions.X && pt.Y <= dimensions.Y)
 				   .Select(pt => layout.GetValueOrDefault(pt, Seat.Floor))
-				   .Any(seat => seat == Seat.Occupied));
-			return occupied.Count(isOccupied => isOccupied);
-		}
-
-		public static int CountSightEmpty(Layout layout, Point at)
-		{
-			var adjacents = new Point[]{
-				Point.North,Point.South,Point.East,Point.West,
-				Point.NorthWest,Point.NorthEast,Point.SouthWest,Point.SouthEast
-			};
-
-			Point dimensions = layout.Dimensions();
-
-			var occupied = adjacents.Select(cur =>
-			   Enumerable
-				   .Range(1, Math.Max(dimensions.X + 1, dimensions.Y + 1))
-				   .Select(i => at + (cur * i))
-				   .Where(pt => pt.X >= 0 && pt.Y >= 0 && pt.X <= dimensions.X && pt.Y <= dimensions.Y)
-				   .Select(pt => layout.GetValueOrDefault(pt, Seat.Floor))
-				   //.Select(seat => seat == Seat.Occupied)
+				   .Where( seat => seat != Seat.Floor)
 				   .FirstOrDefault() == Seat.Occupied);
 			return occupied.Count(isOccupied => isOccupied);
 		}

@@ -44,12 +44,12 @@ namespace advent.of.code.tests.y2020
 
 		[Theory]
 		[InlineData(1,"3,4",8)]
-		[InlineData(2,"1,1",1)]
+		[InlineData(2,"1,1",0)]
 		[InlineData(3,"3,3",0)]
 		public void SightSeeing(int variant, string point, int expected) {
 			var layout = CreateLayout(variant);
 			var at = Point.FromString(point);
-			var actual = SeatingSystem.CountSightSeeings(layout, at);
+			var actual = SeatingSystem.CountSightOccupied(layout, at);
 			Assert.Equal(expected, actual);
 		}
 
@@ -60,36 +60,49 @@ namespace advent.of.code.tests.y2020
 			var input = CreateLayout(0);
 
 			// Act
-			var next = SeatingSystem.ProcessUntilStable(input, SeatingSystem.CountSightSeeings,
-				SeatingSystem.CountSightEmpty, 5).Take(3).ToArray();
-
-			File.WriteAllText("next01.txt", Visualize(next[0]));
-			File.WriteAllText("next02.txt", Visualize(next[1]));
-			File.WriteAllText("next03.txt", Visualize(next[2]));
 
 			var actual = SeatingSystem.StabilizeSeeing(input);
-
-
-
-
 
 			// Assert
 			Assert.Equal(26, actual);
 		}
 
-		// [Fact]
-		// public void PuzzlePartTwo() {
 
-		// 	//  Arrange
-		// 	var input = File
-		// 		.ReadLines("tests/y2020/Day11.Input.txt");
+		[Fact]
+		public void CountSightEmpty() {
+			var input = @"
+#.LL.LL.L#
+#LLLLLL.LL
+L.L.L..L..
+LLLL.LL.LL
+L.LL.LL.LL
+L.LLLLL.LL
+..L.L.....
+LLLLLLLLL#
+#.LLLLLL.L
+#.LLLLL.L#".ToLayout();
 
-		// 	// Act
-		// 	var actual = SeatingSystem.StabilizeSeeing(input);
+			var actual = SeatingSystem.CountSightOccupied(input, new Point(2,0));
 
-		// 	// Assert
-		// 	Assert.Equal(2361, actual);
-		// }
+			Assert.Equal(1, actual);
+			actual = SeatingSystem.CountSightOccupied(input, new Point(3,0));
+			Assert.Equal(0, actual);
+
+		}
+		[Fact]
+		public void PuzzlePartTwo() {
+
+			//  Arrange
+			var input = File
+				.ReadLines("tests/y2020/Day11.Input.txt")
+				.ToLayout();
+
+			// Act
+			var actual = SeatingSystem.StabilizeSeeing(input);
+
+			// Assert
+			Assert.Equal(2361, actual);
+		}
 
 		[Fact]
 		public void IsPointOnLine()
