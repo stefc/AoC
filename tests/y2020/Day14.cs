@@ -32,39 +32,18 @@ namespace advent.of.code.tests.y2020
 		[Fact]
 		public void TestFloatMask()
 		{
+
+			// 000000000000000000000000000000X1001X
 			var actual = Mask.Create("00000000000000000000000000000000X0XX");
 
-			var floatMask = actual.Floating;
-
-			var floats = floatMask.AsEnumerable()
-				.Zip(36.PowersOf2(), (bit,ary) => bit ? ary: 0)
-				.Where( x => x > 0)
+			var operators = actual.Floating
+				.Adresses()
+				.Select( x => Convert.ToString((long)x,2).PadLeft(36, '0'))
 				.ToArray();
 
-
-			var operators = floats.Aggregate( ImmutableList<int>.Empty,
-				(acc,cur) => {
-					if (acc.IsEmpty) {
-						return acc.Add((int)cur).Add(0);
-					} else {
-						return acc.Aggregate( acc, (a,c) => a.Add(c | (int)cur));
-					}
-				})
-				.Select( x => Convert.ToString(x,2))
-				.ToArray();
-
-			var n = Convert.ToUInt64(Math.Pow(2,floats.Length));
-
+			Assert.Equal(8, operators.Length);
 		}
 
-		private IEnumerable<ulong> Foo(ulong n) {
-
-			var x = 1ul;
-			for(var cur=0ul; cur<n; cur++) {
-				x = x ^ cur;
-				yield return x;
-			}
-		}
 
 		[Fact]
 		public void PuzzleOne()
@@ -100,6 +79,38 @@ mem[8] = 0".ToProgram();
 			Assert.Equal(10035335144067ul, actual);
 		}
 
+		[Fact]
+		public void PuzzleTwo()
+		{
+			// Arrange
+			var program = @"
+mask = 000000000000000000000000000000X1001X
+mem[42] = 100
+mask = 00000000000000000000000000000000X0XX
+mem[26] = 1".ToProgram();
 
+			// Act
+			var actual = DockingData.EvaluateV2(program);
+
+			// Assert
+			Assert.Equal(208ul, actual);
+
+		}
+
+		[Fact]
+		public void PuzzlePartTwo()
+		{
+			//  Arrange
+			var input = File
+				.ReadLines("tests/y2020/Day14.Input.txt")
+				.ToArray()
+				.ToProgram();
+
+			// Act
+			var actual = DockingData.EvaluateV2(input);
+
+			// Assert
+			Assert.Equal(3817372618036ul, actual);
+		}
 	}
 }

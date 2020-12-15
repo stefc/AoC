@@ -1,9 +1,5 @@
 using Xunit;
 using System.Linq;
-using System.IO;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using advent.of.code.y2020.day15;
 
 namespace advent.of.code.tests.y2020
@@ -49,7 +45,7 @@ namespace advent.of.code.tests.y2020
 
 			// Act
 			var actual = RambunctiousRecitation.Spoken(input)
-				.ElementAt(30000000-1);
+				.ElementAt(30_000_000-1);
 
 			// Assert
 			Assert.Equal(175594, actual);

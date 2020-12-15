@@ -78,6 +78,26 @@ namespace advent.of.code.y2020.day14
 			}
 		}
 
+		public static IEnumerable<ulong> Adresses(this BitArray floatMask)
+		{
+			var floats = floatMask.AsEnumerable()
+				.Zip(36.PowersOf2(), (bit,ary) => bit ? ary: 0)
+				.Where( x => x > 0)
+				.ToArray();
+
+
+			var adrs = floats
+				.Aggregate( ImmutableList<ulong>.Empty,
+					(acc,cur) => acc.IsEmpty
+					?
+					acc.Add(0).Add(cur)
+					:
+					acc.Aggregate( acc, (a,c) => a.Add(c | cur)))
+				.ToArray();
+
+			return adrs;
+		}
+
 		public static ulong ToUInt64(this BitArray ba)
 		{
 			var len = Math.Min(36, ba.Count);
@@ -151,20 +171,25 @@ namespace advent.of.code.y2020.day14
 		}
 
 		public Memory DecodeV2(Memory memory, Store store) {
-			var unchangedMask = this.Mask.And.ToUInt64();
 			var overwriteMask = this.Mask.Or.ToUInt64();
 			var floatMask = this.Mask.Floating;
 
-			var floats = floatMask.AsEnumerable()
-				.Zip(36.PowersOf2(), (bit,ary) => bit ? ary: 0)
-				.Where( x => x > 0)
-				.ToArray();
+			var andMask = floatMask.ToUInt64() ^ 0x0FFFFFFFFF;
+			var adr = (store.Adr | overwriteMask) & andMask;
 
-			var adr = store.Adr | overwriteMask;
+			var adrs = floatMask.Adresses().Select( adrMask =>
+				adr | adrMask ).ToArray();
 
-			return memory;
-			// return value == 0 ? memory.Remove(store.Adr) : memory.SetItem(store.Adr, value);
+			var value = store.Value;
 
+			if (value == 0)
+			{
+				return memory.RemoveRange( adrs );
+			}
+			else
+			{
+				return memory.SetItems( adrs.Select( x => KeyValuePair.Create(x, value)));
+			}
 		}
     }
 }
