@@ -23,8 +23,8 @@
                 "test",
 				"advent-of-code.csproj",
                 "--filter",
-                "Topic=intcode"
-//				"Year=2019"
+//                "Topic=intcode"
+				"Year=2021"
             ],
             "group": {
                 "kind": "test",
