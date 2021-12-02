@@ -26,6 +26,9 @@
     <Content Include="tests\y20*\Day*.Input.txt" >
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="tests\y20*\TestDay*.Input.txt" >
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
