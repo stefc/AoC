@@ -8,49 +8,49 @@ namespace advent.of.code.y2021.day2;
 class Dive
 {
 	public int A(IEnumerable<string> values)
-	{
-		var cmds = values.Select(ToCommand);
+	=> values.Select(ToCommand).Aggregate(new Level(0, 0),
+			 (accu, cmd) => cmd.Direction switch
+			 {
+				 Direction.Up or Direction.Down => accu with { Depth = accu.Depth + cmd.Direction.Sign() * cmd.Steps },
 
-		var p = cmds.Aggregate( Point.Zero, (accu, cmd) => 
-		accu + cmd.Direction * cmd.Steps);
-			
-		return p.X * p.Y;
-	}
+				 _ => accu with { Horizontal = accu.Horizontal + cmd.Steps }
+			 },
+			 accu => accu.Horizontal * accu.Depth);
 
 	public int B(IEnumerable<string> values)
-	{
-		var cmds = values.Select(ToCommand);
-
-		return cmds.Aggregate( new Track(0,0,0), 
-			(accu, cmd) => 
-				(cmd.Direction.Y != 0) ? 
-					accu with { Aim = accu.Aim + cmd.Direction.Y * cmd.Steps } 
+	=> values.Select(ToCommand)
+		.Aggregate(new Track(0, 0, 0),
+			(accu, cmd) =>
+				(cmd.Direction != Direction.Forward) ?
+					accu with { Aim = accu.Aim + cmd.Direction.Sign() * cmd.Steps }
 					:
-					accu with { Horizontal  = accu.Horizontal + cmd.Steps, Depth = accu.Depth  + accu.Aim * cmd.Steps },
+					accu with { Horizontal = accu.Horizontal + cmd.Steps, Depth = accu.Depth + accu.Aim * cmd.Steps },
 				accu => accu.Horizontal * accu.Depth);
-	}
 
-	private static Point InstructionToDir(string instruction)
-	=> instruction switch
-	{ "up" => Point.North, "down" => Point.South, _ => Point.East };
 
-	internal record Command ( Point Direction, int Steps);
 
-	internal record Track( int Horizontal, int Depth, int Aim);
 
-	internal enum Direction { Up, Down, Forward };
-
-	public static Command ToCommand(string input) {
-		string pattern = 
+	public static Command ToCommand(string input)
+	{
+		string pattern =
 			@"^(up|down|forward)\s(\d*)$";
-		
-		Match m = Regex.Match(input, pattern);
-		if (m.Success)
-		{
-			return new Command(InstructionToDir(m.Groups[1].Value), 
-				Convert.ToInt32(m.Groups[2].Value));
-		}
-		return new Command(Point.Zero,0);
-         }
 
+		Match m = Regex.Match(input, pattern);
+		return (m.Success) ?
+			new Command(Enum.Parse<Direction>(m.Groups[1].Value, true), Convert.ToInt32(m.Groups[2].Value))
+			:
+			new Command(Direction.Forward, 0);
+	}
+}
+
+internal enum Direction { Up, Down, Forward };
+
+internal record Command(Direction Direction, int Steps);
+
+internal record Level(int Horizontal, int Depth);
+internal record Track(int Horizontal, int Depth, int Aim) : Level(Horizontal, Depth);
+
+internal static class DirectionExtensions
+{
+	public static int Sign(this Direction d) => d == Direction.Up ? -1 : +1;
 }
