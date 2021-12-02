@@ -7,13 +7,15 @@ namespace advent.of.code.tests.y2021;
 [Trait("Day", "2")]
 public class TestDay2
 {
-	private readonly Prepare _ = new Prepare();
+	private readonly Dive _ = new Dive();
 
-	private IEnumerable<int> ReadPuzzle() 
-	=> 	File.ReadLines($"tests/y2021/{nameof(TestDay2)}.Input.txt").Select(x => Convert.ToInt32(x)).ToArray();
+	private IEnumerable<string> ReadPuzzle() 
+	=> 	File.ReadLines($"tests/y2021/{nameof(TestDay2)}.Input.txt").ToArray();
 
-	private IEnumerable<int> CreateSample()
-	=> new int[]{199,200,208,210,200,207,240,269,260,263};
+	private IEnumerable<string> CreateSample()
+	=> new string[]{
+		"forward 5","down 5","forward 8","up 3","down 8","forward 2"
+		};
 	
 	[Fact]
 	public void SampleSilver()
@@ -25,10 +27,10 @@ public class TestDay2
 		var actual = _.A(input);
 
 		// Assert
-		Assert.Equal(7, actual);
+		Assert.Equal(150, actual);
 	}
 
-	[Fact(Skip="Fehlerhaft")]
+	[Fact]
 	public void PuzzleSilver()
 	{
 		//  Arrange
@@ -38,10 +40,10 @@ public class TestDay2
 		var actual = _.A(input);
 
 		// Assert
-		Assert.Equal(1754, actual);
+		Assert.Equal(1882980, actual);
 	}
 
-	[Fact(Skip="Fehlerhaft")]
+	[Fact]
 	public void SampleGold()
 	{
 		// Arrange
@@ -51,10 +53,10 @@ public class TestDay2
 		var actual = _.B(input);
 
 		// Assert
-		Assert.Equal(5, actual);
+		Assert.Equal(900, actual);
 	}
 
-	[Fact(Skip="Fehlerhaft")]
+	[Fact]
 	public void PuzzleGold()
 	{
 		//  Arrange
