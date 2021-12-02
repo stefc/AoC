@@ -60,7 +60,7 @@ public class TestDay1
 	}
 
 	private IEnumerable<int> ReadPuzzle() 
-	=> 	File.ReadLines("tests/y2021/Day1.Input.txt").Select(x => Convert.ToInt32(x)).ToArray();
+	=> 	File.ReadLines("tests/y2021/TestDay1.Input.txt").Select(x => Convert.ToInt32(x)).ToArray();
 
 	private IEnumerable<int> CreateSample()
 	=> new int[]{199,200,208,210,200,207,240,269,260,263};
