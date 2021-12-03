@@ -1,20 +1,31 @@
 using Xunit;
-using advent.of.code.y2021.day2;
+using advent.of.code.y2021.day4;
 
 namespace advent.of.code.tests.y2021;
 
 [Trait("Year", "2021")]
-[Trait("Day", "2")]
-public class TestDay2
+[Trait("Day", "4")]
+public class TestDay4
 {
 	private readonly Prepare _ = new Prepare();
 
 	private IEnumerable<string> ReadPuzzle() 
-	=> 	File.ReadLines($"tests/y2021/{nameof(TestDay2)}.Input.txt").ToArray();
+	=> 	File.ReadLines($"tests/y2021/{nameof(TestDay4)}.Input.txt").ToArray();
 
 	private IEnumerable<string> CreateSample()
 	=> new string[]{
-		"forward 5","down 5","forward 8","up 3","down 8","forward 2"
+	"00100",
+	"11110",
+	"10110",
+	"10111",
+	"10101",
+	"01111",
+	"00111",
+	"11100",
+	"10000",
+	"11001",
+	"00010",
+	"01010"
 		};
 	
 	[Fact]
@@ -27,7 +38,7 @@ public class TestDay2
 		var actual = _.A(input);
 
 		// Assert
-		Assert.Equal(150, actual);
+		Assert.Equal(1, actual);
 	}
 
 	[Fact]
@@ -40,7 +51,7 @@ public class TestDay2
 		var actual = _.A(input);
 
 		// Assert
-		Assert.Equal(1882980, actual);
+		Assert.Equal(1, actual);
 	}
 
 	[Fact]
@@ -53,7 +64,7 @@ public class TestDay2
 		var actual = _.B(input);
 
 		// Assert
-		Assert.Equal(900, actual);
+		Assert.Equal(1, actual);
 	}
 
 	[Fact]
@@ -66,6 +77,6 @@ public class TestDay2
 		var actual = _.B(input);
 
 		// Assert
-		Assert.Equal(1971232560, actual);
+		Assert.Equal(1, actual);
 	}
 }
