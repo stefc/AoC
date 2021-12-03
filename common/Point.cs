@@ -17,8 +17,13 @@ public class Point : IEquatable<Point>
 	private static Lazy<Point> northeast = new Lazy<Point>(() => new Point(+1, -1));
 	private static Lazy<Point> southwest = new Lazy<Point>(() => new Point(-1, +1));
 	private static Lazy<Point> southeast = new Lazy<Point>(() => new Point(+1, +1));
-	private string value;
 
+
+	public static Point Zero => zero.Value;
+	public static Point North => north.Value;
+	public static Point South => south.Value;
+	public static Point West => west.Value;
+	public static Point East => east.Value;
 
 	public int X { get; private set; }
 
@@ -34,11 +39,6 @@ public class Point : IEquatable<Point>
 	// private string value;
 
 	public static Point NorthWest => northwest.Value;
-	public static Point Zero  => zero.Value;
-	public static Point North  => north.Value;
-	public static Point South  => south.Value;
-	public static Point West  => west.Value;
-	public static Point East  => east.Value;
 	public static Point NorthEast => northeast.Value;
 	public static Point SouthWest => southwest.Value;
 	public static Point SouthEast => southeast.Value;
@@ -82,8 +82,6 @@ public class Point : IEquatable<Point>
 
 public static class PointExtensions
 {
-	public static Point Add(this Point a, Point b)
-	=> new Point(a.X + b.X, a.Y + b.Y);
 
 	public static IEnumerable<Point> AsEnumerable(this (Point start, Point end) line)
 	{
@@ -140,6 +138,22 @@ public static class PointExtensions
 
 		return new Point(v_[0], v_[1]);
 	}
+
+	public static Point FromString(string value)
+	{
+		var parts = value.Split(',');
+		int x = Convert.ToInt32(parts.FirstOrDefault());
+		int y = Convert.ToInt32(parts.LastOrDefault());
+		return new Point(x, y);
+	}
+
+	
+	public static Point Add(this Point a, Point b)
+	=> new Point(a.X + b.X, a.Y + b.Y);
+
+
+
+
 
 
 
