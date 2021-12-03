@@ -12,6 +12,11 @@ public class Point : IEquatable<Point>
 	private static Lazy<Point> south = new Lazy<Point>(() => new Point(0, +1));
 	private static Lazy<Point> west = new Lazy<Point>(() => new Point(-1, 0));
 	private static Lazy<Point> east = new Lazy<Point>(() => new Point(+1, 0));
+
+	private static Lazy<Point> northwest = new Lazy<Point>(() => new Point(-1, -1));
+	private static Lazy<Point> northeast = new Lazy<Point>(() => new Point(+1, -1));
+	private static Lazy<Point> southwest = new Lazy<Point>(() => new Point(-1, +1));
+	private static Lazy<Point> southeast = new Lazy<Point>(() => new Point(+1, +1));
 	private string value;
 
 
@@ -25,13 +30,15 @@ public class Point : IEquatable<Point>
 		Y = y;
 	}
 
-	private static Lazy<Point> northwest = new Lazy<Point>(() => new Point(-1, -1));
-	private static Lazy<Point> northeast = new Lazy<Point>(() => new Point(+1, -1));
-	private static Lazy<Point> southwest = new Lazy<Point>(() => new Point(-1, +1));
-	private static Lazy<Point> southeast = new Lazy<Point>(() => new Point(+1, +1));
+	
 	// private string value;
 
 	public static Point NorthWest => northwest.Value;
+	public static Point Zero  => zero.Value;
+	public static Point North  => north.Value;
+	public static Point South  => south.Value;
+	public static Point West  => west.Value;
+	public static Point East  => east.Value;
 	public static Point NorthEast => northeast.Value;
 	public static Point SouthWest => southwest.Value;
 	public static Point SouthEast => southeast.Value;
