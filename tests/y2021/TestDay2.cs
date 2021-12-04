@@ -7,7 +7,7 @@ namespace advent.of.code.tests.y2021;
 [Trait("Day", "2")]
 public class TestDay2
 {
-	private readonly Prepare _ = new Prepare();
+	private readonly Dive _ = new Dive();
 
 	private IEnumerable<string> ReadPuzzle() 
 	=> 	File.ReadLines($"tests/y2021/{nameof(TestDay2)}.Input.txt").ToArray();

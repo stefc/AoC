@@ -76,12 +76,12 @@ public class BitMatrix
 		this.data = values.ToArray();
 	}
 
-	public BitMatrix(IEnumerable<string> values) : this(values.Select(x => ToBinary(values.First().Length, Convert.ToInt32(x, 2))))
+	public BitMatrix(IEnumerable<string> values) : this(values.Select(x => ToBinary(Convert.ToInt32(x, 2), values.First().Length)))
 	{
 
 	}
 
-	public static BitArray ToBinary(int w, int numeral)
+	public static BitArray ToBinary(int numeral, int w)
 	{
 		var x = new BitArray(new[] { numeral });
 		return new BitArray(x.OfType<bool>().Reverse().TakeLast(w).ToArray());

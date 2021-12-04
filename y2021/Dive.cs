@@ -5,7 +5,7 @@ namespace advent.of.code.y2021.day2;
 
 // http://adventofcode.com/2021/day/2
 
-class Prepare
+class Dive
 {
 	public int A(IEnumerable<string> values)
 	=> values.Select(ToCommand).Aggregate(new Level(0, 0),

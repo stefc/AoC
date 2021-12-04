@@ -1,9 +1,5 @@
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace advent.of.code {
+namespace advent.of.code
+{
 
 	public static class StringExtension {
 
@@ -16,6 +12,9 @@ namespace advent.of.code {
 		public static IEnumerable<int> ToNumbers(this string s)
 		=> s.Split(' ', '\t', ',', '\n')
 			.Select( cell => Convert.ToInt32(cell));
+
+		public static int[] ToNumbers(this string input, int l)
+		=> input.Chunk(l).Select(x => Convert.ToInt32(new String(x).Trim())).ToArray();
 
 		public static IEnumerable<long> ToBigNumbers(this string s)
 		=> s.Split(' ', '\t', ',', '\n')
