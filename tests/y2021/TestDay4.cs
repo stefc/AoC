@@ -154,6 +154,6 @@ public class TestDay4
 		var actual = _.B(input);
 
 		// Assert
-		Assert.Equal(1, actual);
+		Assert.Equal(17408, actual);
 	}
 }
