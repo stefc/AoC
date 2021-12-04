@@ -14,7 +14,7 @@ public class TestDay1
 		var input = CreateSample();
 
 		// Act
-		var actual = SonarSweep.CountIncreases(input);
+		var actual = _.Silver(input);
 
 		// Assert
 		Assert.Equal(7, actual);
@@ -27,7 +27,7 @@ public class TestDay1
 		var input = ReadPuzzle();
 
 		// Act
-		var actual = SonarSweep.CountIncreases(input);
+		var actual = _.Silver(input);
 
 		// Assert
 		Assert.Equal(1754, actual);
@@ -40,7 +40,7 @@ public class TestDay1
 		var input = CreateSample();
 
 		// Act
-		var actual = SonarSweep.CountIncreasesSliding(input);
+		var actual = _.Gold(input);
 
 		// Assert
 		Assert.Equal(5, actual);
@@ -53,15 +53,26 @@ public class TestDay1
 		var input = ReadPuzzle();
 
 		// Act
-		var actual = SonarSweep.CountIncreasesSliding(input);
+		var actual = _.Gold(input);
 
 		// Assert
 		Assert.Equal(1789, actual);
 	}
 
-	private IEnumerable<int> ReadPuzzle() 
+	/*private IEnumerable<int> ReadPuzzle() 
 	=> 	File.ReadLines("tests/y2021/TestDay1.Input.txt").Select(x => Convert.ToInt32(x)).ToArray();
 
 	private IEnumerable<int> CreateSample()
 	=> new int[]{199,200,208,210,200,207,240,269,260,263};
+	*/
+
+	private readonly SonarSweep _ = new SonarSweep();
+
+	private IEnumerable<string> ReadPuzzle() 
+	=> 	File.ReadLines($"tests/y2021/{nameof(TestDay1)}.Input.txt").ToArray();
+
+	private IEnumerable<string> CreateSample()
+	=> new string[]{
+		"199","200","208","210","200","207","240","269","260","263"
+		};
 }

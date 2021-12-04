@@ -24,7 +24,7 @@ public class TestDay2
 		var input = CreateSample();
 
 		// Act
-		var actual = _.A(input);
+		var actual = _.Silver(input);
 
 		// Assert
 		Assert.Equal(150, actual);
@@ -37,7 +37,7 @@ public class TestDay2
 		var input = ReadPuzzle();
 
 		// Act
-		var actual = _.A(input);
+		var actual = _.Silver(input);
 
 		// Assert
 		Assert.Equal(1882980, actual);
@@ -50,7 +50,7 @@ public class TestDay2
 		var input = CreateSample();
 
 		// Act
-		var actual = _.B(input);
+		var actual = _.Gold(input);
 
 		// Assert
 		Assert.Equal(900, actual);
@@ -63,7 +63,7 @@ public class TestDay2
 		var input = ReadPuzzle();
 
 		// Act
-		var actual = _.B(input);
+		var actual = _.Gold(input);
 
 		// Assert
 		Assert.Equal(1971232560, actual);

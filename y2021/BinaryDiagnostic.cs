@@ -5,22 +5,20 @@ namespace advent.of.code.y2021.day3;
 
 // http://adventofcode.com/2021/day/3
 
-class  BinaryDiagnostic
+class  BinaryDiagnostic : IPuzzle
 {
-	public int A(IEnumerable<string> values)
+	public int Silver(IEnumerable<string> values)
 	{
-
 		BitMatrix m = new BitMatrix(values);
 
 		var gamma = new BitArray(m.GetColumns().Select( bits => bits.MostCommonBit()).ToArray());
 
-		// var gamma = new BitArray(m.Transpose().Select(MostCommonBit).ToArray());
 		var epsilon = gamma.Negate();
 
 		return gamma.ToNumeral() * epsilon.ToNumeral();
 	}
 
-	public int B(IEnumerable<string> values)
+	public int Gold(IEnumerable<string> values)
 	{
 		var m = new BitMatrix(values);
 
@@ -55,8 +53,6 @@ class  BinaryDiagnostic
 		}
 		return m.GetRows().Single().ToNumeral();
 	}
-
-	
 }
 
 

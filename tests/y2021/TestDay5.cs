@@ -1,16 +1,17 @@
 using Xunit;
-using advent.of.code.y2021.day4;
+using advent.of.code.y2021;
+using advent.of.code.y2021.day5;
 
 namespace advent.of.code.tests.y2021;
 
 [Trait("Year", "2021")]
-[Trait("Day", "4")]
-public class TestDay4
+[Trait("Day", "5")]
+public class TestDay5
 {
-	private readonly GiantSquid _ = new GiantSquid();
+	private readonly IPuzzle _ = new Prepare();
 
 	private IEnumerable<string> ReadPuzzle()
-	=> File.ReadLines($"tests/y2021/{nameof(TestDay4)}.Input.txt")
+	=> File.ReadLines($"tests/y2021/{nameof(TestDay5)}.Input.txt")
 		.Where(line => !String.IsNullOrEmpty(line))
 		.ToArray();
 
@@ -55,69 +56,7 @@ public class TestDay4
 		Assert.Equal(4512, actual);
 	}
 
-	[Fact]
-	public void TestRowBingo()
-	{
-		var board = new string[]{
-"14 21 17 24  4",
-"10 16 15  9 19",
-"18  8 23 26 20",
-"22 11 13  6  5",
-" 2  0 12  3  7"
-		};
-
-		var state = new BoardState(board);
-
-		state = state + 14 + 21 + 17 + 24;
-
-		Assert.False(state.IsBingo);
-
-		state += 4;
-
-		Assert.True(state.IsBingo);
-	}
-
-	[Fact]
-	public void TestColumnBingo()
-	{
-		var board = new string[]{
-"14 21 17 24  4",
-"10 16 15  9 19",
-"18  8 23 26 20",
-"22 11 13  6  5",
-" 2  0 12  3  7"
-		};
-
-		var state = new BoardState(board);
-
-		state = state + 17 + 15 + 13 + 12;
-
-		Assert.False(state.IsBingo);
-
-		state += 23;
-
-		Assert.True(state.IsBingo);
-	}
-
-	[Fact]
-	public void TestScore()
-	{
-		var board = new string[]{
-			"14 21 17 24  4",
-			"10 16 15  9 19",
-			"18  8 23 26 20",
-			"22 11 13  6  5",
-			" 2  0 12  3  7"
-		};
-
-		var state = new BoardState(board);
-
-		state = state + 14 + 21 + 17 + 24 + 4 + 9 + 23 + 11 + 5 + 2 + 0  + 7;
-
-		Assert.Equal(188, state.Score);
-	}
-
-
+	
 	[Fact]
 	public void PuzzleSilver()
 	{
