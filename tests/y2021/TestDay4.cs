@@ -6,12 +6,7 @@ namespace advent.of.code.tests.y2021;
 [Trait("Day", "4")]
 public class TestDay4
 {
-	private readonly GiantSquid _ = new GiantSquid();
-
-	private IEnumerable<string> ReadPuzzle()
-	=> File.ReadLines($"tests/y2021/{nameof(TestDay4)}.Input.txt")
-		.Where(line => !String.IsNullOrEmpty(line))
-		.ToArray();
+	private readonly IPuzzle _ = new GiantSquid();
 
 	private IEnumerable<string> CreateSample()
 	{
@@ -121,7 +116,7 @@ public class TestDay4
 	public void PuzzleSilver()
 	{
 		//  Arrange
-		var input = ReadPuzzle();
+		var input = _.ReadPuzzle();
 
 		// Act
 		var actual = _.Silver(input);
@@ -147,7 +142,7 @@ public class TestDay4
 	public void PuzzleGold()
 	{
 		//  Arrange
-		var input = ReadPuzzle();
+		var input = _.ReadPuzzle();
 
 		// Act
 		var actual = _.Gold(input);

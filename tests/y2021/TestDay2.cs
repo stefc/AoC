@@ -6,10 +6,7 @@ namespace advent.of.code.tests.y2021;
 [Trait("Day", "2")]
 public class TestDay2
 {
-	private readonly Dive _ = new Dive();
-
-	private IEnumerable<string> ReadPuzzle() 
-	=> 	File.ReadLines($"tests/y2021/{nameof(TestDay2)}.Input.txt").ToArray();
+	private readonly IPuzzle _ = new Dive();
 
 	private IEnumerable<string> CreateSample()
 	=> new string[]{
@@ -33,7 +30,7 @@ public class TestDay2
 	public void PuzzleSilver()
 	{
 		//  Arrange
-		var input = ReadPuzzle();
+		var input = _.ReadPuzzle();
 
 		// Act
 		var actual = _.Silver(input);
@@ -59,7 +56,7 @@ public class TestDay2
 	public void PuzzleGold()
 	{
 		//  Arrange
-		var input = ReadPuzzle();
+		var input = _.ReadPuzzle();
 
 		// Act
 		var actual = _.Gold(input);

@@ -6,6 +6,8 @@ namespace advent.of.code.tests.y2021;
 [Trait("Day", "1")]
 public class TestDay1
 {
+	private readonly IPuzzle _ = new SonarSweep();
+
 	[Fact]
 	public void SampleSilver()
 	{
@@ -23,7 +25,7 @@ public class TestDay1
 	public void PuzzleSilver()
 	{
 		//  Arrange
-		var input = ReadPuzzle();
+		var input = _.ReadPuzzle();
 
 		// Act
 		var actual = _.Silver(input);
@@ -49,7 +51,7 @@ public class TestDay1
 	public void PuzzleGold()
 	{
 		//  Arrange
-		var input = ReadPuzzle();
+		var input = _.ReadPuzzle();
 
 		// Act
 		var actual = _.Gold(input);
@@ -65,11 +67,7 @@ public class TestDay1
 	=> new int[]{199,200,208,210,200,207,240,269,260,263};
 	*/
 
-	private readonly SonarSweep _ = new SonarSweep();
-
-	private IEnumerable<string> ReadPuzzle() 
-	=> 	File.ReadLines($"tests/y2021/{nameof(TestDay1)}.Input.txt").ToArray();
-
+	
 	private IEnumerable<string> CreateSample()
 	=> new string[]{
 		"199","200","208","210","200","207","240","269","260","263"

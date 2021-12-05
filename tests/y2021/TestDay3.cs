@@ -6,11 +6,8 @@ namespace advent.of.code.tests.y2021;
 [Trait("Day", "3")]
 public class TestDay3
 {
-	private readonly BinaryDiagnostic _ = new BinaryDiagnostic();
-
-	private IEnumerable<string> ReadPuzzle() 
-	=> 	File.ReadLines($"tests/y2021/{nameof(TestDay3)}.Input.txt").ToArray();
-
+	private readonly IPuzzle _ = new BinaryDiagnostic();
+	
 	private IEnumerable<string> CreateSample()
 	=> new string[]{
 	"00100",
@@ -44,7 +41,7 @@ public class TestDay3
 	public void PuzzleSilver()
 	{
 		//  Arrange
-		var input = ReadPuzzle();
+		var input = _.ReadPuzzle();
 
 		// Act
 		var actual = _.Silver(input);
@@ -70,7 +67,7 @@ public class TestDay3
 	public void PuzzleGold()
 	{
 		//  Arrange
-		var input = ReadPuzzle();
+		var input = _.ReadPuzzle();
 
 		// Act
 		var actual = _.Gold(input);

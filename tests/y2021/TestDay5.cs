@@ -1,4 +1,3 @@
-using advent.of.code.y2021;
 using advent.of.code.y2021.day5;
 
 namespace advent.of.code.tests.y2021;
@@ -8,11 +7,6 @@ namespace advent.of.code.tests.y2021;
 public class TestDay5
 {
 	private readonly IPuzzle _ = new HydroVenture();
-
-	private IEnumerable<string> ReadPuzzle()
-	=> File.ReadLines($"tests/y2021/{nameof(TestDay5)}.Input.txt")
-		.Where(line => !String.IsNullOrEmpty(line))
-		.ToArray();
 
 	private IEnumerable<string> CreateSample()
 	{
@@ -51,7 +45,7 @@ public class TestDay5
 	public void PuzzleSilver()
 	{
 		//  Arrange
-		var input = ReadPuzzle();
+		var input = _.ReadPuzzle();
 
 		// Act
 		var actual = _.Silver(input);
@@ -77,7 +71,7 @@ public class TestDay5
 	public void PuzzleGold()
 	{
 		//  Arrange
-		var input = ReadPuzzle();
+		var input = _.ReadPuzzle();
 
 		// Act
 		var actual = _.Gold(input);
