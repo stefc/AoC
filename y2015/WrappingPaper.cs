@@ -1,14 +1,12 @@
 // http://adventofcode.com/2015/day/2
 
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+namespace advent.of.code.y2015.day2
+{
 
-namespace advent.of.code.y2015.day2 {
+	public class WrappingPaper : IPuzzle {
 
-    static class WrappingPaper {
         
+
         public static int SquareFeetOfPaper(string dimension)  
         {
             var dim = ToDimension(dimension);
@@ -42,5 +40,20 @@ namespace advent.of.code.y2015.day2 {
                 w:lengths.ElementAt(1), 
                 h:lengths.ElementAt(2));
         }
-    }
+
+		public int Silver(IEnumerable<string> values)
+		{
+            return values
+                .Select(WrappingPaper.SquareFeetOfPaper)
+                .Sum();
+
+		}
+
+		public int Gold(IEnumerable<string> values)
+		{
+			return values
+                .Select(WrappingPaper.FeetOfRibbon)
+                .Sum();
+		}
+	}
 }

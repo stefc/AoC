@@ -8,6 +8,10 @@ namespace advent.of.code.tests.y2015
     [Trait("Day", "2")]
 	public class TestDay2
     {
+       	private readonly IPuzzle _ = new WrappingPaper();
+
+
+
         [Theory]
         [InlineData("2x3x4",58)]
         [InlineData("1x1x10",43)]
@@ -26,18 +30,13 @@ namespace advent.of.code.tests.y2015
 
         [Fact]
         public void Puzzle() {
-            var input = File
-                .ReadLines("tests/y2015/Day2.Input.txt");
+            var input = _.ReadPuzzle();
 
-            var paper = input
-                .Select(WrappingPaper.SquareFeetOfPaper)
-                .Sum();
+            var paper = _.Silver(input);
 
             Assert.Equal(1586300, paper);
 
-            var ribbon = input
-                .Select(WrappingPaper.FeetOfRibbon)
-                .Sum();
+            var ribbon = _.Gold(input);
 
             Assert.Equal(3737498, ribbon);
         }
