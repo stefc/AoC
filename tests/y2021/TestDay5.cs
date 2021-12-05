@@ -1,6 +1,7 @@
 using Xunit;
 using advent.of.code.y2021;
 using advent.of.code.y2021.day5;
+using advent.of.code.common;
 
 namespace advent.of.code.tests.y2021;
 
@@ -8,7 +9,7 @@ namespace advent.of.code.tests.y2021;
 [Trait("Day", "5")]
 public class TestDay5
 {
-	private readonly IPuzzle _ = new Prepare();
+	private readonly IPuzzle _ = new HydroVenture();
 
 	private IEnumerable<string> ReadPuzzle()
 	=> File.ReadLines($"tests/y2021/{nameof(TestDay5)}.Input.txt")
@@ -18,25 +19,16 @@ public class TestDay5
 	private IEnumerable<string> CreateSample()
 	{
 		string input = @"
-7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
-
-22 13 17 11  0
- 8  2 23  4 24
-21  9 14 16  7
- 6 10  3 18  5
- 1 12 20 15 19
-
- 3 15  0  2 22
- 9 18 13 17  5
-19  8  7 25 23
-20 11 10 24  4
-14 21 16 12  6
-
-14 21 17 24  4
-10 16 15  9 19
-18  8 23 26 20
-22 11 13  6  5
- 2  0 12  3  7
+0,9 -> 5,9
+8,0 -> 0,8
+9,4 -> 3,4
+2,2 -> 2,1
+7,0 -> 7,4
+6,4 -> 2,0
+0,9 -> 2,9
+3,4 -> 1,4
+0,0 -> 8,8
+5,5 -> 8,2
 ";
 		return input.Split("\n")
 				.Where(line => !String.IsNullOrEmpty(line))
@@ -53,7 +45,7 @@ public class TestDay5
 		var actual = _.Silver(input);
 
 		// Assert
-		Assert.Equal(4512, actual);
+		Assert.Equal(5, actual);
 	}
 
 	
@@ -80,7 +72,7 @@ public class TestDay5
 		var actual = _.Gold(input);
 
 		// Assert
-		Assert.Equal(1924, actual);
+		Assert.Equal(12, actual);
 	}
 
 	[Fact]
@@ -93,6 +85,45 @@ public class TestDay5
 		var actual = _.Gold(input);
 
 		// Assert
-		Assert.Equal(17408, actual);
+		Assert.Equal(21101, actual);
+	}
+
+	[Fact]
+	public void TestParse() {
+		var input = "510,818 -> 132,818";
+
+		var actual = HydroVenture.ToLine(input);
+
+		Assert.Equal(new Point(510,818), actual.start);
+		Assert.Equal(new Point(132,818), actual.end);
+	}
+
+	[Fact]
+	public void TestDrawLine()
+	{
+		var field = new VentField();
+		var line = HydroVenture.ToLine("1,1 -> 1,3");
+
+		field = field + line;
+
+		Assert.Equal( 3, field.Visited.Count);
+		Assert.True( field.Visited.ContainsKey( new Point(1,2)));
+		Assert.True( field.Visited.ContainsKey( line.start));
+		Assert.True( field.Visited.ContainsKey( line.end));
+		
+	}
+
+	[Fact]
+	public void TestOverlap()
+	{
+		var lines = new string[]{
+			"2,2 -> 2,1","0,9 -> 5,9","0,9 -> 2,9"};
+		
+		var field = lines.Select(HydroVenture.ToLine).Aggregate( 
+			new VentField(),
+			(accu,current) => accu + current);
+
+		Assert.Equal(3, field.CountOverlaps);
+
 	}
 }
