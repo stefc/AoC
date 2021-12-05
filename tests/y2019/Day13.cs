@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using System.Linq;
 using System.Collections.Immutable;
 
 using Xunit;
@@ -13,14 +10,14 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
 using static System.Environment;
-using System.Collections.Generic;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Drawing;
 
 namespace advent.of.code.tests.y2019
 {
-    [Trait("Year", "2019")]
+	[Trait("Year", "2019")]
     [Trait("Topic", "intcode")]
+    [Trait("Day", "13")]
     public class TestDay13
     {
 
@@ -43,7 +40,7 @@ namespace advent.of.code.tests.y2019
             Assert.Equal(0, count);
         }
 
-        //[Fact]
+        [Fact(Skip="Generate gif")]
         public void Playing()
         {
             string input = File.ReadAllText("tests/y2019/Day13.Input.txt");
@@ -124,7 +121,6 @@ namespace advent.of.code.tests.y2019
             }
 
             imgFactory.SaveGif("Test.gif");
-            Assert.Equal(11441, scores.Last());
         }
 
         [Fact]

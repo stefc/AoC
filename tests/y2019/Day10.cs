@@ -1,22 +1,16 @@
 
-using System.Linq;
-using System.IO;
-
 using Xunit;
 
 using advent.of.code.y2019.day10;
 using advent.of.code.common;
-using System.Collections.Immutable;
-using System.Collections.Generic;
-using System;
 
 namespace advent.of.code.tests.y2019
 {
-	using static F;
 
 	using Line = ValueTuple<Point, Point>;
 
-	[Trait("Category", "y2019")]
+	[Trait("Year", "2019")]
+	[Trait("Day", "10")]
     public class TestDay10
     {
 		private IEnumerable<Point> GetAsteroids()
@@ -145,7 +139,6 @@ namespace advent.of.code.tests.y2019
 
 		[Theory]
 		[InlineData("3,4:1,0", "2,2", false)]
-		[InlineData("3,4:1,0", "2,2", false)]
 		[InlineData("3,4:4,0", "4,2", true)]
 		[InlineData("3,4:4,0", "3,2", true)]
 		public void TestHitLine(string _line, string _point, bool expected)
@@ -188,7 +181,6 @@ namespace advent.of.code.tests.y2019
 			Point p, int count)
 		{
 			var result = MonitorStation.FindBestAsteroid(asteroids);
-			Assert.NotNull(result);
 			Assert.Equal(p, result.Asteroid);
 			Assert.Equal(count, result.Count);
 		}

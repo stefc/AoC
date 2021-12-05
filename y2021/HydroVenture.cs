@@ -1,8 +1,3 @@
-
-using System.Collections.Immutable;
-using System.Text.RegularExpressions;
-using advent.of.code.common;
-
 namespace advent.of.code.y2021.day5;
 
 // http://adventofcode.com/2021/day/5
@@ -27,8 +22,7 @@ public class HydroVenture : IPuzzle
 	}
 	
 
-	public record Line(Point start, Point end);
-
+	
 	public static Line ToLine(string input)
 	{
 		string pattern =
@@ -46,11 +40,7 @@ public class HydroVenture : IPuzzle
 	=> values.Chunk(2).Select( chunk => new Point(chunk[0], chunk[1]));
 }
 
-public static class LineExtensions {
 
-	public static bool IsVertical(this HydroVenture.Line line) => line.start.X == line.end.X;  
-	public static bool IsHorizontal(this HydroVenture.Line line) => line.start.Y == line.end.Y;  
-}
 
 
 record VentField
@@ -63,7 +53,7 @@ record VentField
 		Visited = ImmutableDictionary<Point,int>.Empty;
 	}
 
-	public VentField Draw(HydroVenture.Line line) 
+	public VentField Draw(Line line) 
 	{
 		var points = BresenhamLineAlgorithm.GetPointsOnLine(line).ToArray();
 
@@ -76,7 +66,7 @@ record VentField
 		return this with { Visited = newVisited };
 	}
 
-	public static VentField operator + (VentField state, HydroVenture.Line line)
+	public static VentField operator + (VentField state, Line line)
 		=> state.Draw(line);
 
 	public int CountOverlaps => Visited.Values.Count( v => v >= 2);
@@ -86,7 +76,7 @@ record VentField
 // http://ericw.ca/notes/bresenhams-line-algorithm-in-csharp.html
 public static class BresenhamLineAlgorithm {
 
-	public static IEnumerable<Point> GetPointsOnLine(HydroVenture.Line line) 
+	public static IEnumerable<Point> GetPointsOnLine(Line line) 
 	=> GetPointsOnLine(line.start.X, line.start.Y, line.end.X, line.end.Y);
 
 	public static IEnumerable<Point> GetPointsOnLine(int x0, int y0, int x1, int y1)

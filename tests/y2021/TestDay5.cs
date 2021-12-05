@@ -1,7 +1,5 @@
-using Xunit;
 using advent.of.code.y2021;
 using advent.of.code.y2021.day5;
-using advent.of.code.common;
 
 namespace advent.of.code.tests.y2021;
 
@@ -59,7 +57,7 @@ public class TestDay5
 		var actual = _.Silver(input);
 
 		// Assert
-		Assert.Equal(50008, actual);
+		Assert.Equal(4993, actual);
 	}
 
 	[Fact]

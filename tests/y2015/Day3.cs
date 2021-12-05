@@ -1,43 +1,41 @@
 // http://adventofcode.com/2015/day/3
 
-using System.IO;
-using Xunit;
 using advent.of.code.y2015.day3;
 
-namespace advent.of.code.tests.y2015
+namespace advent.of.code.tests.y2015;
+
+[Trait("Year", "2015")]
+[Trait("Day", "3")]
+public class TestDay3
 {
+	[Theory]
+	[InlineData(">", 2)]
+	[InlineData("^>v<", 4)]
+	[InlineData("^v^v^v^v^v", 2)]
+	public void PartOne(string instructions, int expected)
+		=>
+			Assert.Equal(expected,
+				SphericalHouses.AtLeastOnePresent(instructions));
 
-    [Trait("Category","y2015")]
-	public class TestDay3
-    {
-        [Theory]
-        [InlineData(">",2)]
-        [InlineData("^>v<",4)]
-        [InlineData("^v^v^v^v^v",2)]
-        public void PartOne(string instructions, int expected)
-            =>
-                Assert.Equal(expected,
-                    SphericalHouses.AtLeastOnePresent(instructions));
+	[Theory]
+	[InlineData("^v", 3)]
+	[InlineData("^>v<", 3)]
+	[InlineData("^v^v^v^v^v", 11)]
+	public void PartTwo(string instructions, int expected)
+		=>
+			Assert.Equal(expected,
+				SphericalHouses.TogetherWithRobodog(instructions));
 
-        [Theory]
-        [InlineData("^v",3)]
-        [InlineData("^>v<",3)]
-        [InlineData("^v^v^v^v^v",11)]
-        public void PartTwo(string instructions, int expected)
-            =>
-                Assert.Equal(expected,
-                    SphericalHouses.TogetherWithRobodog(instructions));
+	[Fact]
+	public void Puzzle()
+	{
+		var input = File
+			.ReadAllText("tests/y2015/Day3.Input.txt");
 
-        [Fact]
-        public void Puzzle() {
-            var input = File
-                .ReadAllText("tests/y2015/Day3.Input.txt");
+		Assert.Equal(2081,
+			SphericalHouses.AtLeastOnePresent(input));
 
-            Assert.Equal(2081,
-                SphericalHouses.AtLeastOnePresent(input));
-
-            Assert.Equal(2341,
-                SphericalHouses.TogetherWithRobodog(input));
-        }
-    }
+		Assert.Equal(2341,
+			SphericalHouses.TogetherWithRobodog(input));
+	}
 }

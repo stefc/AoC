@@ -1,6 +1,3 @@
-using System.Text.RegularExpressions;
-using advent.of.code.common;
-
 namespace advent.of.code.y2021.day2;
 
 // http://adventofcode.com/2021/day/2

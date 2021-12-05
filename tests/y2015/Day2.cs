@@ -1,13 +1,11 @@
-using Xunit;
 
 using advent.of.code.y2015.day2;
-using System.IO;
-using System.Linq;
 
 namespace advent.of.code.tests.y2015
 {
 
-	[Trait("Category","y2015")]
+	[Trait("Year", "2015")]
+    [Trait("Day", "2")]
 	public class TestDay2
     {
         [Theory]

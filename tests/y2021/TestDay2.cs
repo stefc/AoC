@@ -1,4 +1,3 @@
-using Xunit;
 using advent.of.code.y2021.day2;
 
 namespace advent.of.code.tests.y2021;

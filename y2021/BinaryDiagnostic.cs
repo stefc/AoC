@@ -1,6 +1,3 @@
-using System.Collections;
-using advent.of.code.common;
-
 namespace advent.of.code.y2021.day3;
 
 // http://adventofcode.com/2021/day/3
