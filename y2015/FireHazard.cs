@@ -39,15 +39,6 @@ toggle 0,0 through 999,999 would increase the total brightness by 2000000.
 
 // http://adventofcode.com/2015/day/6
 
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using advent.of.code.common;
-using System.Text.RegularExpressions;
-using System.Numerics;
-using System.Collections;
-
 namespace advent.of.code.y2015.day6
 {
 

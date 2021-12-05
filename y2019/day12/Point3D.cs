@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-
 namespace advent.of.code.y2019.day12
 {
-    using static F;
-    public class Point3D : IEquatable<Point3D>
+	using static F;
+	public class Point3D : IEquatable<Point3D>
     {
 
         private static Lazy<Point3D> zero = new Lazy<Point3D>(() => new Point3D(0, 0, 0));

@@ -82,9 +82,7 @@ public class TestDay5
 
 	[Fact]
 	public void TestParse() {
-		var input = "510,818 -> 132,818";
-
-		var actual = HydroVenture.ToLine(input);
+		var actual = "510,818 -> 132,818".ToLine();
 
 		Assert.Equal(new Point(510,818), actual.start);
 		Assert.Equal(new Point(132,818), actual.end);
@@ -94,7 +92,7 @@ public class TestDay5
 	public void TestDrawLine()
 	{
 		var field = new VentField();
-		var line = HydroVenture.ToLine("1,1 -> 1,3");
+		var line = "1,1 -> 1,3".ToLine();
 
 		field = field + line;
 
@@ -111,7 +109,7 @@ public class TestDay5
 		var lines = new string[]{
 			"2,2 -> 2,1","0,9 -> 5,9","0,9 -> 2,9"};
 		
-		var field = lines.Select(HydroVenture.ToLine).Aggregate( 
+		var field = lines.Select(l => l.ToLine()).Aggregate( 
 			new VentField(),
 			(accu,current) => accu + current);
 

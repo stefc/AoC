@@ -1,21 +1,13 @@
-using System.Linq;
-using System.Collections.Generic;
-using Combinatorics.Collections;
-using System.Collections;
-using System;
-using System.Text.RegularExpressions;
-using System.Collections.Immutable;
-
 namespace advent.of.code.y2020.day14
 {
-	 using static F;
+	using static F;
 
 
 
 
-	 using Program = IEnumerable<Either<Mask, Store>>;
+	using Program = IEnumerable<Either<Mask, Store>>;
 
-	 using Memory = ImmutableDictionary<ulong,ulong>;
+	using Memory = ImmutableDictionary<ulong, ulong>;
 
 	// http://adventofcode.com/2020/day/14
 

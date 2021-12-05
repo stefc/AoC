@@ -1,9 +1,3 @@
-using System.Linq;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System;
-using System.Collections.Immutable;
-
 namespace advent.of.code.y2020.day8
 {
 	public enum Operations
