@@ -1,7 +1,7 @@
 # AoC
 Advent Of Code
 
-Das Riesenpuzzle 4 Jahre x 24 Puzzle => 96 für angehende C# Coder.
+Das Riesenpuzzle 6 Jahre x 25 Puzzle => 150 für angehende C# Coder.
 
 ## Vorraussetzung
 
@@ -28,7 +28,7 @@ Die Installationsanweisung inkl. Downloadlink findest du auf der Web-Seite https
 ### .NetCore 
 
 Nur mit dem Editor wirst du allerdings noch kein C# Code ausführen können. Hierzu benötigst du auf dem Computer noch das 
-sogenannte .NetCore Framework. Wir gehen aktuell von der Version 2.2 aus. Das wird jedoch laufend angepasst sobald neue Versionen 
+sogenannte .NetCore Framework. Wir gehen aktuell von der Version 6.0 aus. Das wird jedoch laufend angepasst sobald neue Versionen 
 released werden. 
 
 https://dotnet.microsoft.com/download
@@ -100,7 +100,7 @@ Das Programm baust du mit dem Aufruf 'dotnet build' und mit 'dotnet test' lässt
 
 Willst du nur die Tests für ein einzelnes Jahr laufen lassen, so geschieht das mit einem Filter Ausdruck: 
 
-`dotnet test --filter Category=y2020 -v m`
+`dotnet test --filter Year=2015 -v m`
 
 Die Tests sagen dir das dein Algorithmus funktioniert. 
 
