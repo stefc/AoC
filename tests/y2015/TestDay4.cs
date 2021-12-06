@@ -25,7 +25,7 @@ public class TestDay4
 	[Fact]
 	public void Puzzle()
 	{
-		Assert.Equal(117946, _.Silvered("ckczppom"));
-		Assert.Equal(3938038, _.Golded("ckczppom"));
+		Assert.Equal(117_946, _.Silvered("ckczppom"));
+		Assert.Equal(3_938_038, _.Golded("ckczppom"));
 	}
 }
