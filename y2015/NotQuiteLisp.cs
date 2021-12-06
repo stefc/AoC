@@ -20,7 +20,7 @@ public class NotQuiteLisp : IPuzzle
 
 	private static int MovementSign(char movement) => movement == '(' ? +1 : -1;
 
-	public int Silver(IEnumerable<string> values) => WhatFloor(values.Single());
+	public long Silver(IEnumerable<string> values) => WhatFloor(values.Single());
 
-	public int Gold(IEnumerable<string> values) => HowManyMovesToBasement(values.Single());
+	public long Gold(IEnumerable<string> values) => HowManyMovesToBasement(values.Single());
 }

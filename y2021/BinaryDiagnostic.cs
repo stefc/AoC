@@ -4,7 +4,7 @@ namespace advent.of.code.y2021.day3;
 
 class  BinaryDiagnostic : IPuzzle
 {
-	public int Silver(IEnumerable<string> values)
+	public long Silver(IEnumerable<string> values)
 	{
 		BitMatrix m = new BitMatrix(values);
 
@@ -15,7 +15,7 @@ class  BinaryDiagnostic : IPuzzle
 		return gamma.ToNumeral() * epsilon.ToNumeral();
 	}
 
-	public int Gold(IEnumerable<string> values)
+	public long Gold(IEnumerable<string> values)
 	{
 		var m = new BitMatrix(values);
 

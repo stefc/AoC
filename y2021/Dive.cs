@@ -4,7 +4,7 @@ namespace advent.of.code.y2021.day2;
 
 class Dive : IPuzzle
 {
-	public int Silver(IEnumerable<string> values)
+	public long Silver(IEnumerable<string> values)
 	=> values.Select(ToCommand).Aggregate(new Level(0, 0),
 			 (accu, cmd) => cmd.Direction switch
 			 {
@@ -14,7 +14,7 @@ class Dive : IPuzzle
 			 },
 			 accu => accu.Horizontal * accu.Depth);
 
-	public int Gold(IEnumerable<string> values)
+	public long Gold(IEnumerable<string> values)
 	=> values.Select(ToCommand)
 		.Aggregate(new Track(0, 0, 0),
 			(accu, cmd) =>

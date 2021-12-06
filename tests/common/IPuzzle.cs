@@ -3,10 +3,10 @@ namespace advent.of.code.common;
 
 public interface IPuzzle 
 {
-	public int Silver(IEnumerable<string> values);
+	public long Silver(IEnumerable<string> values);
 	
-	public int Gold(IEnumerable<string> values);
+	public long Gold(IEnumerable<string> values);
 
-	public int Silvered(params string[] values) => Silver(values);
-	public int Golded(params string[] values) => Gold(values);
+	public long Silvered(params string[] values) => Silver(values);
+	public long Golded(params string[] values) => Gold(values);
 }

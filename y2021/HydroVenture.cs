@@ -4,7 +4,7 @@ namespace advent.of.code.y2021.day5;
 
 public class HydroVenture : IPuzzle
 {
-	public int Silver(IEnumerable<string> values)
+	public long Silver(IEnumerable<string> values)
 	{
 		var lines = values.Select(l => l.ToLine()).Where( l => l.IsHorizontal() || l.IsVertical()).ToArray();
 
@@ -13,7 +13,7 @@ public class HydroVenture : IPuzzle
 		return field.CountOverlaps;
 	}
 		
-	public int Gold(IEnumerable<string> values) {
+	public long Gold(IEnumerable<string> values) {
 		var lines = values.Select( l => l.ToLine()).ToArray();
 
 		var field = lines.Aggregate(new VentField(), (accu,current) => accu + current);

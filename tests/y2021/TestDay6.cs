@@ -6,24 +6,12 @@ namespace advent.of.code.tests.y2021;
 [Trait("Day", "6")]
 public class TestDay6
 {
-	private readonly IPuzzle _ = new Prepare();
+	private readonly IPuzzle _ = new Lanternfish();
 
 	private IEnumerable<string> CreateSample()
 	{
-		string input = @"
-0,9 -> 5,9
-8,0 -> 0,8
-9,4 -> 3,4
-2,2 -> 2,1
-7,0 -> 7,4
-6,4 -> 2,0
-0,9 -> 2,9
-3,4 -> 1,4
-0,0 -> 8,8
-5,5 -> 8,2
-";
+		string input = "3,4,3,1,2";
 		return input.Split("\n")
-				.Where(line => !String.IsNullOrEmpty(line))
 				.ToArray();
 	}
 
@@ -37,7 +25,7 @@ public class TestDay6
 		var actual = _.Silver(input);
 
 		// Assert
-		Assert.Equal(5, actual);
+		Assert.Equal(5934, actual);
 	}
 
 	
@@ -51,7 +39,7 @@ public class TestDay6
 		var actual = _.Silver(input);
 
 		// Assert
-		Assert.Equal(4993, actual);
+		Assert.Equal(374927, actual);
 	}
 
 	[Fact]
@@ -64,7 +52,7 @@ public class TestDay6
 		var actual = _.Gold(input);
 
 		// Assert
-		Assert.Equal(12, actual);
+		Assert.Equal(26984457539, actual);
 	}
 
 	[Fact]
@@ -77,7 +65,7 @@ public class TestDay6
 		var actual = _.Gold(input);
 
 		// Assert
-		Assert.Equal(21101, actual);
+		Assert.Equal(1_687_617_803_407, actual);
 	}
 
 }

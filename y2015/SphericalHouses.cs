@@ -44,9 +44,9 @@ public class SphericalHouses : IPuzzle
         _ => throw new ArgumentException()
     };
 
-	public int Gold(IEnumerable<string> values)
+	public long Gold(IEnumerable<string> values)
 	=> SphericalHouses.TogetherWithRobodog(values.Single());
 
-	public int Silver(IEnumerable<string> values) 
+	public long Silver(IEnumerable<string> values) 
     => SphericalHouses.AtLeastOnePresent(values.Single());
 }

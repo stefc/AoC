@@ -4,7 +4,7 @@ namespace advent.of.code.y2021.day4;
 
 internal class GiantSquid : IPuzzle
 {
-	public int Silver(IEnumerable<string> values)
+	public long Silver(IEnumerable<string> values)
 	{
 		var draws = values.First().ToNumbers();
 
@@ -32,7 +32,7 @@ internal class GiantSquid : IPuzzle
 
 
 
-	public int Gold(IEnumerable<string> values) {
+	public long Gold(IEnumerable<string> values) {
 		var draws = values.First().ToNumbers();
 
 		var boards = values

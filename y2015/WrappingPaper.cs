@@ -38,12 +38,12 @@ namespace advent.of.code.y2015.day2
 				h: lengths.ElementAt(2));
 		}
 
-		public int Silver(IEnumerable<string> values) 
+		public long Silver(IEnumerable<string> values) 
         => values
 				.Select(WrappingPaper.SquareFeetOfPaper)
 				.Sum();
 
-		public int Gold(IEnumerable<string> values) 
+		public long Gold(IEnumerable<string> values) 
         => values
 				.Select(WrappingPaper.FeetOfRibbon)
 				.Sum();
