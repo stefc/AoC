@@ -5,27 +5,27 @@ using System.Text;
 
 namespace advent.of.code.y2015.day4;
 
-static class StockingSuffer
+public class StockingSuffer : IPuzzle
 {
 
 	public static int FindLowestNumber(string secret, int prefix = 5)
 	{
+		var startPrefix = new String('0', prefix);
 		var md5 = MD5.Create();
 		return Enumerable
 			.Range(0, 10000000)
 			.First(number => HasPrefix(
-			   new String('0', prefix),
+			   startPrefix,
 			   md5.ComputeHash(
 				   Encoding.ASCII.GetBytes($"{secret}{number}"))));
 	}
 
 	private static bool HasPrefix(string prefix, byte[] hash)
-	{
-		var result = hash.Aggregate(
-			seed: new StringBuilder(),
-			func: (accu, current) => accu.Append(current.ToString("X2")),
-			resultSelector: accu => accu.ToString());
+	=> BitConverter.ToString(hash).Replace("-","").StartsWith(prefix);
 
-		return result.StartsWith(prefix);
-	}
+	public long Gold(IEnumerable<string> values) => 
+		FindLowestNumber(values.Single(), 6);
+	
+	public long Silver(IEnumerable<string> values) => 
+		FindLowestNumber(values.Single());
 }

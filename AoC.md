@@ -12,3 +12,10 @@ Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden
 * HydroVenture (#5) -> Bresenham Algorithmus Zeichnen Linie
 * LaternFish (#6) -> Circular Shift Register mit Feedback
 
+## 2015 
+
+* NotQuiteLisp (#1) ->
+* WrappingPaper (#2) -> 
+* SphericalHouses (#3) ->
+* StockingSuffer (#4) -> MD5 Hashing 
+* 

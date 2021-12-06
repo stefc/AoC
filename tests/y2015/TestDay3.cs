@@ -26,11 +26,10 @@ public class TestDay3
 	[Fact]
 	public void Puzzle()
 	{
-		var input = File
-			.ReadAllText("tests/y2015/Day3.Input.txt");
+		var input = _.ReadPuzzle();
 
-		Assert.Equal(2081, _.Silvered(input));
+		Assert.Equal(2081, _.Silver(input));
 
-		Assert.Equal(2341, _.Golded(input));
+		Assert.Equal(2341, _.Gold(input));
 	}
 }
