@@ -8,6 +8,8 @@ namespace advent.of.code.tests.y2015;
 [Trait("Day", "6")]
 public class TestDay6
 {
+	private readonly IPuzzle _ = new FireHazard();
+
 	[Theory]
 	[InlineData("turn on 0,0 through 999,999", FireHazard.Command.TurnOn, 0, 0, 999, 999)]
 	[InlineData("toggle 0,0 through 999,0", FireHazard.Command.Toggle, 0, 0, 999, 0)]
@@ -66,35 +68,19 @@ public class TestDay6
 		Assert.Equal(35, grid.LightCount);
 	}
 
-
-	[Fact]
+	[Fact(Skip = "Longrunner")]
 	public void PuzzlePartOne()
 	{
-		var input = File
-			.ReadLines("tests/y2015/Day6.Input.txt");
-
-		var grid = input
-			.Select(FireHazard.Statement.FromString)
-			.Aggregate(
-				seed: new FireHazard.LightGrid(1000, 1000),
-				func: (accu, current) => accu.Operation(current)
-				);
-		Assert.Equal(400410, grid.LightCount);
+		var input = _.ReadPuzzle();
+		
+		Assert.Equal(400410, _.Silver(input));
 	}
 
 	[Fact(Skip = "Longrunner")]
 	public void PuzzlePartTwo()
 	{
-		var input = File
-			.ReadLines("tests/y2015/Day6.Input.txt");
-
-		var grid = input
-			.Select(FireHazard.Statement.FromString)
-			.Aggregate(
-				seed: new FireHazard.BrightnessGrid(1000, 1000),
-				func: (accu, current) => accu.Operation(current)
-				);
-		Assert.Equal(15343601, grid.TotalBrightness);
+		var input = _.ReadPuzzle();
+		Assert.Equal(15343601, _.Gold(input));
 	}
 
 	[Fact]
