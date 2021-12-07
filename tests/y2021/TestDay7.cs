@@ -6,66 +6,25 @@ namespace advent.of.code.tests.y2021;
 [Trait("Day", "7")]
 public class TestDay7
 {
-	private readonly IPuzzle _ = new Prepare();
+	private readonly IPuzzle _ = new TreacheryOfWhales();
 
-	private IEnumerable<string> CreateSample()
-	{
-		string input = "3,4,3,1,2";
-		return input.Split("\n")
-				.ToArray();
-	}
-
+	private IEnumerable<string> CreateSample() 
+	=> "16,1,2,0,4,2,7,1,2,14".Split("\n").ToArray();
+	
 	[Fact]
-	public void SampleSilver()
-	{
-		// Arrange
-		var input = CreateSample();
-
-		// Act
-		var actual = _.Silver(input);
-
-		// Assert
-		Assert.Equal(1, actual);
-	}
-
+	public void SampleSilver() 
+	=> Assert.Equal(37, _.Silver(CreateSample()));
 	
 	[Fact]
 	public void PuzzleSilver()
-	{
-		//  Arrange
-		var input = _.ReadPuzzle();
-
-		// Act
-		var actual = _.Silver(input);
-
-		// Assert
-		Assert.Equal(1, actual);
-	}
-
+	=> Assert.Equal(343605, _.Silver(_.ReadPuzzle()));
+	
 	[Fact]
-	public void SampleGold()
-	{
-		// Arrange
-		var input = CreateSample();
-
-		// Act
-		var actual = _.Gold(input);
-
-		// Assert
-		Assert.Equal(1, actual);
-	}
-
+	public void SampleGold() 
+	=> Assert.Equal(168, _.Gold(CreateSample()));
+	
 	[Fact]
 	public void PuzzleGold()
-	{
-		//  Arrange
-		var input = _.ReadPuzzle();
-
-		// Act
-		var actual = _.Gold(input);
-
-		// Assert
-		Assert.Equal(1, actual);
-	}
+	=> Assert.Equal(96_744_904, _.Gold(_.ReadPuzzle()));
 
 }
