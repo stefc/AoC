@@ -17,9 +17,7 @@ public class TreacheryOfWhales : IPuzzle
 
 		var positions = values.Single().ToNumbers().ToArray();
 		return Enumerable.Range(Convert.ToInt32(positions.Average())-1,3)
-			.Select( src => positions.Select( dest => Binomial(Math.Abs(dest-src))).Sum())
+			.Select( src => positions.Select( dest => Oeis.Binomial(Math.Abs(dest-src))).Sum())
 			.Min();
 	}
-
-	private static int Binomial(int n, int b = 2) => n*(n+1)/b;	// 
 }
