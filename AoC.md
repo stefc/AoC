@@ -16,60 +16,32 @@ Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden
 
 ### Zeiten
 
-BenchmarkDotNet=v0.13.0, OS=macOS 12.0.1 (21A559) [Darwin 21.1.0]
-Apple M1, 1 CPU, 8 logical and 8 physical cores, .NET SDK=6.0.100, Arm64 RyuJIT
-#### Day 1
-| Method |     Mean |   Error |  StdDev |   Median |    Gen 0 |   Gen 1 | Gen 2 | Allocated |
-|------- |---------:|--------:|--------:|---------:|---------:|--------:|------:|----------:|
-| Silver | 188.2 us | 0.22 us | 0.19 us | 188.2 us |  51.5137 | 16.6016 |     - |    106 KB |
-|   Gold | 388.7 us | 0.33 us | 0.29 us | 388.8 us | 189.4531 |       - |     - |    387 KB |
+* BenchmarkDotNet=v0.13.0, OS=macOS 12.0.1 (21A559) [Darwin 21.1.0]
 
-#### Day 2 
-| Method |     Mean |   Error |  StdDev |   Median |    Gen 0 | Gen 1 | Gen 2 | Allocated |
-|------- |---------:|--------:|--------:|---------:|---------:|------:|------:|----------:|
-| Silver | 593.7 us | 2.52 us | 2.36 us | 592.6 us | 323.2422 |     - |     - |    662 KB |
-|   Gold | 589.8 us | 0.91 us | 0.76 us | 589.7 us | 327.1484 |     - |     - |    669 KB |
+* Apple M1, 1 CPU, 8 logical and 8 physical cores
 
-#### Day 3 
-| Method |     Mean |     Error |    StdDev |   Median |     Gen 0 |    Gen 1 | Gen 2 | Allocated |
-|------- |---------:|----------:|----------:|---------:|----------:|---------:|------:|----------:|
-| Silver | 3.142 ms | 0.0245 ms | 0.0218 ms | 3.136 ms | 1796.8750 | 398.4375 |     - |      4 MB |
-|   Gold | 2.763 ms | 0.0199 ms | 0.0186 ms | 2.766 ms | 1656.2500 | 175.7813 |     - |      3 MB |
+* .NET SDK=6.0.100, Arm64 RyuJIT
 
-#### Day 4
-| Method |      Mean |    Error |   StdDev |    Median |      Gen 0 |     Gen 1 | Gen 2 | Allocated |
-|------- |----------:|---------:|---------:|----------:|-----------:|----------:|------:|----------:|
-| Silver |  69.57 ms | 0.320 ms | 0.299 ms |  69.42 ms | 33000.0000 |  250.0000 |     - |     67 MB |
-|   Gold | 212.06 ms | 0.832 ms | 0.738 ms | 212.05 ms | 92000.0000 | 1000.0000 |     - |    188 MB |
-
-#### Day 5 
-| Method |     Mean |   Error |  StdDev |   Median |      Gen 0 |      Gen 1 |     Gen 2 | Allocated |
-|------- |---------:|--------:|--------:|---------:|-----------:|-----------:|----------:|----------:|
-| Silver | 158.3 ms | 2.71 ms | 2.26 ms | 157.6 ms | 31750.0000 |  4500.0000 | 1250.0000 |    100 MB |
-|   Gold | 402.7 ms | 1.62 ms | 1.26 ms | 403.2 ms | 67000.0000 | 11000.0000 | 3000.0000 |    209 MB |
-
-#### Day 6 
-| Method |     Mean |    Error |   StdDev |   Median |   Gen 0 |  Gen 1 | Gen 2 | Allocated |
-|------- |---------:|---------:|---------:|---------:|--------:|-------:|------:|----------:|
-| Silver | 65.44 us | 0.033 us | 0.029 us | 65.45 us | 14.8926 | 7.4463 |     - |     31 KB |
-|   Gold | 68.83 us | 0.109 us | 0.091 us | 68.85 us | 22.9492 | 7.5684 |     - |     47 KB |
-
-#### Day 7 
-| Method |        Mean |    Error |   StdDev |      Median |   Gen 0 |   Gen 1 | Gen 2 | Allocated |
-|------- |------------:|---------:|---------:|------------:|--------:|--------:|------:|----------:|
-| Silver | 4,553.82 us | 2.336 us | 1.951 us | 4,553.55 us | 85.9375 |       - |     - |    181 KB |
-|   Gold |    84.71 us | 0.165 us | 0.138 us |    84.68 us | 33.8135 | 11.2305 |     - |     69 KB |
-#### Day 8 
-| Method |       Mean |   Error |  StdDev |     Median |     Gen 0 | Gen 1 | Gen 2 | Allocated |
-|------- |-----------:|--------:|--------:|-----------:|----------:|------:|------:|----------:|
-| Silver |   892.0 us | 1.63 us | 1.45 us |   891.6 us |  727.5391 |     - |     - |      1 MB |
-|   Gold | 4,982.0 us | 7.61 us | 6.74 us | 4,982.4 us | 2000.0000 |     - |     - |      4 MB |
-
-#### Day 9
-| Method |      Mean |     Error |    StdDev |    Median |     Gen 0 |    Gen 1 |    Gen 2 | Allocated |
-|------- |----------:|----------:|----------:|----------:|----------:|---------:|---------:|----------:|
-| Silver |  9.981 ms | 0.0651 ms | 0.0577 ms |  9.973 ms | 4062.5000 | 265.6250 | 109.3750 |     10 MB |
-|   Gold | 13.594 ms | 0.1352 ms | 0.1265 ms | 13.575 ms | 6281.2500 | 250.0000 | 109.3750 |     14 MB |
+| Method | Day |          Mean |        Error |       StdDev |
+|------- |---- |--------------:|-------------:|-------------:|
+| Silver |   1 |     188.23 us |     0.145 us |     0.121 us |
+|   Gold |   1 |     385.37 us |     0.336 us |     0.298 us |
+| Silver |   2 |     594.40 us |     0.661 us |     0.619 us |
+|   Gold |   2 |     589.06 us |     0.819 us |     0.726 us |
+| Silver |   3 |   3,111.68 us |     4.769 us |     4.461 us |
+|   Gold |   3 |   2,713.37 us |     7.995 us |     7.479 us |
+| Silver |   4 |  69,930.93 us |   100.488 us |    89.080 us |
+|   Gold |   4 | 209,905.15 us |   214.026 us |   189.728 us |
+| Silver |   5 | 155,881.37 us | 1,647.648 us | 1,541.211 us |
+|   Gold |   5 | 405,503.65 us | 3,157.726 us | 2,953.739 us |
+| Silver |   6 |      65.53 us |     0.067 us |     0.056 us |
+|   Gold |   6 |      68.83 us |     0.074 us |     0.066 us |
+| Silver |   7 |   4,462.30 us |     1.438 us |     1.275 us |
+|   Gold |   7 |      84.92 us |     0.136 us |     0.121 us |
+| Silver |   8 |     883.94 us |     1.675 us |     1.567 us |
+|   Gold |   8 |   4,941.54 us |     5.078 us |     4.240 us |
+| Silver |   9 |  10,048.63 us |    95.089 us |    79.404 us |
+|   Gold |   9 |  13,410.72 us |   117.181 us |   103.878 us |
 ## 2015 
 
 * NotQuiteLisp (#1) ->

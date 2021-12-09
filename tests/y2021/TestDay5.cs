@@ -4,7 +4,7 @@ namespace advent.of.code.tests.y2021;
 
 [Trait("Year", "2021")]
 [Trait("Day", "5")]
-public class TestDay5
+public class TestDay5  : IPuzzleTest
 {
 	private readonly IPuzzle _ = new HydroVenture();
 

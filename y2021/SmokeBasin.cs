@@ -41,6 +41,7 @@ public record Basin
 		var height = numbers.Length;
 		var width = numbers[0].Length;
 		Map = SmallPoint.Cloud(width, height)
+			.AsParallel()
 			.Aggregate(ImmutableDictionary<SmallPoint,sbyte>.Empty,
 				(acc, cur) =>
 				{
@@ -50,6 +51,7 @@ public record Basin
 		
 	}
 
+	// Memoize ? 
 	public bool IsLower(SmallPoint at)
 	{
 		var height = Map[at];
@@ -63,11 +65,9 @@ public record Basin
 	public ImmutableHashSet<SmallPoint> Flood(SmallPoint xy) => Flood(-1,xy, ImmutableHashSet<SmallPoint>.Empty);
 
 	private ImmutableHashSet<SmallPoint> Flood(sbyte h, SmallPoint xy, ImmutableHashSet<SmallPoint> visited) 
-	=> ((Map.TryGetValue(xy, out var height))
-		&& 
-		((height > h) &&  (!visited.Contains(xy)))) 
+	=> !(Map.TryGetValue(xy, out var height) && ((height > h) &&  (!visited.Contains(xy)))) 
 		? 
-		adjacents.Aggregate( visited.Add(xy), (acc, cur) => Flood( height, cur + xy, acc))
+		visited
 		:
-		visited;
+		adjacents.Aggregate( visited.Add(xy), (acc, cur) => Flood( height, cur + xy, acc));
 }

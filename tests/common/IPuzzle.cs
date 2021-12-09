@@ -10,3 +10,8 @@ public interface IPuzzle
 	public long Silvered(params string[] values) => Silver(values);
 	public long Golded(params string[] values) => Gold(values);
 }
+
+public interface IPuzzleTest {
+	public void PuzzleSilver();
+	public void PuzzleGold();
+}

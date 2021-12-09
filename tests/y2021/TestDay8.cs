@@ -4,7 +4,7 @@ namespace advent.of.code.tests.y2021;
 
 [Trait("Year", "2021")]
 [Trait("Day", "8")]
-public class TestDay8
+public class TestDay8  : IPuzzleTest
 {
 	private readonly IPuzzle _ = new SevenSegmentSearch();
 

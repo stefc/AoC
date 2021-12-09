@@ -5,18 +5,13 @@ namespace advent.of.code.y2021.day8;
 public class SevenSegmentSearch : IPuzzle
 {
 	public long Silver(IEnumerable<string> values) {
-		var unique = values.SelectMany( line => Parse(line).Output).Where
+		var unique = values.AsParallel().SelectMany( line => Parse(line).Output).Where
 			( x => x.Length == 2 || x.Length == 4 || x.Length == 3 || x.Length == 7 );
 		return unique.Count();
 	}
 		
 	public long Gold(IEnumerable<string> values) 
-	=> values.Select( Parse ).Sum(GetOutput);
-
-	private long Calc(IEnumerable<string> values, int days) 
-	{
-		return 3;
-	}
+	=> values.AsParallel().Select( Parse ).Sum(GetOutput);
 
 	internal static Row Parse(string line)
 	{

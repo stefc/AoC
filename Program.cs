@@ -6,7 +6,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        BenchmarkRunner.Run<TestScenarios>();
+        BenchmarkRunner.Run<TestScenario2021>();
     }
 }
 
