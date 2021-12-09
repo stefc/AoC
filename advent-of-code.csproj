@@ -6,19 +6,21 @@
 		<IsPackable>false</IsPackable>
 		<LangVersion>Latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<StartupObject>advent.of.code.Program</StartupObject>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
 		<PackageReference Include="xunit" Version="2.4.2-pre.12" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
-		<PackageReference Include="Combinatorics" Version="1.1.0.19" />
+		<PackageReference Include="Combinatorics" Version="2.0.0" />
 		<PackageReference Include="FakeItEasy" Version="5.1.1" />
 		<PackageReference Include="MathNet.Numerics" Version="4.9.0" />
 		<PackageReference Include="SixLabors.ImageSharp" Version="1.0.2" />
 		<PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta11" />
 		<PackageReference Include="SixLabors.Shapes" Version="1.0.0-beta0009" />
 		<PackageReference Include="morelinq" Version="3.3.2" />
+		<PackageReference Include="BenchmarkDotNet" Version="0.13" />
 	</ItemGroup>
 
 	<ItemGroup>
