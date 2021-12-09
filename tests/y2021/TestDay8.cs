@@ -32,7 +32,7 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 	
 	[Fact]
 	public void PuzzleSilver()
-	=> Assert.Equal(1, _.Silver(_.ReadPuzzle()));
+	=> Assert.Equal(239, _.Silver(_.ReadPuzzle()));
 	
 	[Fact]
 	public void SampleGold() 
@@ -75,8 +75,6 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 		var line = "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf";
 		var row = SevenSegmentSearch.Parse(line);
 		var actual = SevenSegmentSearch.GetOutput(row);
-
 		Assert.Equal(5353, actual);
 	}
-
 }

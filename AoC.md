@@ -2,7 +2,6 @@
 
 Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden sind.
 
-
 ## 2021 
 
 * SonarSweep (#1) -> Zip & Window Linq Funktionen
@@ -12,6 +11,8 @@ Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden
 * HydroVenture (#5) -> Bresenham Algorithmus Zeichnen Linie
 * LaternFish (#6) -> Circular Shift Register mit Feedback
 * Treachery Of Whales (#7) -> Avg + Bionomal Formel (n*(n+1)/2)
+* Seven Segment Search (#8) -> Backtracking 
+* Smoke Basin (#9) -> Rekursiver Fill Algorithmus ala Minesweeper 
 
 ## 2015 
 

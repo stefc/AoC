@@ -78,6 +78,11 @@ public class Point : IEquatable<Point>
 	=> new Point((int)(a.X * scalar), (int)(a.Y * scalar));
 
 	private string debugDescription => $"x={this.X},y={this.Y}";
+
+	public static IEnumerable<Point> Cloud(int size) => Cloud(size,size);
+	public static IEnumerable<Point> Cloud(int width, int height) 
+	=> 	Enumerable.Range(0, width).SelectMany(x => Enumerable.Range(0, height).Select(y => new Point(x, y)));
+
 }
 
 public static class PointExtensions
@@ -119,6 +124,7 @@ public static class PointExtensions
 		yield return p.Y;
 	}
 
+	
 	public static Point RotateRight(this Point p)
 	=> p.Rotate(new float[,] { { 0, -1 }, { 1, 0 } });
 	public static Point RotateLeft(this Point p)
@@ -150,12 +156,6 @@ public static class PointExtensions
 	
 	public static Point Add(this Point a, Point b)
 	=> new Point(a.X + b.X, a.Y + b.Y);
-
-
-
-
-
-
 
 	// https://www.xarg.org/book/computer-graphics/2d-hittest/
 	public static bool HitTest(this Point p3, (Point p1, Point p2) link)

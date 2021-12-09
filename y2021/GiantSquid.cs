@@ -74,7 +74,8 @@ public record BoardState
 	public BoardState(int[][] numbers)
 	{
 		Width = numbers.Length;
-		Board = Enumerable.Range(0, Width).SelectMany(x => Enumerable.Range(0, Width).Select(y => new Point(x, y)))
+		Board = Point
+			.Cloud(Width)
 			.Aggregate(ImmutableDictionary<int,Point>.Empty,
 				(accu, current) =>
 				{
