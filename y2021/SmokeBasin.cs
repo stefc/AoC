@@ -7,13 +7,14 @@ internal class SmokeBasin : IPuzzle
 	public long Silver(IEnumerable<string> values)
 	{
 		var basin = Parse(values);
-		return basin.Map.Where( kvp => basin.IsLower(kvp.Key)).Sum( kvp => 1 + kvp.Value);
+		return basin.Map.AsParallel().Where( kvp => basin.IsLower(kvp.Key)).Sum( kvp => 1 + kvp.Value);
 	}
 
 	public long Gold(IEnumerable<string> values) 
 	{
 		var basin = Parse(values);
 		return basin.Map.Keys
+			.AsParallel()
 			.Where( at => basin.IsLower(at))
 			.Select( pt => basin.Flood(pt).Count())
 			.OrderByDescending(x=>x)
@@ -24,23 +25,23 @@ internal class SmokeBasin : IPuzzle
 	public static Basin Parse(IEnumerable<string> values)
 	=> new Basin(ToMatrix(values));
 	
-	private static int[][] ToMatrix(IEnumerable<string> lines) 
-	=> lines.Select( l => l.ToDigits().ToArray()).ToArray();
+	private static sbyte[][] ToMatrix(IEnumerable<string> lines) 
+	=> lines.Select( l => l.ToDigits().Select(Convert.ToSByte).ToArray()).ToArray();
 	
 }
 
 public record Basin
 {
-	private readonly Point[] adjacents = new Point[]{Point.North,Point.South,Point.East,Point.West};
+	private readonly SmallPoint[] adjacents = new SmallPoint[]{SmallPoint.North,SmallPoint.South,SmallPoint.East,SmallPoint.West};
 
-	public ImmutableDictionary<Point,int> Map { get; init; }
+	public ImmutableDictionary<SmallPoint,sbyte> Map { get; init; }
 	
-	public Basin(int[][] numbers)
+	public Basin(sbyte[][] numbers)
 	{
 		var height = numbers.Length;
 		var width = numbers[0].Length;
-		Map = Point.Cloud(width, height)
-			.Aggregate(ImmutableDictionary<Point,int>.Empty,
+		Map = SmallPoint.Cloud(width, height)
+			.Aggregate(ImmutableDictionary<SmallPoint,sbyte>.Empty,
 				(acc, cur) =>
 				{
 					var number = numbers[cur.Y][cur.X];
@@ -49,7 +50,7 @@ public record Basin
 		
 	}
 
-	public bool IsLower(Point at)
+	public bool IsLower(SmallPoint at)
 	{
 		var height = Map[at];
 		return !adjacents
@@ -59,9 +60,9 @@ public record Basin
 			.Any( h => h <= height);
 	}
 
-	public ImmutableHashSet<Point> Flood(Point xy) => Flood(-1,xy, ImmutableHashSet<Point>.Empty);
+	public ImmutableHashSet<SmallPoint> Flood(SmallPoint xy) => Flood(-1,xy, ImmutableHashSet<SmallPoint>.Empty);
 
-	private ImmutableHashSet<Point> Flood(int h, Point xy, ImmutableHashSet<Point> visited) 
+	private ImmutableHashSet<SmallPoint> Flood(sbyte h, SmallPoint xy, ImmutableHashSet<SmallPoint> visited) 
 	=> ((Map.TryGetValue(xy, out var height))
 		&& 
 		((height > h) &&  (!visited.Contains(xy)))) 
@@ -70,6 +71,3 @@ public record Basin
 		:
 		visited;
 }
-
-
-

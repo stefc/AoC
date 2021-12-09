@@ -44,6 +44,6 @@ public class TestDay9
 	[InlineData("6,4", 9)]
 	public void TestFlood(string at, int exp) 
 	{
-		Assert.Equal(exp, SmokeBasin.Parse(CreateSample()).Flood(Point.FromString(at)).Count);
+		Assert.Equal(exp, SmokeBasin.Parse(CreateSample()).Flood(SmallPoint.FromString(at)).Count);
 	}
 }

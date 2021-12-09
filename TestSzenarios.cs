@@ -11,12 +11,12 @@ namespace advent.of.code;
 [HtmlExporter]
 public class TestScenarios
 {
-    private TestDay2 subject;
+    private TestDay9 subject;
 
     [GlobalSetup]
     public void Setup()
     {
-        this.subject = new TestDay2();
+        this.subject = new TestDay9();
     }
 
 
