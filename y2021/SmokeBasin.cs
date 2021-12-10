@@ -7,26 +7,27 @@ internal class SmokeBasin : IPuzzle
 	public long Silver(IEnumerable<string> values)
 	{
 		var basin = Parse(values);
-		return basin.Map.AsParallel().Where( kvp => basin.IsLower(kvp.Key)).Sum( kvp => 1 + kvp.Value);
+		var isLower = basin.GetIsLower();
+		return basin.Map.AsParallel().Where( kvp => isLower(kvp.Key)).Sum( kvp => 1 + kvp.Value);
 	}
 
 	public long Gold(IEnumerable<string> values) 
 	{
 		var basin = Parse(values);
+		var isLower = basin.GetIsLower();
 		return basin.Map.Keys
 			.AsParallel()
-			.Where( at => basin.IsLower(at))
+			.Where(isLower)
 			.Select( pt => basin.Flood(pt).Count())
 			.OrderByDescending(x=>x)
 			.Take(3)
 			.Aggregate( 1, (acc,cur) => acc * cur);
 	}
 
-	public static Basin Parse(IEnumerable<string> values)
-	=> new Basin(ToMatrix(values));
+	public static Basin Parse(IEnumerable<string> values) => new Basin(ToMatrix(values));
 	
 	private static sbyte[][] ToMatrix(IEnumerable<string> lines) 
-	=> lines.Select( l => l.ToDigits().Select(Convert.ToSByte).ToArray()).ToArray();
+	=> lines.AsParallel().Select( l => l.ToDigits().Select(Convert.ToSByte).ToArray()).ToArray();
 	
 }
 
@@ -61,6 +62,9 @@ public record Basin
 			.Select( xy => Map[xy])
 			.Any( h => h <= height);
 	}
+
+	public Func<SmallPoint,bool> GetIsLower() => 
+		at => IsLower(at);
 
 	public ImmutableHashSet<SmallPoint> Flood(SmallPoint xy) => Flood(-1,xy, ImmutableHashSet<SmallPoint>.Empty);
 

@@ -1,8 +1,7 @@
 namespace advent.of.code.common;
 
-public class SmallPoint : IEquatable<SmallPoint>
+public record struct SmallPoint 
 {
-
 	private static Lazy<SmallPoint> zero = new Lazy<SmallPoint>(() => new SmallPoint(0, 0));
 	private static Lazy<SmallPoint> north = new Lazy<SmallPoint>(() => new SmallPoint(0, -1));
 	private static Lazy<SmallPoint> south = new Lazy<SmallPoint>(() => new SmallPoint(0, +1));
@@ -47,18 +46,6 @@ public class SmallPoint : IEquatable<SmallPoint>
 		sbyte x = Convert.ToSByte(parts.FirstOrDefault());
 		sbyte y = Convert.ToSByte(parts.LastOrDefault());
 		return new SmallPoint(x, y);
-	}
-
-	public override int GetHashCode()
-	{
-		return this.X * 26 ^ this.Y;
-	}
-
-	public bool Equals(SmallPoint other)
-	{
-		if (other == null)
-			return false;
-		return other.X == this.X && other.Y == this.Y;
 	}
 
 	public int SquareLength => Math.Abs(this.X * this.X) + Math.Abs(this.Y * this.Y);

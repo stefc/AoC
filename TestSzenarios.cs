@@ -29,8 +29,8 @@ public class TestScenario2021
             .Add(10, new TestDay10());
     }
 
-    //[Params(1,2,3,4,5,6,7,8,9,10)]
-    [Params(10)]
+    [Params(1,2,3,4,5,6,7,8,9,10)]
+    //[Params(9)]
     public int Day;
     
     [Benchmark]

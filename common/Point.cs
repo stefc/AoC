@@ -4,7 +4,7 @@ using MathNet.Numerics.LinearAlgebra;
 namespace advent.of.code.common;
 
 [DebuggerDisplay("{debugDescription,nq}")]
-public class Point : IEquatable<Point>
+public record struct Point 
 {
 
 	private static Lazy<Point> zero = new Lazy<Point>(() => new Point(0, 0));
@@ -49,18 +49,6 @@ public class Point : IEquatable<Point>
 		int x = Convert.ToInt32(parts.FirstOrDefault());
 		int y = Convert.ToInt32(parts.LastOrDefault());
 		return new Point(x, y);
-	}
-
-	public override int GetHashCode()
-	{
-		return this.X * 26 ^ this.Y;
-	}
-
-	public bool Equals(Point other)
-	{
-		if (other == null)
-			return false;
-		return other.X == this.X && other.Y == this.Y;
 	}
 
 	public int SquareLength => Math.Abs(this.X * this.X) + Math.Abs(this.Y * this.Y);
