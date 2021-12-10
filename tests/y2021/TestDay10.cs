@@ -3,7 +3,7 @@ using advent.of.code.y2021.day10;
 namespace advent.of.code.tests.y2021;
 
 [Trait("Year", "2021")]
-[Trait("Day", "9")]
+[Trait("Day", "10")]
 public class TestDay10 : IPuzzleTest
 {
 	private readonly IPuzzle _ = new SyntaxScoring();
