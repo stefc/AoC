@@ -25,26 +25,26 @@ Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden
 
 | Method | Day |          Mean |        Error |       StdDev |
 |------- |---- |--------------:|-------------:|-------------:|
-| Silver |   1 |     188.23 us |      0.15 us |     0.121 us |
-|   Gold |   1 |     385.37 us |      0.36 us |     0.298 us |
-| Silver |   2 |     594.40 us |      0.61 us |     0.619 us |
-|   Gold |   2 |     589.06 us |      0.89 us |     0.726 us |
-| Silver |   3 |   3,111.68 us |      4.79 us |     4.461 us |
-|   Gold |   3 |   2,713.37 us |      7.95 us |     7.479 us |
-| Silver |   4 |  69,930.93 us |    100.48 us |    89.080 us |
-|   Gold |   4 | 209,905.15 us |    214.06 us |   189.728 us |
-| Silver |   5 | 155,881.37 us |  1,647.68 us | 1,541.211 us |
-|   Gold |   5 | 405,503.65 us |  3,157.76 us | 2,953.739 us |
-| Silver |   6 |      65.53 us |      0.07 us |     0.056 us |
-|   Gold |   6 |      68.83 us |      0.04 us |     0.066 us |
-| Silver |   7 |      86.98 us |      0.19 us |     0.108 us |
-|   Gold |   7 |      85.35 us |      0.12 us |     0.109 us |
-| Silver |   8 |     883.94 us |      1.65 us |     1.567 us |
-|   Gold |   8 |   4,941.54 us |      5.08 us |     4.240 us |
-| Silver |   9 |  10,048.63 us |     95.09 us |    79.404 us |
-|   Gold |   9 |  13,410.72 us |    117.11 us |    103.87 us |
-| Silver |  10 |     424.30 us |      5.20 us |      4.61 us |
-|   Gold |  10 |     590.10 us |      9.47 us |      8.86 us |
+| Silver |   1 |     190.61 us |     0.119 us |     0.106 us |
+|   Gold |   1 |     385.32 us |     0.883 us |     0.826 us |
+| Silver |   2 |     593.98 us |     0.859 us |     0.762 us |
+|   Gold |   2 |     586.34 us |     0.521 us |     0.407 us |
+| Silver |   3 |   3,089.94 us |     3.491 us |     3.095 us |
+|   Gold |   3 |   2,701.98 us |     4.893 us |     4.086 us |
+| Silver |   4 |  55,323.68 us |    76.324 us |    67.659 us |
+|   Gold |   4 | 168,551.17 us |   162.517 us |   144.067 us |
+| Silver |   5 | 108,698.54 us |   623.102 us |   582.850 us |
+|   Gold |   5 | 275,873.66 us | 3,212.588 us | 2,847.876 us |
+| Silver |   6 |      65.43 us |     0.039 us |     0.032 us |
+|   Gold |   6 |      71.73 us |     0.365 us |     0.342 us |
+| Silver |   7 |      87.14 us |     0.639 us |     0.534 us |
+|   Gold |   7 |      85.18 us |     0.193 us |     0.161 us |
+| Silver |   8 |     650.05 us |    12.861 us |    24.469 us |
+|   Gold |   8 |   2,209.85 us |    41.198 us |    42.308 us |
+| Silver |   9 |   6,525.38 us |    53.550 us |    50.091 us |
+|   Gold |   9 |   8,675.28 us |    52.951 us |    46.940 us |
+| Silver |  10 |     421.03 us |     6.845 us |     6.403 us |
+|   Gold |  10 |     588.05 us |     7.668 us |     6.403 us |
 ## 2015 
 
 * NotQuiteLisp (#1) ->
