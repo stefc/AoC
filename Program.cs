@@ -1,36 +1,14 @@
-﻿using BenchmarkDotNet.Running;
+﻿using advent.of.code.tests.y2015;
+using advent.of.code.tests.y2021;
+using BenchmarkDotNet.Running;
 
 namespace advent.of.code;
 
 class Program
 {
-    static void Main(string[] args)
-    {
-        BenchmarkRunner.Run<TestScenario2021>();
-    }
+	static void Main(string[] args)
+	{
+		BenchmarkRunner.Run<TestScenario2015>();
+		// BenchmarkRunner.Run<TestScenario2021>();
+	}
 }
-
-
-
-/*
-
-
-[SimpleJob(RuntimeMoniker.Net60)]
-public class TestDynmaicPGOScenarios
-{
-    private IEnumerator<Int32> _source = Enumerable.Range(0, Int32.MaxValue).GetEnumerator();
-
-    [Benchmark]
-    public void MoveNext() => _source.MoveNext();
-}
-
-
-|   Method |      Mean |     Error |    StdDev |
-|--------- |----------:|----------:|----------:|
-| MoveNext | 0.1860 ns | 0.0009 ns | 0.0007 ns |
-
-|   Method |      Mean |     Error |    StdDev |
-|--------- |----------:|----------:|----------:|
-| MoveNext | 0.7914 ns | 0.0004 ns | 0.0004 ns |
-
-*/

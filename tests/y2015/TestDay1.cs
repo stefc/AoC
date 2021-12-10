@@ -5,7 +5,7 @@ namespace advent.of.code.tests.y2015;
 
 [Trait("Year", "2015")]
 [Trait("Day", "1")]
-public class TestDay1
+public class TestDay1 : IPuzzleTest
 {
 	private readonly IPuzzle _ = new NotQuiteLisp();
 

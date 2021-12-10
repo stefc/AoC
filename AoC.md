@@ -52,3 +52,17 @@ Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden
 * SphericalHouses (#3) ->
 * StockingSuffer (#4) -> MD5 Hashing / Paralleles First()  Brute Force 
 * 
+
+### Zeiten
+
+* BenchmarkDotNet=v0.13.0, OS=macOS 12.0.1 (21A559) [Darwin 21.1.0]
+
+* Apple M1, 1 CPU, 8 logical and 8 physical cores
+
+* .NET SDK=6.0.100, Arm64 RyuJIT
+
+
+| Method | Day |     Mean |   Error |  StdDev |
+|------- |---- |---------:|--------:|--------:|
+| Silver |   1 | 109.6 us | 0.23 us | 0.20 us |
+|   Gold |   1 | 139.2 us | 0.24 us | 0.21 us |

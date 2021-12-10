@@ -1,9 +1,8 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 
-using advent.of.code.tests.y2021;
 
-namespace advent.of.code;
+namespace advent.of.code.tests.y2021;
 
 [SimpleJob(RuntimeMoniker.Net60)]
 [MarkdownExporterAttribute.GitHub]
