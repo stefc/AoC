@@ -8,7 +8,7 @@ class Program
 {
 	static void Main(string[] args)
 	{
-		BenchmarkRunner.Run<TestScenario2015>();
-		// BenchmarkRunner.Run<TestScenario2021>();
+		//BenchmarkRunner.Run<TestScenario2015>();
+		BenchmarkRunner.Run<TestScenario2021>();
 	}
 }

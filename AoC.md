@@ -14,6 +14,7 @@ Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden
 * Seven Segment Search (#8) -> Backtracking 
 * Smoke Basin (#9) -> Rekursiver Fill Algorithmus ala Minesweeper 
 * Syntax Scoring (#10) -> Öffnende & Schliessende Klammern per Stack ermitteln
+* Dumbo Octopus (#11) -> Kettenreaktion an Benachbarte Octopusse (Schlecht Paralelisierbar)
 
 ### Zeiten
 
@@ -45,13 +46,15 @@ Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden
 |   Gold |   9 |   8,675.28 us |    52.951 us |    46.940 us |
 | Silver |  10 |     421.03 us |     6.845 us |     6.403 us |
 |   Gold |  10 |     588.05 us |     7.668 us |     6.403 us |
+| Silver |  11 |      67.00 ms |     1.224 ms |     1.085 ms |
+|   Gold |  11 |     142.29 ms |     2.639 ms |     2.824 ms |
+
 ## 2015 
 
 * NotQuiteLisp (#1) ->
 * WrappingPaper (#2) -> 
 * SphericalHouses (#3) ->
 * StockingSuffer (#4) -> MD5 Hashing / Paralleles First()  Brute Force 
-* 
 
 ### Zeiten
 

@@ -1,4 +1,8 @@
+using System.Diagnostics;
+
 namespace advent.of.code.common;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
 
 public record struct SmallPoint 
 {
@@ -17,6 +21,12 @@ public record struct SmallPoint
 	public static SmallPoint South => south.Value;
 	public static SmallPoint West => west.Value;
 	public static SmallPoint East => east.Value;
+	public static SmallPoint NorthWest => northwest.Value;
+	public static SmallPoint NorthEast => northeast.Value;
+	public static SmallPoint SouthWest => southwest.Value;
+	public static SmallPoint SouthEast => southeast.Value;
+
+
 
 	public sbyte X { get; private set; }
 
@@ -33,13 +43,6 @@ public record struct SmallPoint
 	}
 
 	
-	// private string value;
-
-	public static SmallPoint NorthWest => northwest.Value;
-	public static SmallPoint NorthEast => northeast.Value;
-	public static SmallPoint SouthWest => southwest.Value;
-	public static SmallPoint SouthEast => southeast.Value;
-
 	public static SmallPoint FromString(string value)
 	{
 		var parts = value.Split(',');
@@ -62,7 +65,7 @@ public record struct SmallPoint
 	public static SmallPoint operator *(SmallPoint a, float scalar)
 	=> new SmallPoint((sbyte)(a.X * scalar), (sbyte)(a.Y * scalar));
 
-	private string debugDescription => $"x={this.X},y={this.Y}";
+	private string DebuggerDisplay => $"x={this.X},y={this.Y}";
 
 	public static IEnumerable<SmallPoint> Cloud(int size) => Cloud(size,size);
 	public static IEnumerable<SmallPoint> Cloud(int width, int height) 
