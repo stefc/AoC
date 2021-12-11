@@ -29,28 +29,9 @@ public class TestDay1 : IPuzzleTest
 		=> Assert.Equal(expected, _.Golded(instructions));
 
 	[Fact]
-	public void PuzzleSilver()
-	{
-		//  Arrange
-		var input = _.ReadPuzzle();
-
-		// Act
-		var actual = _.Silver(input);
-
-		// Assert
-		Assert.Equal(74, actual);
-	}
-
+	public void PuzzleSilver() => Assert.Equal(74, _.Silver(_.ReadPuzzle()));
+	
 	[Fact]
-	public void PuzzleGold()
-	{
-		//  Arrange
-		var input = _.ReadPuzzle();
-
-		// Act
-		var actual = _.Gold(input);
-
-		// Assert
-		Assert.Equal(1795, actual);
-	}
+	public void PuzzleGold() => Assert.Equal(1795, _.Gold(_.ReadPuzzle()));
+	
 }

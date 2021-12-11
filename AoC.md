@@ -51,7 +51,7 @@ Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden
 
 ## 2015 
 
-* NotQuiteLisp (#1) ->
+* NotQuiteLisp (#1) -> 
 * WrappingPaper (#2) -> 
 * SphericalHouses (#3) ->
 * StockingSuffer (#4) -> MD5 Hashing / Paralleles First()  Brute Force 
@@ -65,7 +65,11 @@ Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden
 * .NET SDK=6.0.100, Arm64 RyuJIT
 
 
-| Method | Day |     Mean |   Error |  StdDev |
-|------- |---- |---------:|--------:|--------:|
-| Silver |   1 | 109.6 us | 0.23 us | 0.20 us |
-|   Gold |   1 | 139.2 us | 0.24 us | 0.21 us |
+| Method | Day |       Mean |   Error |   StdDev |
+|------- |---- |-----------:|--------:|---------:|
+| Silver |   1 |   115.2 us | 1.28 us |  1.20 us |
+|   Gold |   1 |   144.5 us | 0.19 us |  0.15 us |
+| Silver |   2 |   396.9 us | 7.95 us | 22.82 us |
+|   Gold |   2 |   353.9 us | 6.46 us |  9.06 us |
+| Silver |   3 | 1,641.2 us | 3.18 us |  2.82 us |
+|   Gold |   3 | 2,312.5 us | 9.03 us |  8.01 us |

@@ -5,7 +5,7 @@ namespace advent.of.code.tests.y2015;
 
 [Trait("Year", "2015")]
 [Trait("Day", "3")]
-public class TestDay3
+public class TestDay3 : IPuzzleTest
 {
 	private readonly IPuzzle _ = new SphericalHouses();
 
@@ -24,12 +24,8 @@ public class TestDay3
 		=> Assert.Equal(expected, _.Golded(instructions));
 
 	[Fact]
-	public void Puzzle()
-	{
-		var input = _.ReadPuzzle();
+	public void PuzzleSilver() => Assert.Equal(2081, _.Silver(_.ReadPuzzle()));
 
-		Assert.Equal(2081, _.Silver(input));
-
-		Assert.Equal(2341, _.Gold(input));
-	}
+	[Fact]
+	public void PuzzleGold() => Assert.Equal(2341, _.Gold(_.ReadPuzzle()));
 }
