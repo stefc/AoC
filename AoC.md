@@ -48,8 +48,8 @@ Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden
 |   Gold |  10 |       604.91 us |    11.623 us |    12.436 us |
 | Silver |  11 |    67,503.48 us | 1,292.534 us | 1,769.235 us |
 |   Gold |  11 |   133,021.39 us | 2,002.511 us | 1,873.150 us |
-| Silver |  12 |    36,607.12 us |   100.872 us |    94.356 us |
-|   Gold |  12 | 3,255,614.75 us | 4,980.254 us | 4,658.532 us |
+| Silver |  12 |     9,901.00 ms |    0.0219 ms |    0.0194 ms |
+|   Gold |  12 | 1,830,679.00 us |    3.3315 ms |    3.1163 ms |
 
 ## 2015 
 

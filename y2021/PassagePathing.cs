@@ -7,10 +7,10 @@ namespace advent.of.code.y2021.day12;
 public class PassagePathing : IPuzzle
 {	
 	public long Silver(IEnumerable<string> input) 
-	=> Parse(input).FindAllPathsOnce().Count();
+	=> Parse(input).FindAllPathsOnce();
 	
 	public long Gold(IEnumerable<string> input) 
-	=> Parse(input).FindAllPathsTwice().Count();
+	=> Parse(input).FindAllPathsTwice();
 
 	public record struct Node (string Id) {
 		public bool IsSmall => Id.First() >= 'a';
@@ -28,9 +28,6 @@ public class PassagePathing : IPuzzle
 			this.Nodes = nodes;
 			this.getNextNodes = NextNodes;
 			this.getNextNodes = this.getNextNodes.Memoize();
-
-			this.canVisitSmallOnce = CanVisitSmallOnce;
-			this.canVisitSmallTwice = CanVisitSmallTwice;
 		}
 		
 		static Node Start = new Node("start");
@@ -38,40 +35,28 @@ public class PassagePathing : IPuzzle
 
 		private readonly Func<Node,ImmutableHashSet<Node>> getNextNodes;
 
-		private readonly Func<IEnumerable<Node>, Node,bool> canVisitSmallOnce;
-		private readonly Func<IEnumerable<Node>, Node,bool> canVisitSmallTwice;
+		public int FindAllPathsOnce() => FindAllPaths(Start, CanVisitSmallOnce);
 
-		public ImmutableHashSet<string> FindAllPathsOnce() => FindAllPaths(Start, this.canVisitSmallOnce);
+		public int FindAllPathsTwice() => FindAllPaths(Start, CanVisitSmallTwice);
 
-		public ImmutableHashSet<string> FindAllPathsTwice() => FindAllPaths(Start, this.canVisitSmallTwice);
+		public int FindAllPaths(Node node, Func<IEnumerable<Node>,Node,bool> canVisit) 
+		=> FindAllPaths(0, ImmutableList<Node>.Empty, node, canVisit);
 
-		public ImmutableHashSet<string> FindAllPaths(Node node, Func<IEnumerable<Node>,Node,bool> canVisit) 
-		=> FindAllPaths(ImmutableHashSet<string>.Empty, ImmutableStack<Node>.Empty, node, canVisit);
-
-		private static string ToString(IEnumerable<Node> path) 
-		=> String.Join(',', path.Select( n=> n.Id));
-
-		public ImmutableHashSet<string> FindAllPaths(ImmutableHashSet<string> connectionPaths, 
-			ImmutableStack<Node> connectionPath, Node node, Func<IEnumerable<Node>,Node,bool> canVisit) 
-		{
-			foreach( var nextNode in this.getNextNodes(node)) 
-			{
-				if (nextNode == End)
-				{
-					var count = connectionPaths.Count;
-					connectionPaths = connectionPaths.Add(ToString(connectionPath));
-					var newCount = connectionPaths.Count;
-					if (count == newCount) {
-						System.Diagnostics.Debugger.Break();
-					}
-				} else if (canVisit(connectionPath, nextNode)) {
-					connectionPath = connectionPath.Push(nextNode);
-					connectionPaths = FindAllPaths(connectionPaths, connectionPath, nextNode, canVisit);
-					connectionPath = connectionPath.Pop(); 
-				}
- 			}
-			return connectionPaths;
-		}
+		public int FindAllPaths(int connectionPaths, 
+			ImmutableList<Node> connectionPath, Node node, Func<IEnumerable<Node>,Node,bool> canVisit) 
+		=> this.getNextNodes(node).AsParallel().Aggregate( connectionPaths, 
+				(accu, nextNode) => 
+					(nextNode == End)
+					?
+					accu+1
+					:
+					(
+						(canVisit(connectionPath, nextNode)) 
+						? 
+						FindAllPaths(accu, connectionPath.Add(nextNode), nextNode, canVisit)
+						: 
+						accu
+					));
 
 		public static bool CanVisitSmallOnce(IEnumerable<Node> connectionPath, Node nextNode)
 		=> !(nextNode.IsSmall && connectionPath.Contains(nextNode));
@@ -81,10 +66,9 @@ public class PassagePathing : IPuzzle
 			{
 				var nodes = connectionPath
 					.Where( n => n.IsSmall)
-					.GroupBy( n => n)
-					.ToDictionary( grp => grp.Key, grp => grp.Count() != 2);
+					.GroupBy( n => n, (k,xs) => xs.Count() != 2);
 				
-				return (nodes.Values.All( x => x) || !nodes.ContainsKey(nextNode));
+				return (!connectionPath.Contains(nextNode) || nodes.All( x => x));
 			}
 			return true;
 		}
