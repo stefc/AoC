@@ -30,8 +30,8 @@ public class TestScenario2021
             .Add(12, new TestDay12());
     }
 
-    [Params(1,2,3,4,5,6,7,8,9,10,11,12)]
-    //[Params(11)]
+    //[Params(1,2,3,4,5,6,7,8,9,10,11,12)]
+    [Params(12)]
     public int Day;
     
     [Benchmark]

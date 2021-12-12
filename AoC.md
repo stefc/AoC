@@ -24,30 +24,32 @@ Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden
 
 * .NET SDK=6.0.100, Arm64 RyuJIT
 
-| Method | Day |          Mean |        Error |       StdDev |
-|------- |---- |--------------:|-------------:|-------------:|
-| Silver |   1 |     190.61 us |     0.119 us |     0.106 us |
-|   Gold |   1 |     385.32 us |     0.883 us |     0.826 us |
-| Silver |   2 |     593.98 us |     0.859 us |     0.762 us |
-|   Gold |   2 |     586.34 us |     0.521 us |     0.407 us |
-| Silver |   3 |   3,089.94 us |     3.491 us |     3.095 us |
-|   Gold |   3 |   2,701.98 us |     4.893 us |     4.086 us |
-| Silver |   4 |  55,323.68 us |    76.324 us |    67.659 us |
-|   Gold |   4 | 168,551.17 us |   162.517 us |   144.067 us |
-| Silver |   5 | 108,698.54 us |   623.102 us |   582.850 us |
-|   Gold |   5 | 275,873.66 us | 3,212.588 us | 2,847.876 us |
-| Silver |   6 |      65.43 us |     0.039 us |     0.032 us |
-|   Gold |   6 |      71.73 us |     0.365 us |     0.342 us |
-| Silver |   7 |      87.14 us |     0.639 us |     0.534 us |
-|   Gold |   7 |      85.18 us |     0.193 us |     0.161 us |
-| Silver |   8 |     650.05 us |    12.861 us |    24.469 us |
-|   Gold |   8 |   2,209.85 us |    41.198 us |    42.308 us |
-| Silver |   9 |   6,525.38 us |    53.550 us |    50.091 us |
-|   Gold |   9 |   8,675.28 us |    52.951 us |    46.940 us |
-| Silver |  10 |     421.03 us |     6.845 us |     6.403 us |
-|   Gold |  10 |     588.05 us |     7.668 us |     6.403 us |
-| Silver |  11 |      67.00 ms |     1.224 ms |     1.085 ms |
-|   Gold |  11 |     142.29 ms |     2.639 ms |     2.824 ms |
+| Method | Day |            Mean |        Error |       StdDev |
+|------- |---- |----------------:|-------------:|-------------:|
+| Silver |   1 |       193.85 us |     0.405 us |     0.316 us |
+|   Gold |   1 |       386.01 us |     1.083 us |     0.904 us |
+| Silver |   2 |       588.02 us |     1.245 us |     0.972 us |
+|   Gold |   2 |       588.64 us |     1.143 us |     1.014 us |
+| Silver |   3 |     3,097.48 us |     4.752 us |     3.968 us |
+|   Gold |   3 |     2,713.45 us |     5.743 us |     4.796 us |
+| Silver |   4 |    55,175.68 us |   129.790 us |   115.056 us |
+|   Gold |   4 |   169,281.89 us |   354.289 us |   331.402 us |
+| Silver |   5 |   108,772.49 us |   824.378 us |   771.123 us |
+|   Gold |   5 |   278,522.47 us | 2,798.525 us | 2,617.742 us |
+| Silver |   6 |        65.67 us |     0.095 us |     0.074 us |
+|   Gold |   6 |        68.83 us |     0.116 us |     0.097 us |
+| Silver |   7 |        86.91 us |     0.320 us |     0.284 us |
+|   Gold |   7 |        85.81 us |     0.207 us |     0.183 us |
+| Silver |   8 |       638.63 us |    12.040 us |    11.262 us |
+|   Gold |   8 |     2,211.95 us |    33.848 us |    31.661 us |
+| Silver |   9 |     6,555.74 us |    39.171 us |    34.724 us |
+|   Gold |   9 |     8,633.09 us |   101.021 us |    94.495 us |
+| Silver |  10 |       418.59 us |     8.154 us |     7.228 us |
+|   Gold |  10 |       604.91 us |    11.623 us |    12.436 us |
+| Silver |  11 |    67,503.48 us | 1,292.534 us | 1,769.235 us |
+|   Gold |  11 |   133,021.39 us | 2,002.511 us | 1,873.150 us |
+| Silver |  12 |    36,607.12 us |   100.872 us |    94.356 us |
+|   Gold |  12 | 3,255,614.75 us | 4,980.254 us | 4,658.532 us |
 
 ## 2015 
 

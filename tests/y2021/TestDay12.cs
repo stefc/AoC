@@ -75,9 +75,7 @@ start-RW
 	}
 	
 	[Fact]
-	public void PuzzleSilver() 
-	=> Assert.Equal(4411, _.Silver(_.ReadPuzzle()));
-	
+	public void PuzzleSilver() => Assert.Equal(4411, _.Silver(_.ReadPuzzle()));
 	
 	[Fact]
 	public void SampleGold() 
@@ -87,20 +85,6 @@ start-RW
 		Assert.Equal(3509, _.Gold(CreateSampleHuge()));
 	}
 	
-	
 	[Fact]
-	public void PuzzleGold()
-	=> Assert.Equal(136767, _.Gold(_.ReadPuzzle()));
-
-	[Fact]
-	public void ParseGraph() 
-	{
-		var graph = PassagePathing.Parse(CreateSample());
-		Assert.Equal(6, graph.Nodes.Count());
-		Assert.Equal(7, graph.Edges.Count());
-	}
-
-
-
-
+	public void PuzzleGold() => Assert.Equal(136767, _.Gold(_.ReadPuzzle()));
 }
