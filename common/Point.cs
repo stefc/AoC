@@ -25,9 +25,9 @@ public record struct Point
 	public static Point West => west.Value;
 	public static Point East => east.Value;
 
-	public int X { get; private set; }
+	public int X { get; init; }
 
-	public int Y { get; private set; }
+	public int Y { get; init; }
 
 	public Point(int x, int y)
 	{

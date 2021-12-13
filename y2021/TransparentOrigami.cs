@@ -44,7 +44,7 @@ public class TransparentOrigami : IPuzzle
 			{
 				var y = fold.At.Y;
 				var newDots = Dots.Where( dot => dot.Y < y).ToImmutableHashSet().Union(
-						Dots.Where( dot => dot.Y > y).Select( dot => new Point(dot.X, y - ( dot.Y - y))).ToImmutableHashSet());
+						Dots.Where( dot => dot.Y > y).Select( dot => dot with { Y = y - ( dot.Y - y)}).ToImmutableHashSet());
 				
 				return this with { Dots = newDots, Folds = Folds.Remove(fold)};
 			}
@@ -52,7 +52,7 @@ public class TransparentOrigami : IPuzzle
 			{
 				var x = fold.At.X;
 				var newDots = Dots.Where( dot => dot.X < x).ToImmutableHashSet().Union(
-						Dots.Where( dot => dot.X > x).Select( dot => new Point(x - ( dot.X - x),dot.Y)).ToImmutableHashSet());
+						Dots.Where( dot => dot.X > x).Select( dot => dot with { X = x - ( dot.X - x)}).ToImmutableHashSet());
 				
 				return this with { Dots = newDots, Folds = Folds.Remove(fold)};
 			}
