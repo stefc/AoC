@@ -15,6 +15,8 @@ Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden
 * Smoke Basin (#9) -> Rekursiver Fill Algorithmus ala Minesweeper 
 * Syntax Scoring (#10) -> Öffnende & Schliessende Klammern per Stack ermitteln
 * Dumbo Octopus (#11) -> Kettenreaktion an Benachbarte Octopusse (Schlecht Paralelisierbar)
+* Passage Pathing (#12) -> Alle möglichen Pfade in einem Graph ermitteln (Null Parallel !)
+* Transparent Origami (#13) -> Koordinaten an einer Linie spiegeln und Ergebnis visualisieren
 
 ### Zeiten
 
@@ -48,8 +50,11 @@ Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden
 |   Gold |  10 |       604.91 us |    11.623 us |    12.436 us |
 | Silver |  11 |    67,503.48 us | 1,292.534 us | 1,769.235 us |
 |   Gold |  11 |   133,021.39 us | 2,002.511 us | 1,873.150 us |
-| Silver |  12 |     9,901.00 ms |    0.0219 ms |    0.0194 ms |
-|   Gold |  12 | 1,830,679.00 us |    3.3315 ms |    3.1163 ms |
+| Silver |  12 |    11,809.10 us |    10.320 us |     8.610 us |
+|   Gold |  12 | 1,867,125.70 us | 5,196.320 us | 4,056.950 us |
+| Silver |  13 |       917.40 us |     5.500 us |     5.140 us |
+|   Gold |  13 |     2,281.30 us |     8.520 us |     7.970 us |
+
 
 ## 2015 
 
