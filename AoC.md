@@ -71,12 +71,13 @@ Hier eine Übersicht über alle Puzzle und was für Algorithmen verwendet wurden
 
 * .NET SDK=6.0.100, Arm64 RyuJIT
 
-
-| Method | Day |       Mean |   Error |   StdDev |
-|------- |---- |-----------:|--------:|---------:|
-| Silver |   1 |   115.2 us | 1.28 us |  1.20 us |
-|   Gold |   1 |   144.5 us | 0.19 us |  0.15 us |
-| Silver |   2 |   396.9 us | 7.95 us | 22.82 us |
-|   Gold |   2 |   353.9 us | 6.46 us |  9.06 us |
-| Silver |   3 | 1,641.2 us | 3.18 us |  2.82 us |
-|   Gold |   3 | 2,312.5 us | 9.03 us |  8.01 us |
+| Method | Day |           Mean |       Error |    StdDev |
+|------- |---- |---------------:|------------:|----------:|
+| Silver |   1 |       110.2 us |     0.65 us |   0.58 us |
+|   Gold |   1 |       139.9 us |     0.33 us |   0.29 us |
+| Silver |   2 |       338.1 us |     4.45 us |   3.94 us |
+|   Gold |   2 |       312.7 us |     2.51 us |   2.22 us |
+| Silver |   3 |     1,588.4 us |     2.68 us |   2.24 us |
+|   Gold |   3 |     2,238.1 us |     3.55 us |   2.77 us |
+| Silver |   4 |    52,069.0 us |    69.26 us |  64.78 us |
+|   Gold |   4 | 1,710,779.5 us | 1,061.13 us | 940.66 us |

@@ -18,11 +18,12 @@ public class TestScenario2015
         this.subjects = ImmutableDictionary<int,IPuzzleTest>.Empty 
             .Add(1, new TestDay1())
             .Add(2, new TestDay2())
-            .Add(3, new TestDay3());
+            .Add(3, new TestDay3())
+            .Add(4, new TestDay4());
     }
 
     //[Params(1,2,3,4,5,6,7,8,9,10,11)]
-    [Params(1,2,3)]
+    [Params(1,2,3,4)]
     public int Day;
     
     [Benchmark]
