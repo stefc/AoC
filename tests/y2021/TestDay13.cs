@@ -45,11 +45,5 @@ fold along x=5";
 		
 	[Fact]
 	public void PuzzleGold() => Assert.Equal(93, _.Gold(_.ReadPuzzle()));
-
-	[Fact(Skip="Only needs for read the code")]
-	public void TestGold()
-	{
-		var dots = TransparentOrigami.Parse(_.ReadPuzzle()).CompleteFolding();	
-		System.Console.WriteLine(TransparentOrigami.Visualize(dots));
-	}
+	
 }

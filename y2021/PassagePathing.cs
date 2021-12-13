@@ -13,27 +13,32 @@ public class PassagePathing : IPuzzle
 	=> Parse(input).FindAllPathsTwice();
 
 	public record struct Node (string Id) {
-		public bool IsSmall => Id.First() >= 'a';
-	}
 
+		public bool IsSmall => Id[0] >= 'a';
+	}
+	
 	public record struct Edge (Node start, Node end) {}
 
 	public record Graph (ImmutableList<Node> Nodes, ImmutableList<Edge> Edges) {
 
+		private readonly ImmutableDictionary<Node, ImmutableList<Node>> arcs; 
 		public Graph(IEnumerable<string> values) : this(ImmutableList<Node>.Empty, ImmutableList<Edge>.Empty)
 		{
-			var edges = values.Select(ParseEdge).ToImmutableList();
+			var edges = values.Select(ParseEdge)
+				.Select( e => ((e.end == Start) || (e.start == End)) ? new Edge(e.end, e.start) : e)
+				.ToImmutableList();
+
 			var nodes = edges.SelectMany( e => new[]{e.start,e.end}).Distinct().ToImmutableList();
+
 			this.Edges = edges;
 			this.Nodes = nodes;
-			this.getNextNodes = NextNodes;
-			this.getNextNodes = this.getNextNodes.Memoize();
+
+			arcs = nodes.Aggregate(ImmutableDictionary<Node,ImmutableList<Node>>.Empty, 
+				(acc, cur) => acc.Add( cur, NextNodes(cur).ToImmutableList()));
 		}
 		
 		static Node Start = new Node("start");
 		static Node End = new Node("end");
-
-		private readonly Func<Node,ImmutableHashSet<Node>> getNextNodes;
 
 		public int FindAllPathsOnce() => FindAllPaths(Start, CanVisitSmallOnce);
 
@@ -44,7 +49,7 @@ public class PassagePathing : IPuzzle
 
 		public int FindAllPaths(int connectionPaths, 
 			ImmutableList<Node> connectionPath, Node node, Func<IEnumerable<Node>,Node,bool> canVisit) 
-		=> this.getNextNodes(node).AsParallel().Aggregate( connectionPaths, 
+		=> this.arcs[node].AsParallel().Aggregate( connectionPaths, 
 				(accu, nextNode) => 
 					(nextNode == End)
 					?
@@ -73,12 +78,12 @@ public class PassagePathing : IPuzzle
 			return true;
 		}
 
-		public ImmutableHashSet<Node> NextNodes(Node node) 
+		public IEnumerable<Node> NextNodes(Node node) 
 		=> Edges
 			.Where( e => e.start == node || e.end == node)
 			.Select( e => e.end == node ? e.start : e.end)
-			.ToImmutableHashSet()
-			.Remove(Start);
+			.Where( n => n != Start)
+			.Distinct();
 	}
 
 	private static Edge ParseEdge (string line) {

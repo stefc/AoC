@@ -55,38 +55,6 @@ public class TransparentOrigami : IPuzzle
 
 	public record struct Instructions (ImmutableHashSet<Point> Dots, ImmutableList<Fold> Folds) {
 
-		public Instructions OneFolding() {
-
-			var fold = Folds.First();
-
-			if (fold.At.X == 0) 
-			{
-				var y = fold.At.Y;
-				var newDots = Dots.Where( dot => dot.Y < y).ToImmutableHashSet().Union(
-						Dots.Where( dot => dot.Y > y).Select( dot => dot with { Y = y - ( dot.Y - y)}).ToImmutableHashSet());
-				
-				return this with { Dots = newDots, Folds = Folds.Remove(fold)};
-			}
-			else 
-			{
-				var x = fold.At.X;
-				var newDots = Dots.Where( dot => dot.X < x).ToImmutableHashSet().Union(
-						Dots.Where( dot => dot.X > x).Select( dot => dot with { X = x - ( dot.X - x)}).ToImmutableHashSet());
-				
-				return this with { Dots = newDots, Folds = Folds.Remove(fold)};
-			}
-		}
-
-		public IEnumerable<Point> CompleteFolding() 
-		{
-			var instructions = this;
-			while (instructions.Folds.Any()) {
-				instructions = instructions.OneFolding();	
-			}
-
-			return instructions.Dots;
-		}
-
 		public ChannelReader<Point> PumpPoints() 
 		{
 			var output = Channel.CreateUnbounded<Point>();
@@ -149,12 +117,12 @@ public class TransparentOrigami : IPuzzle
 			if (At.X == 0) 
 			{
 				var y = At.Y;
-				return (dot.Y < y) ? dot : dot with { Y = y - ( dot.Y - y)};
+				return (dot.Y < y) ? dot : dot with { Y =( y << 1) - dot.Y};
 			}
 			else 
 			{
 				var x = At.X;
-				return (dot.X < x) ? dot : dot with { X = x - ( dot.X - x)};
+				return (dot.X < x) ? dot : dot with { X = (x << 1) - dot.X};
 			}
 		}
 	}
