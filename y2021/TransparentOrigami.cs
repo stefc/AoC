@@ -1,12 +1,31 @@
+using System.Threading.Channels;
+
 namespace advent.of.code.y2021.day13;
 
 // http://adventofcode.com/2021/day/13
 
 public class TransparentOrigami : IPuzzle
 {
-	public long Silver(IEnumerable<string> values) => Parse(values).OneFolding().Dots.Count;
+	public long Silver(IEnumerable<string> values)  
+	{
+		var instructions = Parse(values);
+		return instructions
+			.SinkStage(instructions.Folding(instructions.PumpPoints(), instructions.Folds.First()))
+			.GetAwaiter()
+			.GetResult();
+	}
 	
-	public long Gold(IEnumerable<string> values) => Parse(values).CompleteFolding().Count();
+	public long Gold(IEnumerable<string> values) {
+
+		var instructions = Parse(values);
+
+		var sink = instructions.Folds.Aggregate(
+			instructions.PumpPoints(), 
+			(acc, cur) => instructions.Folding(acc, cur), 
+			acc => instructions.SinkStage(acc));
+		
+		return sink.GetAwaiter().GetResult();
+	 }
 
 	internal static Instructions Parse(IEnumerable<string> values)
 	{
@@ -67,17 +86,76 @@ public class TransparentOrigami : IPuzzle
 
 			return instructions.Dots;
 		}
-	}
 
-	public record struct Fold (Point At) {
+		public ChannelReader<Point> PumpPoints() 
+		{
+			var output = Channel.CreateUnbounded<Point>();
 
-		public static Fold FromString(string s) {
-			var parts = s.Split('=');
-			var xy = Convert.ToInt32(parts[1]);
-			return (parts[0].Last()=='x') ? new Fold( new Point(xy,0)) : new Fold( new Point(0, xy));
+			var dots = Dots;
+			Task.Run( async () => 
+			{
+				foreach(var dot in dots) 
+					await output.Writer.WriteAsync(dot);
+				output.Writer.Complete();
+			});
+
+			return output;
+		}
+
+		public ChannelReader<Point> Folding(ChannelReader<Point> input, Fold fold)
+		{
+			var output = Channel.CreateUnbounded<Point>();
+
+			var dots = ImmutableHashSet<Point>.Empty;
+			Task.Run(async () => 
+			{
+				await foreach (var xy in input.ReadAllAsync()) 
+				{
+					var newDot = fold.Mirror(xy);
+					if (!dots.Contains(newDot)) 
+					{
+						dots = dots.Add(newDot);
+						await output.Writer.WriteAsync(newDot);
+					}	
+				}
+				output.Writer.Complete();
+			});
+
+			return output;
+		}
+
+		public async Task<int> SinkStage(ChannelReader<Point> input) {
+
+			var counter = 0;
+			await foreach (var xy in input.ReadAllAsync()) {
+				counter++;
+			}
+			return counter;
 		}
 	}
 
 
 
+	public record struct Fold (Point At) {
+
+		public static  Fold FromString(string s) {
+			var parts = s.Split('=');
+			var xy = Convert.ToInt32(parts[1]);
+			return (parts[0].Last()=='x') ? new Fold( new Point(xy,0)) : new Fold( new Point(0, xy));
+		}
+
+		public Point Mirror(Point dot) 
+		{
+			if (At.X == 0) 
+			{
+				var y = At.Y;
+				return (dot.Y < y) ? dot : dot with { Y = y - ( dot.Y - y)};
+			}
+			else 
+			{
+				var x = At.X;
+				return (dot.X < x) ? dot : dot with { X = x - ( dot.X - x)};
+			}
+		}
+	}
 }
