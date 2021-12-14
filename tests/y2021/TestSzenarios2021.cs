@@ -11,6 +11,14 @@ public class TestScenario2021
 {
     private ImmutableDictionary<int,IPuzzleTest> subjects;
 
+    private IEnumerable<Type> GetAllTypesThatImplementInterface<IPuzzleTest>()
+    {
+	    return System.Reflection.Assembly.GetExecutingAssembly()
+		    .GetTypes()
+		    .Where(type => typeof(IPuzzleTest).IsAssignableFrom(type) && !type.IsInterface);
+    }
+
+
 
     [GlobalSetup]
     public void Setup()
@@ -28,11 +36,12 @@ public class TestScenario2021
             .Add(10, new TestDay10())
             .Add(11, new TestDay11())
             .Add(12, new TestDay12())
-            .Add(13, new TestDay13());
+            .Add(13, new TestDay13())
+            .Add(14, new TestDay14());
     }
 
-    //[Params(1,2,3,4,5,6,7,8,9,10,11,12,13)]
-    [Params(13)]
+    [Params(1,2,3,4,5,6,7,8,9,10,11,12,13,14)]
+    //[Params(14)]
     public int Day;
     
     [Benchmark]
