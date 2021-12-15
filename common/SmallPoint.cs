@@ -4,7 +4,7 @@ namespace advent.of.code.common;
 
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 
-public record struct SmallPoint 
+public record struct SmallPoint : IComparable<SmallPoint>
 {
 	private static Lazy<SmallPoint> zero = new Lazy<SmallPoint>(() => new SmallPoint(0, 0));
 	private static Lazy<SmallPoint> north = new Lazy<SmallPoint>(() => new SmallPoint(0, -1));
@@ -67,10 +67,19 @@ public record struct SmallPoint
 
 	private string DebuggerDisplay => $"x={this.X},y={this.Y}";
 
+	public string CellAdr 
+		=> (this.X < 26) 
+		? 
+		$"{(char)('A'+this.X)}{this.Y+1}" 
+		: 
+		$"{(char)('A'+ (this.X / 26)-1)}{(char)('A'+(this.X % 26))}{this.Y+1}";
+
 	public static IEnumerable<SmallPoint> Cloud(int size) => Cloud(size,size);
 	public static IEnumerable<SmallPoint> Cloud(int width, int height) 
 	=> 	Enumerable.Range(0, width).SelectMany(x => Enumerable.Range(0, height).Select(y => new SmallPoint(x, y)));
 
+	public int CompareTo(SmallPoint other)
+	=> this.CellAdr.CompareTo(other.CellAdr);
 }
 
 public static class SmallPointExtensions

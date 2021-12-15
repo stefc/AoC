@@ -12,17 +12,18 @@ public class TestScenario2021
     private ImmutableDictionary<int,IPuzzleTest> subjects;
 
     private IEnumerable<Type> GetAllTypesThatImplementInterface<IPuzzleTest>()
-    {
-	    return System.Reflection.Assembly.GetExecutingAssembly()
-		    .GetTypes()
-		    .Where(type => typeof(IPuzzleTest).IsAssignableFrom(type) && !type.IsInterface);
-    }
-
+    => System.Reflection.Assembly.GetExecutingAssembly()
+        .GetTypes()
+        .Where(type => typeof(IPuzzleTest).IsAssignableFrom(type) 
+            && !type.IsInterface 
+            && Attribute.IsDefined(type, typeof(TraitAttribute)));
 
 
     [GlobalSetup]
     public void Setup()
     {
+        
+
         this.subjects = ImmutableDictionary<int,IPuzzleTest>.Empty 
             .Add(1, new TestDay1())
             .Add(2, new TestDay2())

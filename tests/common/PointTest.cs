@@ -22,5 +22,17 @@ namespace advent.of.code.tests.common
 
 
 		}
+
+		[Fact]
+		public void TestExcelAdr()
+		{
+			Assert.Equal("A1", new SmallPoint(0,0).CellAdr);
+			Assert.Equal("B1", new SmallPoint(1,0).CellAdr);
+			Assert.Equal("A2", new SmallPoint(0,1).CellAdr);
+			Assert.Equal("B2", new SmallPoint(1,1).CellAdr);
+			Assert.Equal("Z1", new SmallPoint(25,0).CellAdr);
+			Assert.Equal("AA1", new SmallPoint(26,0).CellAdr);
+			Assert.Equal("AB1", new SmallPoint(27,0).CellAdr);
+		}
 	}
 }
