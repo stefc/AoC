@@ -16,6 +16,15 @@ public static class BitArrayExtensions
 		return result[0];
 	}
 
+	public static IEnumerable<bool> AsEnumerable(this BitArray bits) {
+			foreach (var bit in bits) {
+				yield return (bool)bit;
+			}
+	}
+
+	public static string ToBinary(this BitArray bits) 
+	=> new String(bits.Cast<bool>().Chunk(4).SelectMany( chunk => chunk.Reverse()).Select( onoff => onoff ? '1':'0').ToArray());
+
 	public static BitArray Negate(this BitArray bits) => new BitArray(bits).Not();
 
 	public static bool MostCommonBit(this BitArray bits)
