@@ -39,6 +39,19 @@ public class Chiton : IPuzzle
 
 	}
 
+	internal static string SpreadHorizontal(string v)
+	{
+		return Enumerable.Range(1,4).Aggregate(v, (acc, cur) => acc + Spread(v, cur));
+	}
+
+	internal static string Spread(string v, int add=1)
+	{
+		var digits = new String(v.ToDigits()
+			.Select( digit => ((digit + add-1) % 9)+1).Select( digit => (char)('0'+digit))
+			.ToArray());
+		return digits;
+	}
+
 	private static AdjacencyList AddVerticies(AdjacencyList adjList, SmallPoint xy, int startVertex, ImmutableSortedDictionary<SmallPoint,int> map)
 	{
 		var newAdj = adjacents
