@@ -100,7 +100,7 @@ Das Programm baust du mit dem Aufruf 'dotnet build' und mit 'dotnet test' lässt
 
 Willst du nur die Tests für ein einzelnes Jahr laufen lassen, so geschieht das mit einem Filter Ausdruck: 
 
-`dotnet test --filter Year=2015 -v m`
+`dotnet test --filter Year=2022 -v m`
 
 Die Tests sagen dir das dein Algorithmus funktioniert. 
 

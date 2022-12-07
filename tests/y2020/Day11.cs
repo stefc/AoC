@@ -192,8 +192,5 @@ L.LLLLL.LL".ToLayout();
 
 			return String.Join('\n', lines);
 		}
-
-
-
 	}
 }
