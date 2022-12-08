@@ -2,7 +2,7 @@ using MoreLinq;
 
 namespace advent.of.code.y2022;
 
-// http://adventofcode.com/2022/day/3
+// http://adventofcode.com/2022/day/5
 
 class SupplyStacks : IPuzzle<string>
 {
