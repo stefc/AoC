@@ -18,7 +18,7 @@ static class PasswordPhilosophy
 			var letter = match.Groups["letter"].Value;
 			var password = match.Groups["password"].Value;
 
-			return password.IsValidCount(policy.PolicyFrom(), letter.First());
+			return password.IsValidCount(policy.ExtractRange(), letter.First());
 		});
 	}
 
@@ -34,14 +34,8 @@ static class PasswordPhilosophy
 			var letter = match.Groups["letter"].Value;
 			var password = match.Groups["password"].Value;
 
-			return password.IsValidOccurence(policy.PolicyFrom(), letter.First());
+			return password.IsValidOccurence(policy.ExtractRange(), letter.First());
 		});
-	}
-
-	private static (int start, int end) PolicyFrom(this string value)
-	{
-		var ranges = value.Split('-').Select(x => Convert.ToInt32(x)).ToArray();
-		return (start: ranges.First(), end: ranges.Last());
 	}
 
 	private static bool IsValidCount(this string password, (int start, int end) policy, char letter)
