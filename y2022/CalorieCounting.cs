@@ -1,6 +1,6 @@
 using MoreLinq;
 
-namespace advent.of.code.y2022.day1;
+namespace advent.of.code.y2022;
 
 // http://adventofcode.com/2022/day/1
 

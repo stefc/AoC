@@ -3,13 +3,22 @@ using advent.of.code.y2022;
 namespace advent.of.code.tests.y2022;
 
 [Trait("Year", "2022")]
-[Trait("Day", "1")]
-public class TestDay1 : IPuzzleTest
+[Trait("Day", "5")]
+public class TestDay5 : IPuzzleTest
 {
-	private readonly IPuzzle _ = new CalorieCounting();
+	private readonly IPuzzle<string> _ = new SupplyStacks();
 
 	private IEnumerable<string> CreateSample()
-	=> new string[]{"1000","2000","3000","","4000","","5000","6000","","7000","8000","9000","","10000"};
+	=> @"
+    [D]    
+[N] [C]    
+[Z] [M] [P]
+ 1   2   3 
+
+move 1 from 2 to 1
+move 3 from 1 to 3
+move 2 from 2 to 1
+move 1 from 1 to 2".Split("\n").ToArray();
 
 	[Fact]
 	public void SampleSilver()
@@ -21,7 +30,7 @@ public class TestDay1 : IPuzzleTest
 		var actual = _.Silver(input);
 
 		// Assert
-		Assert.Equal(24000, actual);
+		Assert.Equal("CMZ", actual);
 	}
 
 	[Fact]
@@ -34,7 +43,7 @@ public class TestDay1 : IPuzzleTest
 		var actual = _.Silver(input);
 
 		// Assert
-		Assert.Equal(71506, actual);
+		Assert.Equal("VCTFTJQCG", actual);
 	}
 
 	[Fact]
@@ -47,7 +56,7 @@ public class TestDay1 : IPuzzleTest
 		var actual = _.Gold(input);
 
 		// Assert
-		Assert.Equal(45000, actual);
+		Assert.Equal("MCD", actual);
 	}
 
 	[Fact]
@@ -60,7 +69,7 @@ public class TestDay1 : IPuzzleTest
 		var actual = _.Gold(input);
 
 		// Assert
-		Assert.Equal(209603, actual);
+		Assert.Equal("GCFGLDNJZ", actual);
 	}
 
 }

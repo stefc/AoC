@@ -1,4 +1,4 @@
-using advent.of.code.y2022.day2;
+using advent.of.code.y2022;
 
 namespace advent.of.code.tests.y2022;
 

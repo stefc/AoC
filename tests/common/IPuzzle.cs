@@ -1,14 +1,17 @@
 
 namespace advent.of.code.common;
 
-public interface IPuzzle 
+public interface IPuzzle<T> 
 {
-	public long Silver(IEnumerable<string> values);
+	public T Silver(IEnumerable<string> values);
 	
-	public long Gold(IEnumerable<string> values);
+	public T Gold(IEnumerable<string> values);
 
-	public long Silvered(params string[] values) => Silver(values);
-	public long Golded(params string[] values) => Gold(values);
+	public T Silvered(params string[] values) => Silver(values);
+	public T Golded(params string[] values) => Gold(values);
+}
+
+public interface IPuzzle : IPuzzle<long> {
 }
 
 public interface IPuzzleTest {
