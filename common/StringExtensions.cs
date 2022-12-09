@@ -10,6 +10,8 @@ public static class StringExtensions
 		return (start: ranges.First(), end: ranges.Last());
 	}
 
+	public static bool IsNumeric(this string value) => int.TryParse(value, out var _);
+
 
 	public static Line ToLine(this string input, string pattern = @"^(\d*),(\d*)\s->\s(\d*),(\d*)$")
 	{

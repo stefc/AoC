@@ -19,12 +19,13 @@ public class TestScenario
             .Add(2, new TestDay2())
             .Add(3, new TestDay3())
             .Add(4, new TestDay4())
-            .Add(5, new TestDay4())
-            .Add(6, new TestDay4())
+            .Add(5, new TestDay5())
+            .Add(6, new TestDay6())
+            .Add(7, new TestDay7())
             ;
     }
 
-    [Params(1,2,3,4,5,6)]
+    [Params(1,2,3,4,5,6,7)]
     public int Day;
     
     [Benchmark]

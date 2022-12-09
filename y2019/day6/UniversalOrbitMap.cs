@@ -1,21 +1,16 @@
 // http://adventofcode.com/2019/day/6
 
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-
 using advent.of.code;
 using advent.of.code.common.Bst;
 
 namespace advent.of.code.y2019.day6
 {
-    using static advent.of.code.common.Bst.Tree;
+	using static advent.of.code.common.Bst.Tree;
 
-    using NodeMap = ImmutableDictionary<string, Tree<string>>;
-    using ParentSet = ImmutableHashSet<string>;
+	using NodeMap = ImmutableDictionary<string, Tree<string>>;
+	using ParentSet = ImmutableHashSet<string>;
 
-    public static class UniversalOrbitMap
+	public static class UniversalOrbitMap
     {
         public static int CountOrbits(this Tree<string> map, int level = 0)
         => map.Match(
