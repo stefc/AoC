@@ -65,7 +65,7 @@ public class TestDay6 : IPuzzleTest
 		var actual = _.Gold(input);
 
 		// Assert
-		Assert.Equal(3, actual);
+		Assert.Equal(3513, actual);
 	}
 
 }

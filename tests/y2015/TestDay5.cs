@@ -6,18 +6,26 @@ namespace advent.of.code.tests.y2015;
 
 [Trait("Year", "2015")]
 [Trait("Day", "5")]
-public class TestDay5
+public class TestDay5 : IPuzzleTest
 {
 	private readonly IPuzzle _ = new StringClassifier();
 
-	[Fact]
-	public void Puzzle()
+	public TestDay5()
 	{
-		var input = _.ReadPuzzle();
+		this.input = _.ReadPuzzle();
+	}
 
-		Assert.Equal(255, _.Silver(input));
+	private readonly IEnumerable<string> input;
 
-		Assert.Equal(55, _.Gold(input));
-		
+	[Fact]
+	public void PuzzleGold()
+	{
+		Assert.Equal(55, _.Gold(this.input));
+	}
+
+	[Fact]
+	public void PuzzleSilver()
+	{
+		Assert.Equal(255, _.Silver(this.input));
 	}
 }

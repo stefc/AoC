@@ -4,10 +4,10 @@ using BenchmarkDotNet.Jobs;
 
 namespace advent.of.code.tests.y2021;
 
-[SimpleJob(RuntimeMoniker.Net60)]
+[SimpleJob(RuntimeMoniker.Net70)]
 [MarkdownExporterAttribute.GitHub]
 
-public class TestScenario2021
+public class TestScenario
 {
     private ImmutableDictionary<int,IPuzzleTest> subjects;
 
