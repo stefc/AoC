@@ -7,6 +7,9 @@ namespace advent.of.code.tests.y2022;
 public class TestDay3 : IPuzzleTest
 {
 	private readonly IPuzzle _ = new RucksackReorg();
+	private readonly string[] input;
+
+	public TestDay3() => this.input = _.ReadPuzzle().ToArray();
 
 	private IEnumerable<string> CreateSample()
 	=> new string[]{
@@ -17,56 +20,13 @@ public class TestDay3 : IPuzzleTest
 		"ttgJtRGJQctTZtZT",
 		"CrZsJsPPZsGzwwsLwLmpwMDw"};
 
-	[Fact]
-	public void SampleSilver()
-	{
-		// Arrange
-		var input = CreateSample();
+	[Fact] public void SampleSilver() => Assert.Equal(157, _.Silver(CreateSample()));
 
-		// Act
-		var actual = _.Silver(input);
+	[Fact] public void SampleGold() => Assert.Equal(70, _.Gold(CreateSample()));
 
-		// Assert
-		Assert.Equal(157, actual);
-	}
+	public void PuzzleSilver() => _.Silver(this.input);
+	public void PuzzleGold() => _.Gold(this.input);
 
-	[Fact]
-	public void PuzzleSilver()
-	{
-		//  Arrange
-		var input = _.ReadPuzzle();
-
-		// Act
-		var actual = _.Silver(input);
-
-		// Assert
-		Assert.Equal(7821, actual);
-	}
-
-	[Fact]
-	public void SampleGold()
-	{
-		// Arrange
-		var input = CreateSample();
-
-		// Act
-		var actual = _.Gold(input);
-
-		// Assert
-		Assert.Equal(70, actual);
-	}
-
-	[Fact]
-	public void PuzzleGold()
-	{
-		//  Arrange
-		var input = _.ReadPuzzle();
-
-		// Act
-		var actual = _.Gold(input);
-
-		// Assert
-		Assert.Equal(2752, actual);
-	}
-
+	[Fact] public void TestSilver() => Assert.Equal(7821, _.Silver(this.input));
+	[Fact] public void TestGold() => Assert.Equal(2752, _.Gold(this.input));
 }

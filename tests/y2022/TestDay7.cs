@@ -8,6 +8,10 @@ public class TestDay7 : IPuzzleTest
 {
 	private readonly IPuzzle _ = new NoSpaceLeft();
 
+	private readonly string[] input;
+
+	public TestDay7() => this.input = _.ReadPuzzle().ToArray();
+
 	private IEnumerable<string> CreateSample()
 	=> @"$ cd /
 $ ls
@@ -33,57 +37,15 @@ $ ls
 5626152 d.ext
 7214296 k".Split("\n").ToArray();
 
-	[Fact]
-	public void SampleSilver()
-	{
-		// Arrange
-		var input = CreateSample();
-
-		// Act
-		var actual = _.Silver(input);
-
-		// Assert
-		Assert.Equal(95437, actual);
-	}
-
-	[Fact]
-	public void PuzzleSilver()
-	{
-		//  Arrange
-		var input = _.ReadPuzzle();
-
-		// Act
-		var actual = _.Silver(input);
-
-		// Assert
-		Assert.Equal(1232307, actual);
-	}
-
+	[Fact] public void SampleSilver() => Assert.Equal(95437, _.Silver(CreateSample()));
 	
-	[Fact]
-	public void SampleGold()
-	{
-		// Arrange
-		var input = CreateSample();
+	[Fact] public void SampleGold() => Assert.Equal(24933642, _.Gold(CreateSample()));
 
-		// Act
-		var actual = _.Gold(input);
-		
-		// // Assert
-		Assert.Equal(24933642, actual);
-	}
+	public void PuzzleSilver() => _.Silver(this.input);
+	public void PuzzleGold() => _.Gold(this.input);
 
-	[Fact]
-	public void PuzzleGold()
-	{
-		//  Arrange
-		var input = _.ReadPuzzle(true);
+	[Fact] public void TestSilver() => Assert.Equal(1232307, _.Silver(this.input));
 
-		// Act
-		var actual = _.Gold(input);
-
-		// Assert
-		Assert.Equal(7268994, actual);
-	}
+	[Fact] public void TestGold() => Assert.Equal(7268994, _.Gold(this.input));
 
 }

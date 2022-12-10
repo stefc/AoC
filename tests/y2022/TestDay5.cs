@@ -8,6 +8,10 @@ public class TestDay5 : IPuzzleTest
 {
 	private readonly IPuzzle<string> _ = new SupplyStacks();
 
+	private readonly string[] input;
+
+	public TestDay5() => this.input = _.ReadPuzzle(true).ToArray();
+
 	private IEnumerable<string> CreateSample()
 	=> @"
     [D]    
@@ -20,56 +24,14 @@ move 3 from 1 to 3
 move 2 from 2 to 1
 move 1 from 1 to 2".Split("\n").ToArray();
 
-	[Fact]
-	public void SampleSilver()
-	{
-		// Arrange
-		var input = CreateSample();
+	[Fact] public void SampleSilver() => Assert.Equal("CMZ", _.Silver(CreateSample()));
 
-		// Act
-		var actual = _.Silver(input);
+	[Fact] public void SampleGold() => Assert.Equal("MCD", _.Gold(CreateSample()));
 
-		// Assert
-		Assert.Equal("CMZ", actual);
-	}
+	public void PuzzleSilver() => _.Silver(this.input);
+	public void PuzzleGold() => _.Gold(this.input);
 
-	[Fact]
-	public void PuzzleSilver()
-	{
-		//  Arrange
-		var input = _.ReadPuzzle(true);
-
-		// Act
-		var actual = _.Silver(input);
-
-		// Assert
-		Assert.Equal("VCTFTJQCG", actual);
-	}
-
-	[Fact]
-	public void SampleGold()
-	{
-		// Arrange
-		var input = CreateSample();
-
-		// Act
-		var actual = _.Gold(input);
-
-		// Assert
-		Assert.Equal("MCD", actual);
-	}
-
-	[Fact]
-	public void PuzzleGold()
-	{
-		//  Arrange
-		var input = _.ReadPuzzle(true);
-
-		// Act
-		var actual = _.Gold(input);
-
-		// Assert
-		Assert.Equal("GCFGLDNJZ", actual);
-	}
+	[Fact] public void TestSilver() => Assert.Equal("VCTFTJQCG", _.Silver(this.input));
+	[Fact] public void TestGold() => Assert.Equal("GCFGLDNJZ", _.Gold(this.input));
 
 }
