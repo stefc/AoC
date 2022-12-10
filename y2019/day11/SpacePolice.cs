@@ -1,19 +1,9 @@
 // http://adventofcode.com/2019/day/11
 
-
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-
-
-using advent.of.code;
-using advent.of.code.common;
-
 namespace advent.of.code.y2019.day11
 {
 
-    public enum PaintColor {
+	public enum PaintColor {
         Black = 0,
         White = 1
     }
