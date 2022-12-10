@@ -21,12 +21,12 @@ public class TestDay8 : IPuzzleTest
 
 	[Fact]	public void SampleSilver() => Assert.Equal(21, _.Silver(CreateSample()));
 
-	[Fact]	public void SampleGold() => Assert.Equal(24933642, _.Gold(CreateSample()));
+	[Fact]	public void SampleGold() => Assert.Equal(8, _.Gold(CreateSample()));
 
 	public void PuzzleSilver() => _.Silver(this.input);
 	public void PuzzleGold() => _.Gold(this.input);
 
 	[Fact] public void TestSilver() => Assert.Equal(1827, _.Silver(this.input));
 
-	[Fact] public void TestGold()  => Assert.Equal(1827, _.Gold(this.input));
+	[Fact] public void TestGold()  => Assert.Equal(335580, _.Gold(this.input));
 }

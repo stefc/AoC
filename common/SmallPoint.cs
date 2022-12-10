@@ -115,9 +115,6 @@ public static class SmallPointExtensions
 		yield return p.Y;
 	}
 
-	
-	
-	
 	public static SmallPoint FromString(string value)
 	{
 		var parts = value.Split(',');
@@ -125,12 +122,9 @@ public static class SmallPointExtensions
 		sbyte y = Convert.ToSByte(parts.LastOrDefault());
 		return new SmallPoint(x, y);
 	}
-
 	
 	public static SmallPoint Add(this SmallPoint a, SmallPoint b)
 	=> new SmallPoint(a.X + b.X, a.Y + b.Y);
-
-	
 
 	public static bool IsAdjacent(this SmallPoint p1, SmallPoint p2)
 	{

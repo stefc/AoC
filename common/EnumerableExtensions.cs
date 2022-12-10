@@ -36,6 +36,9 @@ public static class EnumerableExtension
 		return -1;
 	}
 
+	public static int[][] ToMatrix(this IEnumerable<string> lines) 
+	=> lines.AsParallel().Select( l => l.ToDigits().ToArray()).ToArray();
+
 	public static IEnumerable<T> Infinite<T>(this ICollection<T> sequence)
 	{
 		return new InfiniteGenerator<T>(sequence);
