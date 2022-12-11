@@ -21,15 +21,25 @@ D 1
 L 5
 R 2".Split("\n").ToArray();
 
+	private IEnumerable<string> CreateSampleGold()
+	=> @"R 5
+U 8
+L 8
+D 3
+R 17
+D 10
+L 25
+U 20".Split("\n").ToArray();
+
 
 	[Fact]	public void SampleSilver() => Assert.Equal(13, _.Silver(CreateSample()));
 
-	// [Fact]	public void SampleGold() => Assert.Equal(8, _.Gold(CreateSample()));
+	[Fact]	public void SampleGold() => Assert.Equal(36, _.Gold(CreateSampleGold()));
 
 	public void PuzzleSilver() => _.Silver(this.input);
 	public void PuzzleGold() => _.Gold(this.input);
 
 	[Fact] public void TestSilver() => Assert.Equal(5710, _.Silver(this.input));
 
-	// [Fact] public void TestGold()  => Assert.Equal(335580, _.Gold(this.input));
+	[Fact] public void TestGold()  => Assert.Equal(2259, _.Gold(this.input));
 }

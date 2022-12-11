@@ -23,10 +23,11 @@ public class TestScenario
             .Add(6, new TestDay6())
             .Add(7, new TestDay7())
             .Add(8, new TestDay8())
+            .Add(9, new TestDay9())
             ;
     }
 
-    [Params(1,2,3,4,5,6,7,8)]
+    [Params(1,2,3,4,5,6,7,8,9)]
     public int Day;
     
     [Benchmark]
