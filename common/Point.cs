@@ -4,7 +4,7 @@ using MathNet.Numerics.LinearAlgebra;
 namespace advent.of.code.common;
 
 [DebuggerDisplay("{debugDescription,nq}")]
-public record struct Point 
+public record struct Point : IComparable<Point>
 {
 
 	private static Lazy<Point> zero = new Lazy<Point>(() => new Point(0, 0));
@@ -70,6 +70,16 @@ public record struct Point
 	public static IEnumerable<Point> Cloud(int size) => Cloud(size,size);
 	public static IEnumerable<Point> Cloud(int width, int height) 
 	=> 	Enumerable.Range(0, width).SelectMany(x => Enumerable.Range(0, height).Select(y => new Point(x, y)));
+
+	public int CompareTo(Point other)
+	=> this.CellAdr.CompareTo(other.CellAdr);
+	
+	public string CellAdr 
+		=> (this.X < 26) 
+		? 
+		$"{(char)('A'+this.X)}{this.Y+1}" 
+		: 
+		$"{(char)('A'+ (this.X / 26)-1)}{(char)('A'+(this.X % 26))}{this.Y+1}";
 
 }
 

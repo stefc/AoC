@@ -21,7 +21,7 @@
 		<PackageReference Include="SixLabors.Shapes" Version="1.0.0-beta0009" />
 		<PackageReference Include="morelinq" Version="3.3.2" />
 		<PackageReference Include="BenchmarkDotNet" Version="0.13.2" />
-	
+		<PackageReference Include="newtonsoft.json" Version="13.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>

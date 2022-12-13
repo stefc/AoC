@@ -33,6 +33,8 @@ public class Chiton : IPuzzle
 			.Aggregate( new AdjacencyList(),
 			(acc,cur) => AddVerticies(acc, cur.xy, cur.startVertex, map));
 
+		adjList.Print();
+
 		return new Instructions(adjList, 
 			map.Keys.FindIndex( pt => pt == start), 
 			map.Keys.FindIndex( pt => pt == end));

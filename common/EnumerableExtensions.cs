@@ -37,7 +37,10 @@ public static class EnumerableExtension
 	}
 
 	public static int[][] ToMatrix(this IEnumerable<string> lines) 
-	=> lines.AsParallel().Select( l => l.ToDigits().ToArray()).ToArray();
+	=> lines.ToMatrix( l => l.ToDigits());
+	
+	public static T[][] ToMatrix<T>(this IEnumerable<string> lines, Func<string,IEnumerable<T>> select)
+	=> lines.AsParallel().Select( l => select(l).ToArray()).ToArray();
 
 	public static IEnumerable<T> Infinite<T>(this ICollection<T> sequence)
 	{
