@@ -9,28 +9,25 @@ class HillClimbing : IPuzzle
 {
 	private static Pt[] adjacents = new Pt[]{Pt.North,Pt.South,Pt.East,Pt.West};
 
-	internal record struct Instructions ( AdjacencyList adj, int start, int end);
-
+	
 	internal long CountUp(IEnumerable<string> input) {
 		var m = input.ToMatrix( l => l);
 		var map = ToMap(m);
-
+		var w = m.GetLength(0);
+		var PtToIdx = (Pt pt) => w * pt.X + pt.Y;
+		
 		var adjList = map
-			.Select( kvp => (xy:kvp.Key, weight:kvp.Value, startVertex:map.Keys.FindIndex( pt => pt == kvp.Key)))
+			.Select( kvp => (xy:kvp.Key, weight:kvp.Value, startVertex: PtToIdx(kvp.Key)))
 			.Aggregate( new AdjacencyList(),
 			(acc,cur) => AddVerticies(acc, cur.xy, cur.startVertex, cur.weight, map,
-				weight => weight > 1 )) 
+				weight => weight > 1, PtToIdx )) 
 				
 			with { Resolve = (int index) => $"{map.Keys.ElementAt(index).CellAdr} '{map[map.Keys.ElementAt(index)]}'" };
 
 		var start = map.First( kvp => kvp.Value == 'S').Key;
 		var end = map.First( kvp => kvp.Value == 'E').Key;
-
-		var instructions = new Instructions(adjList, 
-			map.Keys.FindIndex( pt => pt == start), 
-			map.Keys.FindIndex( pt => pt == end));
-
-		var path = DijkstraSearch.FindNearestPath( instructions.adj, instructions.start, instructions.end).ToArray();
+		
+		var path = DijkstraSearch.FindNearestPath( adjList, PtToIdx(start), PtToIdx(end)).ToArray();
 
 		return path.Length-1;
 	}
@@ -39,26 +36,27 @@ class HillClimbing : IPuzzle
 		var m = input.ToMatrix( l => l);
 		var map = ToMap(m);
 
+		var w = m.GetLength(0);
+		var PtToIdx = (Pt pt) => w * pt.X + pt.Y;
+
 		var resolver = (int index) => $"{map.Keys.ElementAt(index).CellAdr} '{map[map.Keys.ElementAt(index)]}'";
 
 		var adjList = map
-			.Select( kvp => (xy:kvp.Key, weight:kvp.Value, startVertex:map.Keys.FindIndex( pt => pt == kvp.Key)))
+			.Select( kvp => (xy:kvp.Key, weight:kvp.Value, startVertex:PtToIdx(kvp.Key)))
 			.Aggregate( new AdjacencyList(),
 			(acc,cur) => AddVerticies(acc, cur.xy, cur.startVertex, cur.weight, map,
-				weight => weight > 1))
+				weight => weight > 1, PtToIdx ))
 			with { Resolve = resolver };
 
 		var end = map.First( kvp => kvp.Value == 'E').Key;	
 
-		var possibleStartPositions = map.Where( kvp => kvp.Value == 'a' || kvp.Value == 'S' ).Select( kvp => map.Keys.FindIndex(pt => pt == kvp.Key)).ToArray();
+		var possibleStartPositions = map.Where( kvp => kvp.Value == 'a' || kvp.Value == 'S' ).Select( kvp => PtToIdx(kvp.Key)).ToArray();
 
-		var path = DijkstraSearch.FindNearestPath( adjList, possibleStartPositions, map.Keys.FindIndex( pt => pt == end))
-			.ToArray();
-
+		var path = DijkstraSearch.FindNearestPath( adjList, possibleStartPositions, PtToIdx(end)).ToArray();
 		return path.Length-1;
 	}
 
-	private AdjacencyList AddVerticies(AdjacencyList adjList, Pt xy, int startVertex, char startWeight, Map map, Predicate<int> predicate)
+	private AdjacencyList AddVerticies(AdjacencyList adjList, Pt xy, int startVertex, char startWeight, Map map, Predicate<int> predicate, Func<Pt,int> pointToIndex)
 	{
 		var newAdj = adjacents
 			.Select( cur => xy + cur)
@@ -66,7 +64,7 @@ class HillClimbing : IPuzzle
 			.Aggregate( adjList, 
 			(acc, cur) =>  {
 				var weight = ToCode(map[cur])-(ToCode(startWeight));
-				var endVertex = map.Keys.FindIndex(pt => pt == cur);
+				var endVertex = pointToIndex(cur);
 				if (predicate(weight)) return acc;
 				return acc.AddEdge(startVertex, new Vertex(endVertex, 1));
 			});
