@@ -19,7 +19,9 @@ class HillClimbing : IPuzzle
 			.Select( kvp => (xy:kvp.Key, weight:kvp.Value, startVertex:map.Keys.FindIndex( pt => pt == kvp.Key)))
 			.Aggregate( new AdjacencyList(),
 			(acc,cur) => AddVerticies(acc, cur.xy, cur.startVertex, cur.weight, map,
-				weight => weight > 1));
+				weight => weight > 1 )) 
+				
+			with { Resolve = (int index) => $"{map.Keys.ElementAt(index).CellAdr} '{map[map.Keys.ElementAt(index)]}'" };
 
 		var start = map.First( kvp => kvp.Value == 'S').Key;
 		var end = map.First( kvp => kvp.Value == 'E').Key;
@@ -43,17 +45,15 @@ class HillClimbing : IPuzzle
 			.Select( kvp => (xy:kvp.Key, weight:kvp.Value, startVertex:map.Keys.FindIndex( pt => pt == kvp.Key)))
 			.Aggregate( new AdjacencyList(),
 			(acc,cur) => AddVerticies(acc, cur.xy, cur.startVertex, cur.weight, map,
-				weight => weight < 1))
+				weight => weight > 1))
 			with { Resolve = resolver };
 
-		var start = map.First( kvp => kvp.Value == 'E').Key;
-		var end = map.First( kvp => kvp.Value == 'S').Key;
+		var end = map.First( kvp => kvp.Value == 'E').Key;	
 
-		var instructions = new Instructions(adjList, 
-			map.Keys.FindIndex( pt => pt == start), 
-			map.Keys.FindIndex( pt => pt == end));
+		var possibleStartPositions = map.Where( kvp => kvp.Value == 'a' || kvp.Value == 'S' ).Select( kvp => map.Keys.FindIndex(pt => pt == kvp.Key)).ToArray();
 
-		var path = DijkstraSearch.FindNearestPathForWeight( instructions.adj, instructions.start, instructions.end, 0).ToArray();
+		var path = DijkstraSearch.FindNearestPath( adjList, possibleStartPositions, map.Keys.FindIndex( pt => pt == end))
+			.ToArray();
 
 		return path.Length-1;
 	}
@@ -87,9 +87,6 @@ class HillClimbing : IPuzzle
 		if (ch=='E') return ((int)'z'-(int)'a');
 		return (int)ch-(int)'a';
 	}
-
-
-
 	
 	public long Silver(IEnumerable<string> input) => CountUp(input);
 

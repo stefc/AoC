@@ -25,12 +25,12 @@ abdefghi".Split("\n").ToArray();
 
 	[Fact]	public void SampleSilver() => Assert.Equal(31, _.Silver(CreateSample()));
 
-	[Fact]	public void SampleGold() => Assert.Equal(36, _.Gold(CreateSample()));
+	[Fact]	public void SampleGold() => Assert.Equal(29, _.Gold(CreateSample()));
 
 	public void PuzzleSilver() => _.Silver(this.input);
 	public void PuzzleGold() => _.Gold(this.input);
 
 	[Fact] public void TestSilver() => Assert.Equal(490, _.Silver(this.input));
 
-	// [Fact] public void TestGold()  => Assert.Equal(2259, _.Gold(this.input));
+	[Fact] public void TestGold()  => Assert.Equal(488, _.Gold(this.input));
 }

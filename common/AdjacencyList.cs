@@ -5,15 +5,16 @@ using MoreLinq;
 namespace advent.of.code.common;
 
 using Vertices = ImmutableList<Vertex>;
+using AdjList = ImmutableDictionary<int, ImmutableList<Vertex>>;
 
 // http://theoryofprogramming.com/adjacency-list-implementation-in-c-sharp/
 public record struct Vertex(int end, int weight) { }
 
 [DebuggerDisplay("{debugDescription,nq}")]
-public record struct AdjacencyList(ImmutableDictionary<int, Vertices> Matrix, Func<int, string> Resolve = null)
+public record struct AdjacencyList(AdjList Matrix, Func<int, string> Resolve = null)
 {
 	// Constructor - creates an empty Adjacency List
-	public AdjacencyList() : this(ImmutableDictionary<int, Vertices>.Empty)
+	public AdjacencyList() : this(AdjList.Empty)
 	{
 	}
 	
@@ -35,31 +36,9 @@ public record struct AdjacencyList(ImmutableDictionary<int, Vertices> Matrix, Fu
 		if (Matrix.TryGetValue(startVertex, out var list))
 		{
 			list = list.Remove(vertex);
-			if (list.IsEmpty)
-			{
-				return this with { Matrix = this.Matrix.Remove(startVertex) };
-			}
-			else
-			{
-				return this with { Matrix = this.Matrix.SetItem(startVertex, list) };
-			}
+			return this with { Matrix = list.IsEmpty ? this.Matrix.Remove(startVertex) : this.Matrix.SetItem(startVertex, list) };
 		}
 		return this;
-	}
-
-	public void Print()
-	{
-		foreach (var startVertex in this.Matrix.Keys.OrderBy(x => x))
-		{
-			var list = this.Matrix[startVertex];
-			Console.Write("adjacencyList[" + startVertex + "] -> ");
-
-			foreach (var vertex in list)
-			{
-				Console.Write(vertex.end + "(" + vertex.weight + ")");
-			}
-			Console.WriteLine();
-		}
 	}
 
 	private static string verticesToString(Vertices vertices) =>
