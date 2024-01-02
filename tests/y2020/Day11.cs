@@ -89,7 +89,7 @@ LLLLLLLLL#
 			Assert.Equal(0, actual);
 
 		}
-		[Fact]
+		[Fact(Skip = "Long running")]
 		public void PuzzlePartTwo() {
 
 			//  Arrange

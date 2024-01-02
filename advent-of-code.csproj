@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<RootNamespace>advent.of.code</RootNamespace>
 		<IsPackable>false</IsPackable>
 		<LangVersion>Latest</LangVersion>
@@ -29,9 +29,9 @@
 		<Using Include="System.Collections.Immutable"/>
 		<Using Include="System.Text.RegularExpressions"/>
 		<Using Include="System.Runtime.CompilerServices"/>
-		
+
 		<Using Include="Xunit"/>
-		
+
 		<Using Include="advent.of.code.common"/>
 		<Using Include="advent.of.code.tests.helper" />
 	</ItemGroup>
