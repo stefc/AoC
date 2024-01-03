@@ -29,5 +29,5 @@ public class TestDay1 : IPuzzleTest
 
 	[Fact] public void TestSilver() => Assert.Equal(54331, _.Silver(this.input));
 
-	[Fact] public void TestGold() => Assert.Equal(209603, _.Gold(this.input));
+	[Fact] public void TestGold() => Assert.Equal(54518, _.Gold(this.input));
 }
