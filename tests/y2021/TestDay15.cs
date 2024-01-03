@@ -12,7 +12,7 @@ public class TestDay15 : IPuzzleTest
 		string input = @"116
 138
 581";
-		return input.Split("\n")
+		return input.Split(Environment.NewLine)
 				.ToArray();
 	}
 
@@ -28,11 +28,11 @@ public class TestDay15 : IPuzzleTest
 3125421639
 1293138521
 2311944581";
-		return input.Split("\n")
+		return input.Split(Environment.NewLine)
 				.ToArray();
 	}
 
-	[Fact( Skip="Not work")]
+	[Fact]
 	public void SampleSilver() => Assert.Equal(40, _.Silver(CreateSample()));
 
 	[Fact( Skip="Not work")]

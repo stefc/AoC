@@ -21,7 +21,7 @@ public class TestDay11 : IPuzzleTest
 4846848554
 5283751526
 ";
-		return input.Split("\n")
+		return input.Split(Environment.NewLine)
 				.Where(line => !String.IsNullOrEmpty(line))
 				.ToArray();
 	}
@@ -34,12 +34,12 @@ public class TestDay11 : IPuzzleTest
 19991
 11111
 ";
-		return input.Split("\n")
-				.Where(line => !String.IsNullOrEmpty(line))
+		return input.Split(Environment.NewLine)
+				.Where(line => !String.IsNullOrWhiteSpace(line))
 				.ToArray();
 	}
 
-	[Fact( Skip="Not work")]
+	[Fact]
 	public void SampleSilver()
 	=> Assert.Equal(1656, _.Silver(CreateSample()));
 
@@ -47,7 +47,7 @@ public class TestDay11 : IPuzzleTest
 	public void PuzzleSilver()
 	=> Assert.Equal(1652, _.Silver(_.ReadPuzzle()));
 
-	[Fact( Skip="Not work")]
+	[Fact]
 	public void SampleGold()
 	=> Assert.Equal(195, _.Gold(CreateSample()));
 

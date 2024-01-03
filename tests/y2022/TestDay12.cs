@@ -19,13 +19,13 @@ public class TestDay12 : IPuzzleTest
 abcryxxl
 accszExk
 acctuvwj
-abdefghi".Split("\n").ToArray();
+abdefghi".Split(Environment.NewLine).ToArray();
 
 
 
-	[Fact( Skip="Not work")]	public void SampleSilver() => Assert.Equal(31, _.Silver(CreateSample()));
+	[Fact]	public void SampleSilver() => Assert.Equal(31, _.Silver(CreateSample()));
 
-	[Fact( Skip="Not work")]	public void SampleGold() => Assert.Equal(29, _.Gold(CreateSample()));
+	[Fact]	public void SampleGold() => Assert.Equal(29, _.Gold(CreateSample()));
 
 	public void PuzzleSilver() => _.Silver(this.input);
 	public void PuzzleGold() => _.Gold(this.input);

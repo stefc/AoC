@@ -18,7 +18,7 @@ b-d
 A-end
 b-end
 ";
-		return input.Split("\n")
+		return input.Split(Environment.NewLine)
 				.Where(line => !String.IsNullOrEmpty(line))
 				.ToArray();
 	}
@@ -36,7 +36,7 @@ kj-sa
 kj-HN
 kj-dc
 ";
-		return input.Split("\n")
+		return input.Split(Environment.NewLine)
 				.Where(line => !String.IsNullOrEmpty(line))
 				.ToArray();
 	}
@@ -62,12 +62,12 @@ zg-he
 pj-fs
 start-RW
 ";
-		return input.Split("\n")
+		return input.Split(Environment.NewLine)
 				.Where(line => !String.IsNullOrEmpty(line))
 				.ToArray();
 	}
 
-	[Fact( Skip="Not work")]
+	[Fact]
 	public void SampleSilver() {
 		Assert.Equal(10, _.Silver(CreateSample()));
 		Assert.Equal(19, _.Silver(CreateSampleLarger()));
@@ -77,7 +77,7 @@ start-RW
 	[Fact]
 	public void PuzzleSilver() => Assert.Equal(4411, _.Silver(_.ReadPuzzle()));
 
-	[Fact( Skip="Not work")]
+	[Fact]
 	public void SampleGold()
 	{
 		Assert.Equal(36, _.Gold(CreateSample()));

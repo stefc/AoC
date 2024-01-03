@@ -27,17 +27,17 @@ BB -> N
 BC -> B
 CC -> N
 CN -> C";
-		return input.Split("\n")
+		return input.Split(Environment.NewLine)
 				.ToArray();
 	}
 
-	[Fact( Skip="Not work")]
+	[Fact]
 	public void SampleSilver() => Assert.Equal(1588, _.Silver(CreateSample()));
 
 	[Fact]
 	public void PuzzleSilver() => Assert.Equal(2703, _.Silver(_.ReadPuzzle()));
 
-	[Fact( Skip="Not work")]
+	[Fact]
 	public void SampleGold() => Assert.Equal(2188189693529, _.Gold(CreateSample()));
 
 	[Fact]

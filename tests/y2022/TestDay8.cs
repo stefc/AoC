@@ -16,12 +16,12 @@ public class TestDay8 : IPuzzleTest
 25512
 65332
 33549
-35390".Split("\n").ToArray();
+35390".Split(Environment.NewLine).ToArray();
 
 
-	[Fact( Skip="Not work")]	public void SampleSilver() => Assert.Equal(21, _.Silver(CreateSample()));
+	[Fact]	public void SampleSilver() => Assert.Equal(21, _.Silver(CreateSample()));
 
-	[Fact( Skip="Not work")]	public void SampleGold() => Assert.Equal(8, _.Gold(CreateSample()));
+	[Fact]	public void SampleGold() => Assert.Equal(8, _.Gold(CreateSample()));
 
 	public void PuzzleSilver() => _.Silver(this.input);
 	public void PuzzleGold() => _.Gold(this.input);
