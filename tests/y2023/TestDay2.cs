@@ -1,4 +1,3 @@
-using System.Linq;
 using advent.of.code.y2023;
 
 namespace advent.of.code.tests.y2023;
@@ -38,11 +37,7 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
 	[Fact]
 	public void IsPossibleSubSet()
 	{
-		var subSet = new SubSet([
-			new(CubeColor.Red, 1),
-			new(CubeColor.Green, 2),
-			new(CubeColor.Blue, 6)
-		]);
+		var subSet = new SubSet([new(CubeColor.Red, 1),new(CubeColor.Green, 2),new(CubeColor.Blue, 6)]);
 		Assert.True(subSet.IsPossible(1, 2, 6));
 		Assert.False(subSet.IsPossible(1, 2, 5));
 		Assert.False(subSet.IsPossible(1, 1, 6));
@@ -63,8 +58,8 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
 	[Fact]
 	public void SampleGold() => Assert.Equal(2286, _.Gold(CreateSample()));
 
-	public void PuzzleSilver() => _.Silver(this.input);
-	public void PuzzleGold() => _.Gold(this.input);
+	void IPuzzleTest.PuzzleSilver() => _.Silver(this.input);
+	void IPuzzleTest.PuzzleGold() => _.Gold(this.input);
 
 	[Fact] public void TestSilver() => Assert.Equal(2176, _.Silver(this.input));
 

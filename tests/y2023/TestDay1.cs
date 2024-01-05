@@ -24,8 +24,8 @@ public class TestDay1 : IPuzzleTest
 	[Fact]
 	public void SampleGold() => Assert.Equal(281, _.Gold(CreateSampleB()));
 
-	public void PuzzleSilver() => _.Silver(this.input);
-	public void PuzzleGold() => _.Gold(this.input);
+	void IPuzzleTest.PuzzleSilver() => _.Silver(this.input);
+	void IPuzzleTest.PuzzleGold() => _.Gold(this.input);
 
 	[Fact] public void TestSilver() => Assert.Equal(54331, _.Silver(this.input));
 
