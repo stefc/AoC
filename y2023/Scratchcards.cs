@@ -35,17 +35,19 @@ class Scratchcards : IPuzzle
 	public long Gold(IEnumerable<string> input)
 	{
 		var cards = input.Select(ParseCard).ToImmutableList();
-
-		var copies = cards.ToDictionary(card => card.CardNumber, _ => 1);
-
-		cards.Select((card, index) => new { Card = card, Index = index })
-			.ForEach(item =>
-			{
-				for (int i = 0; i < item.Card.Matches && item.Index + i + 1 < cards.Count; i++)
-					copies[cards[item.Index + i + 1].CardNumber] += copies[item.Card.CardNumber];
-			});
-
-		return copies.Values.Sum();
+		return cards.Select((card, index) => new { Card = card, Index = index })
+			.Aggregate(
+				cards.ToImmutableDictionary(card => card.CardNumber, _ => 1),
+				(accu, current) => Enumerable.Range(0, current.Card.Matches)
+					.Where(i => current.Index + i + 1 < cards.Count)
+					.Aggregate(accu, (innerAccu, i) =>
+					{
+						var nextCardNumber = cards[current.Index + i + 1].CardNumber;
+						var updatedValue = innerAccu[nextCardNumber] + innerAccu[current.Card.CardNumber];
+						return innerAccu.SetItem(nextCardNumber, updatedValue);
+					}),
+				accu => accu.Values.Sum()
+			);
 	}
 
 	[GeneratedRegex(@"Card\s+(\d+): (.+)")]
@@ -57,5 +59,4 @@ class Scratchcards : IPuzzle
 
 		public int Matches => this.Winning.Intersect(this.Numbers).Count;
 	};
-
 }
