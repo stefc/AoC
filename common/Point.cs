@@ -35,7 +35,7 @@ public record struct Point : IComparable<Point>
 		Y = y;
 	}
 
-	
+
 	// private string value;
 
 	public static Point NorthWest => northwest.Value;
@@ -68,17 +68,17 @@ public record struct Point : IComparable<Point>
 	private string debugDescription => $"x={this.X},y={this.Y}";
 
 	public static IEnumerable<Point> Cloud(int size) => Cloud(size,size);
-	public static IEnumerable<Point> Cloud(int width, int height) 
+	public static IEnumerable<Point> Cloud(int width, int height)
 	=> 	Enumerable.Range(0, width).SelectMany(x => Enumerable.Range(0, height).Select(y => new Point(x, y)));
 
 	public int CompareTo(Point other)
 	=> this.CellAdr.CompareTo(other.CellAdr);
-	
-	public string CellAdr 
-		=> (this.X < 26) 
-		? 
-		$"{(char)('A'+this.X)}{this.Y+1}" 
-		: 
+
+	public string CellAdr
+		=> (this.X < 26)
+		?
+		$"{(char)('A'+this.X)}{this.Y+1}"
+		:
 		$"{(char)('A'+ (this.X / 26)-1)}{(char)('A'+(this.X % 26))}{this.Y+1}";
 
 }
@@ -122,7 +122,7 @@ public static class PointExtensions
 		yield return p.Y;
 	}
 
-	
+
 	public static Point RotateRight(this Point p)
 	=> p.Rotate(new float[,] { { 0, -1 }, { 1, 0 } });
 	public static Point RotateLeft(this Point p)
@@ -132,7 +132,7 @@ public static class PointExtensions
 	{
 
 		var M = Matrix<float>.Build;
-		var V = MathNet.Numerics.LinearAlgebra.Vector<float>.Build;
+		var V = Vector<float>.Build;
 
 		var m = M.DenseOfArray(transform);
 		var v = V.Dense(p.AsEnumerable().Select(Convert.ToSingle).ToArray());
@@ -151,7 +151,7 @@ public static class PointExtensions
 		return new Point(x, y);
 	}
 
-	
+
 	public static Point Add(this Point a, Point b)
 	=> new Point(a.X + b.X, a.Y + b.Y);
 
