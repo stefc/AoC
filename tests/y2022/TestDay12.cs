@@ -11,17 +11,17 @@ public class TestDay12 : IPuzzleTest
 	private readonly IPuzzle _ = new HillClimbing();
 	private readonly string[] input;
 
-	
+
 	public TestDay12() => this.input = _.ReadPuzzle().ToArray();
-		
+
 	private IEnumerable<string> CreateSample()
 	=> @"Sabqponm
 abcryxxl
 accszExk
 acctuvwj
-abdefghi".Split("\n").ToArray();
+abdefghi".Split(Environment.NewLine).ToArray();
 
-	
+
 
 	[Fact]	public void SampleSilver() => Assert.Equal(31, _.Silver(CreateSample()));
 

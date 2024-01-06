@@ -35,10 +35,10 @@ $ ls
 4060174 j
 8033020 d.log
 5626152 d.ext
-7214296 k".Split("\n").ToArray();
+7214296 k".Split(Environment.NewLine).ToArray();
 
 	[Fact] public void SampleSilver() => Assert.Equal(95437, _.Silver(CreateSample()));
-	
+
 	[Fact] public void SampleGold() => Assert.Equal(24933642, _.Gold(CreateSample()));
 
 	public void PuzzleSilver() => _.Silver(this.input);

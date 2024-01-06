@@ -14,15 +14,15 @@ public class TestDay5 : IPuzzleTest
 
 	private IEnumerable<string> CreateSample()
 	=> @"
-    [D]    
-[N] [C]    
+    [D]
+[N] [C]
 [Z] [M] [P]
- 1   2   3 
+ 1   2   3
 
 move 1 from 2 to 1
 move 3 from 1 to 3
 move 2 from 2 to 1
-move 1 from 1 to 2".Split("\n").ToArray();
+move 1 from 1 to 2".Split(Environment.NewLine).ToArray();
 
 	[Fact] public void SampleSilver() => Assert.Equal("CMZ", _.Silver(CreateSample()));
 

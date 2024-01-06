@@ -4,9 +4,9 @@ namespace advent.of.code
 	public static class StringExtension {
 
 		public static IEnumerable<int> ToDigits(this string s)
-		=> s.Select( ch => Convert.ToInt32(new String(ch,1)));
+		=> s.Select( ch => Convert.ToInt32(new string(ch,1)));
 
-		public static IEnumerable<int> ToDigits(this int number) 
+		public static IEnumerable<int> ToDigits(this int number)
 		=> number.ToString().ToDigits();
 
 		public static IEnumerable<int> ToNumbers(this string s)
