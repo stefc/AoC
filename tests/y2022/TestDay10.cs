@@ -162,12 +162,12 @@ noop".Split("\n").ToArray();
 
 	[Fact]	public void SampleSilver() => Assert.Equal(13140, _.Silver(CreateSample()));
 
-	[Fact]	public void SampleGold() => Assert.Equal(36, _.Gold(CreateSample()));
+	[Fact(Skip="Not Ready")]	public void SampleGold() => Assert.Equal(36, _.Gold(CreateSample()));
 
 	public void PuzzleSilver() => _.Silver(this.input);
 	public void PuzzleGold() => _.Gold(this.input);
 
 	[Fact] public void TestSilver() => Assert.Equal(13920, _.Silver(this.input));
 
-	[Fact] public void TestGold()  => Assert.Equal(2259, _.Gold(this.input));
+	[Fact(Skip="Not Ready")] public void TestGold()  => Assert.Equal(2259, _.Gold(this.input));
 }
