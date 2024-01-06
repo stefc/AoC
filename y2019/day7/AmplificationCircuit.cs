@@ -1,31 +1,25 @@
 // http://adventofcode.com/2019/day/7
 
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-
 using advent.of.code;
 using advent.of.code.y2019.day2;
 
 namespace advent.of.code.y2019.day7
 {
-    using Adr = Int32; 
-	using Mem = Int64; 
+	using Mem = Int64;
 
-    using PermutationAccu = 
-        ValueTuple<ImmutableArray<int>, ImmutableArray<bool>>;
+	using PermutationAccu =
+		ValueTuple<ImmutableArray<int>, ImmutableArray<bool>>;
 
-    using IntMatrix = IEnumerable<IEnumerable<int>>;
+	using IntMatrix = IEnumerable<IEnumerable<int>>;
 
-    using Computation = StatefulComputation<Option<ProgramState>, 
-		ImmutableSortedDictionary<Int64,Int64>>;
-    
+	using Computation = StatefulComputation<Option<ProgramState>,
+		ImmutableSortedDictionary<Int64, Int64>>;
 
 
-    // https://en.wikipedia.org/wiki/Steinhaus–Johnson–Trotter_algorithm
 
-    public static class AmplificationCircuit
+	// https://en.wikipedia.org/wiki/Steinhaus–Johnson–Trotter_algorithm
+
+	public static class AmplificationCircuit
     {
         private const bool LEFT_TO_RIGHT = true;
         private const bool RIGHT_TO_LEFT = false;
