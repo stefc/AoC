@@ -3,15 +3,9 @@ namespace advent.of.code.common;
 public static class EnumerableExtension
 {
 
-	public static T Head<T>(this IEnumerable<T> sequence)
-	{
-		return sequence.FirstOrDefault();
-	}
+	public static T Head<T>(this IEnumerable<T> sequence) => sequence.FirstOrDefault();
 
-	public static IEnumerable<T> Tail<T>(this IEnumerable<T> sequence)
-	{
-		return sequence.Skip(1);
-	}
+	public static IEnumerable<T> Tail<T>(this IEnumerable<T> sequence) => sequence.Skip(1);
 
 	public static bool IsEmpty<T>(this IEnumerable<T> sequence) =>
 		sequence.Count() == 0;
@@ -36,9 +30,9 @@ public static class EnumerableExtension
 		return -1;
 	}
 
-	public static int[][] ToMatrix(this IEnumerable<string> lines) 
+	public static int[][] ToMatrix(this IEnumerable<string> lines)
 	=> lines.ToMatrix( l => l.ToDigits());
-	
+
 	public static T[][] ToMatrix<T>(this IEnumerable<string> lines, Func<string,IEnumerable<T>> select)
 	=> lines.AsParallel().Select( l => select(l).ToArray()).ToArray();
 
