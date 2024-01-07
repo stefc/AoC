@@ -3,5 +3,6 @@
         "**/bin": true,
         "**/obj": true
     },
-    "editor.acceptSuggestionOnCommitCharacter": false
+    "editor.acceptSuggestionOnCommitCharacter": false,
+    "files.autoSave": "afterDelay"
 }
