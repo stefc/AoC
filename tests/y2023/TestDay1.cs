@@ -14,8 +14,7 @@ public class TestDay1 : IPuzzleTest
 	private IEnumerable<string> CreateSampleA()
 	=> new string[]{"1abc2","pqr3stu8vwx","a1b2c3d4e5f","treb7uchet"};
 	private IEnumerable<string> CreateSampleB()
-	=> new string[]{"two1nine","eightwothree","abcone2threexyz",
-		"xtwone3four","4nineeightseven2","zoneight234","7pqrstsixteen"};
+	=> new string[]{"two1nine","eightwothree","abcone2threexyz","xtwone3four","4nineeightseven2","zoneight234","7pqrstsixteen"};
 
 
 	[Fact]

@@ -29,7 +29,7 @@ public class TestDay3 : IPuzzleTest
 	public void SampleSilver() => Assert.Equal(4361, _.Silver(CreateSample()));
 
 	[Fact]
-	public void SampleGold() => Assert.Equal(2286, _.Gold(CreateSample()));
+	public void SampleGold() => Assert.Equal(467835, _.Gold(CreateSample()));
 
 	[Fact]
 	public void TestSymbolMap() {
@@ -45,7 +45,7 @@ public class TestDay3 : IPuzzleTest
 	[Fact]
 	public void ExtractRatiosFromLine() {
 		var line = "467..114..";
-		var ratios = GearRatios.ExtractRatiosFromLine(line).ToArray();
+		var ratios = GearRatios.ExtractRatiosFromLine(line,42).ToArray();
 		Assert.Equal(2, ratios.Count());
 		Assert.Equal(467, ratios.First().ratio);
 		Assert.Equal(0, ratios.First().start);
@@ -55,16 +55,10 @@ public class TestDay3 : IPuzzleTest
 		Assert.Equal(7, ratios.Last().end);
 	}
 
-	[Fact]
-	public void ParseSematic() {
-		var current = GearRatios.Parse(CreateSample());
-		
-	}
-
 	void IPuzzleTest.PuzzleSilver() => _.Silver(this.input);
 	void IPuzzleTest.PuzzleGold() => _.Gold(this.input);
 
-	[Fact] public void TestSilver() => Assert.Equal(2176, _.Silver(this.input));
+	[Fact] public void TestSilver() => Assert.Equal(521515, _.Silver(this.input));
 
-	[Fact] public void TestGold() => Assert.Equal(63700, _.Gold(this.input));
+	[Fact] public void TestGold() => Assert.Equal(69527306, _.Gold(this.input));
 }
