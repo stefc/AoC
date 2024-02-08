@@ -18,6 +18,7 @@ class Trebuchet : IPuzzle
 		var match = FindAllWords(value).Concat(FindDigits(value)).OrderBy(x => x.index).Select(x => x.number);
 		return (match.First() * 10) + match.Last();
 	}
+
 	private static IEnumerable<(int number, int index)> FindWords(string value, string word, int number)
 	=> Enumerable.Range(0, Math.Max(value.Length - word.Length, 0))
 		.Select(index => value.IndexOf(word, index))

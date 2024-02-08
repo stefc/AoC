@@ -8,7 +8,6 @@ partial
 
 class CubeConundrum : IPuzzle
 {
-
 	public static CubeColor ToColor(string value) => Enum.Parse<CubeColor>(value, true);
 
 	public static GameRecord ParseGameRecord(string gameRecord)
@@ -27,7 +26,6 @@ class CubeConundrum : IPuzzle
 
 		return new GameRecord(gameNumber, cubesString
 			.Select(cubeString => cubeRegex.Matches(cubeString)
-				.Cast<Match>()
 				.Select(cubeMatch => new Cube(
 					ToColor(cubeMatch.Groups[2].Value),
 					int.Parse(cubeMatch.Groups[1].Value)))
@@ -61,7 +59,6 @@ class CubeConundrum : IPuzzle
 }
 
 // enum with 3 values red, green, blue specify color of cube
-internal enum CubeColor { Red, Green, Blue };
 
 internal record GameRecord(int GameNumber, List<SubSet> SubSets)
 {
@@ -71,10 +68,10 @@ internal record GameRecord(int GameNumber, List<SubSet> SubSets)
 		return SubSets.All(subSet => subSet.IsPossible(red, green, blue));
 	}
 
-	public (int red, int green, int blue) MinimumCubeCount() =>
-		(SubSets.Select(subSet => subSet.MinimumCubeCount().red).Max(),
-			SubSets.Select(subSet => subSet.MinimumCubeCount().green).Max(),
-			SubSets.Select(subSet => subSet.MinimumCubeCount().blue).Max());
+	public (int red, int green, int blue) MinimumCubeCount() =>(
+		SubSets.Select(subSet => subSet.MinimumCubeCount().red).Max(),
+		SubSets.Select(subSet => subSet.MinimumCubeCount().green).Max(),
+		SubSets.Select(subSet => subSet.MinimumCubeCount().blue).Max());
 };
 
 internal record SubSet(List<Cube> Cubes)
@@ -88,10 +85,12 @@ internal record SubSet(List<Cube> Cubes)
 		return red >= redCubes && green >= greenCubes && blue >= blueCubes;
 	}
 
-	public (int red, int green, int blue) MinimumCubeCount() =>
-		(Cubes.Where(cube => cube.Color == CubeColor.Red).Sum(cube => cube.Quantity),
-			Cubes.Where(cube => cube.Color == CubeColor.Green).Sum(cube => cube.Quantity),
-			Cubes.Where(cube => cube.Color == CubeColor.Blue).Sum(cube => cube.Quantity));
+	public (int red, int green, int blue) MinimumCubeCount() =>(
+		Cubes.Where(cube => cube.Color == CubeColor.Red).Sum(cube => cube.Quantity),
+		Cubes.Where(cube => cube.Color == CubeColor.Green).Sum(cube => cube.Quantity),
+		Cubes.Where(cube => cube.Color == CubeColor.Blue).Sum(cube => cube.Quantity));
 };
 
 internal record Cube(CubeColor Color, int Quantity);
+
+internal enum CubeColor { Red, Green, Blue };
